@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Bin and Obj
+API/bin/*
+API/obj/*
+ClientOvertime/bin/*
+ClientOvertime/obj/*
