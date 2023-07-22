@@ -402,3 +402,4 @@ API/bin/*
 API/obj/*
 ClientOvertime/bin/*
 ClientOvertime/obj/*
+API/appsettings.json
