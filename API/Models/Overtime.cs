@@ -27,5 +27,5 @@ public class Overtime : BaseEntity
     // Cardinality
     public ICollection<History>? Histories { get; set; }
 
-    public Payslip? Payslip { get; set; }
+    public ICollection<Payslip>? Payslips { get; set; }
 }
