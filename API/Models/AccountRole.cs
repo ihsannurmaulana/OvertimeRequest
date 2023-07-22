@@ -10,4 +10,9 @@ public class AccountRole : BaseEntity
 
     [Column("role_guid")]
     public Guid? RoleGuid { get; set; }
+
+    // Cardinality
+    public Account? Account { get; set; }
+
+    public Role? Role { get; set; }
 }

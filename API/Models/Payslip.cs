@@ -19,4 +19,9 @@ public class Payslip : BaseEntity
 
     [Column("overtime_guid")]
     public Guid OvertimeGuid { get; set; }
+
+    // Cardinality
+    public ICollection<Overtime>? Overtimes { get; set; }
+
+    public Employee? Employee { get; set; }
 }

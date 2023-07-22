@@ -23,4 +23,9 @@ public class Overtime : BaseEntity
 
     [Column("manager_id")]
     public Guid ManagerId { get; set; }
+
+    // Cardinality
+    public ICollection<History>? Histories { get; set; }
+
+    public Payslip? Payslip { get; set; }
 }

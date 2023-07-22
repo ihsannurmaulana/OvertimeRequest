@@ -10,4 +10,9 @@ public class History : BaseEntity
 
     [Column("overtime_guid")]
     public Guid OvertimeGuid { get; set; }
+
+    // Cardinality
+    public Employee? Employee { get; set; }
+
+    public Overtime? Overtime { get; set; }
 }

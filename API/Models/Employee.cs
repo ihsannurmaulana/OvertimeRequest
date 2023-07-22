@@ -30,4 +30,12 @@ public class Employee : BaseEntity
 
     [Column("manager_id")]
     public int ManagerId { get; set; }
+
+
+    // Cardinality
+    public Account? Account { get; set; }
+
+    public Payslip? Payslip { get; set; }
+
+    public ICollection<History>? Histories { get; set; }
 }
