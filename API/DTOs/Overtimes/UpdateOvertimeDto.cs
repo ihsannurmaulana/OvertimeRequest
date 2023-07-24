@@ -19,8 +19,8 @@ public class UpdateOvertimeDto
         return new()
         {
             Guid = getOvertime.Guid,
-            OvertimeNumber = getOvertime.OvertimeNumber,
             StartDate = getOvertime.StartDate,
+            OvertimeNumber = getOvertime.OvertimeNumber,
             EndDate = getOvertime.EndDate,
             Remarks = getOvertime.Remarks,
             Status = getOvertime.Status,
@@ -34,8 +34,8 @@ public class UpdateOvertimeDto
         return new()
         {
             Guid = overtime.Guid,
-            OvertimeNumber = overtime.OvertimeNumber,
             StartDate = overtime.StartDate,
+            OvertimeNumber = overtime.OvertimeNumber,
             EndDate = overtime.EndDate,
             Remarks = overtime.Remarks,
             Status = overtime.Status,
