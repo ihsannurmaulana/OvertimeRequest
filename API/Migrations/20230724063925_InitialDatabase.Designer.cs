@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(OvertimeDbContext))]
-    [Migration("20230724015801_InitialDatabase")]
+    [Migration("20230724063925_InitialDatabase")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,9 +120,9 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("last_name");
 
-                    b.Property<int?>("ManagerId")
-                        .HasColumnType("int")
-                        .HasColumnName("manager_id");
+                    b.Property<Guid?>("ManagerGuid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("manager_guid");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
@@ -139,7 +139,7 @@ namespace API.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("ManagerId");
+                    b.HasIndex("ManagerGuid");
 
                     b.HasIndex("Nik", "PhoneNumber")
                         .IsUnique();
@@ -323,9 +323,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Employee", b =>
                 {
                     b.HasOne("API.Models.Employee", "Manager")
-                        .WithMany("Subordinates")
-                        .HasForeignKey("ManagerId")
-                        .HasPrincipalKey("Nik");
+                        .WithMany("Employees")
+                        .HasForeignKey("ManagerGuid");
 
                     b.Navigation("Manager");
                 });
@@ -378,11 +377,11 @@ namespace API.Migrations
                 {
                     b.Navigation("Account");
 
+                    b.Navigation("Employees");
+
                     b.Navigation("Overtimes");
 
                     b.Navigation("Payslip");
-
-                    b.Navigation("Subordinates");
                 });
 
             modelBuilder.Entity("API.Models.Overtime", b =>

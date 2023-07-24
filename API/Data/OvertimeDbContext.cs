@@ -53,9 +53,8 @@ public class OvertimeDbContext : DbContext
         // Employee - Employee
         modelBuilder.Entity<Employee>()
                     .HasOne(employee => employee.Manager)
-                    .WithMany(employee => employee.Subordinates)
-                    .HasForeignKey(employee => employee.ManagerId)
-                    .HasPrincipalKey(employee => employee.Nik);
+                    .WithMany(employee => employee.Employees)
+                    .HasForeignKey(employee => employee.ManagerGuid);
 
         // Employee - Overtime
         modelBuilder.Entity<Employee>()
