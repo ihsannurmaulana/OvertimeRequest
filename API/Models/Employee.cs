@@ -28,13 +28,13 @@ public class Employee : BaseEntity
     [Column("phone_number", TypeName = "nvarchar(20)")]
     public string PhoneNumber { get; set; }
 
-    [Column("manager_id")]
-    public int? ManagerId { get; set; }
+    [Column("manager_guid")]
+    public Guid? ManagerGuid { get; set; }
 
 
     // Cardinality
     public Employee? Manager { get; set; }
-    public ICollection<Employee>? Subordinates { get; set; } = new List<Employee>();
+    public ICollection<Employee>? Employees { get; set; } = new List<Employee>();
     public Account? Account { get; set; }
 
     public Payslip? Payslip { get; set; }
