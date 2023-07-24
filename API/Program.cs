@@ -29,6 +29,7 @@ builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<OvertimeService>();
 builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<AccountRoleService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
