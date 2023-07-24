@@ -1,5 +1,8 @@
 
+using API.Contracts;
 using API.Data;
+using API.Repositories;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,14 @@ builder.Services.AddControllers();
 // Add DbContext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<OvertimeDbContext>(options => options.UseSqlServer(connectionString));
+
+
+// Register repositories
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+
+// Register services
+builder.Services.AddScoped<EmployeeService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
