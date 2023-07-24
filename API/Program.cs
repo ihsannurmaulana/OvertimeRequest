@@ -22,6 +22,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
 builder.Services.AddScoped<IOvertimeRepository, OvertimeRepository>();
+builder.Services.AddScoped<IPayslipRepository, PayslipRepository>();
 
 
 // Register services
@@ -30,6 +31,7 @@ builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<OvertimeService>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRoleService>();
+builder.Services.AddScoped<PayslipService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
