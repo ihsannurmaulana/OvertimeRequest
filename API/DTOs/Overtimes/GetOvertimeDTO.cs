@@ -6,7 +6,7 @@ namespace API.DTOs.Overtimes;
 public class GetOvertimeDTO
 {
     public Guid Guid { get; set; }
-    public int OvertimeNumber { get; set; }
+    public string OvertimeNumber { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string? Remarks { get; set; }

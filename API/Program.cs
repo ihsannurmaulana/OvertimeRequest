@@ -19,11 +19,13 @@ builder.Services.AddDbContext<OvertimeDbContext>(options => options.UseSqlServer
 // Register repositories
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IOvertimeRepository, OvertimeRepository>();
 
 
 // Register services
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<OvertimeService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
