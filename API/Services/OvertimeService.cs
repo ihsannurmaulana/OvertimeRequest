@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.DTOs.Overtimes;
 using API.Models;
+using API.Utilities.Handlers;
 
 namespace API.Services;
 
@@ -38,6 +39,7 @@ public class OvertimeService
     public GetOvertimeDTO? CreateOvertime(NewOvertimeDTO newOvertime)
     {
         Overtime overtime = newOvertime;
+        overtime.OvertimeNumber = GenerateHandler.OverNumber(_overtimeRepository.GetLastOvertimeNumber());
         var createdOvertime = _overtimeRepository.Create(overtime);
         if (createdOvertime is null) return null;
 

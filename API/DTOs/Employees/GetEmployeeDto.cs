@@ -3,7 +3,7 @@ using API.Utilities.Enums;
 
 namespace API.DTOs.Employees;
 
-public class GetEmployeeDto : UpdateEmployeeDto
+public class GetEmployeeDto
 {
     public Guid Guid { get; set; }
     public string Nik { get; set; }
