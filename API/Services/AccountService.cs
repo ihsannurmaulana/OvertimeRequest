@@ -37,8 +37,7 @@ public class AccountService
 
     public GetAccountDto? CreateAccount(NewAccountDto newAccountDto)
     {
-        Account account = newAccountDto;
-        var createdAccount = _accountRepository.Create(account);
+        var createdAccount = _accountRepository.Create(newAccountDto);
         if (createdAccount is null) return null;
 
         return (GetAccountDto) createdAccount;

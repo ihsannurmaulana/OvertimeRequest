@@ -4,6 +4,8 @@ namespace API.DTOs.Accounts;
 
 public class NewAccountDto
 {
+    public Guid Guid { get; set; }
+
     public string Email { get; set; }
 
     public string Password { get; set; }
@@ -12,6 +14,7 @@ public class NewAccountDto
     {
         return new()
         {
+            Guid = newAccountDto.Guid,
             Email = newAccountDto.Email,
             Password = newAccountDto.Password
         };
@@ -21,6 +24,7 @@ public class NewAccountDto
     {
         return new()
         {
+            Guid = account.Guid,
             Email = account.Email,
             Password = account.Password
         };
