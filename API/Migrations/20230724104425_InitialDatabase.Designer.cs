@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(OvertimeDbContext))]
-    [Migration("20230724063925_InitialDatabase")]
+    [Migration("20230724104425_InitialDatabase")]
     partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,8 +128,9 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
-                    b.Property<int>("Nik")
-                        .HasColumnType("int")
+                    b.Property<string>("Nik")
+                        .IsRequired()
+                        .HasColumnType("nchar(6)")
                         .HasColumnName("nik");
 
                     b.Property<string>("PhoneNumber")

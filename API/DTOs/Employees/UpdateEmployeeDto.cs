@@ -6,7 +6,7 @@ namespace API.DTOs.Employees;
 public class UpdateEmployeeDto
 {
     public Guid Guid { get; set; }
-    public int Nik { get; set; }
+    public string Nik { get; set; }
     public string FirstName { get; set; }
     public string? LastName { get; set; }
     public DateTime BirthDate { get; set; }

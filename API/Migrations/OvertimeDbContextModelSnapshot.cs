@@ -126,8 +126,9 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
 
-                    b.Property<int>("Nik")
-                        .HasColumnType("int")
+                    b.Property<string>("Nik")
+                        .IsRequired()
+                        .HasColumnType("nchar(6)")
                         .HasColumnName("nik");
 
                     b.Property<string>("PhoneNumber")
