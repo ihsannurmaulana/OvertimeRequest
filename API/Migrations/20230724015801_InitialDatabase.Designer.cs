@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(OvertimeDbContext))]
-    [Migration("20230722101708_InitializeDatabase")]
-    partial class InitializeDatabase
+    [Migration("20230724015801_InitialDatabase")]
+    partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,10 +158,6 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_date");
 
-                    b.Property<Guid>("EmployeeGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("employee_guid");
-
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
@@ -171,8 +167,6 @@ namespace API.Migrations
                         .HasColumnName("overtime_guid");
 
                     b.HasKey("Guid");
-
-                    b.HasIndex("EmployeeGuid");
 
                     b.HasIndex("OvertimeGuid");
 
@@ -190,13 +184,13 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("created_date");
 
+                    b.Property<Guid>("EmployeeGuid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("employee_guid");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("end_date");
-
-                    b.Property<Guid>("ManagerId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("manager_id");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
@@ -205,6 +199,10 @@ namespace API.Migrations
                     b.Property<int>("OvertimeNumber")
                         .HasColumnType("int")
                         .HasColumnName("overtime_number");
+
+                    b.Property<Guid?>("PayslipGuid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("payslip_guid");
 
                     b.Property<string>("Remarks")
                         .IsRequired()
@@ -221,8 +219,12 @@ namespace API.Migrations
 
                     b.HasKey("Guid");
 
+                    b.HasIndex("EmployeeGuid");
+
                     b.HasIndex("OvertimeNumber")
                         .IsUnique();
+
+                    b.HasIndex("PayslipGuid");
 
                     b.ToTable("tb_m_overtimes");
                 });
@@ -246,17 +248,13 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("date");
 
-                    b.Property<Guid>("EmployeeGuid")
+                    b.Property<Guid?>("EmployeeGuid")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("employee_guid");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_date");
-
-                    b.Property<Guid>("OvertimeGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("overtime_guid");
 
                     b.Property<double>("Salary")
                         .HasColumnType("float")
@@ -265,9 +263,8 @@ namespace API.Migrations
                     b.HasKey("Guid");
 
                     b.HasIndex("EmployeeGuid")
-                        .IsUnique();
-
-                    b.HasIndex("OvertimeGuid");
+                        .IsUnique()
+                        .HasFilter("[employee_guid] IS NOT NULL");
 
                     b.ToTable("tb_m_payslips");
                 });
@@ -335,21 +332,31 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.History", b =>
                 {
-                    b.HasOne("API.Models.Employee", "Employee")
-                        .WithMany("Histories")
-                        .HasForeignKey("EmployeeGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.Models.Overtime", "Overtime")
                         .WithMany("Histories")
                         .HasForeignKey("OvertimeGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Overtime");
+                });
+
+            modelBuilder.Entity("API.Models.Overtime", b =>
+                {
+                    b.HasOne("API.Models.Employee", "Employee")
+                        .WithMany("Overtimes")
+                        .HasForeignKey("EmployeeGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Payslip", "Payslip")
+                        .WithMany("Overtimes")
+                        .HasForeignKey("PayslipGuid")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Employee");
 
-                    b.Navigation("Overtime");
+                    b.Navigation("Payslip");
                 });
 
             modelBuilder.Entity("API.Models.Payslip", b =>
@@ -357,18 +364,9 @@ namespace API.Migrations
                     b.HasOne("API.Models.Employee", "Employee")
                         .WithOne("Payslip")
                         .HasForeignKey("API.Models.Payslip", "EmployeeGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.Overtime", "Overtimes")
-                        .WithMany("Payslips")
-                        .HasForeignKey("OvertimeGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Employee");
-
-                    b.Navigation("Overtimes");
                 });
 
             modelBuilder.Entity("API.Models.Account", b =>
@@ -380,7 +378,7 @@ namespace API.Migrations
                 {
                     b.Navigation("Account");
 
-                    b.Navigation("Histories");
+                    b.Navigation("Overtimes");
 
                     b.Navigation("Payslip");
 
@@ -390,8 +388,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Overtime", b =>
                 {
                     b.Navigation("Histories");
+                });
 
-                    b.Navigation("Payslips");
+            modelBuilder.Entity("API.Models.Payslip", b =>
+                {
+                    b.Navigation("Overtimes");
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>

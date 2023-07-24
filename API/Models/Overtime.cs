@@ -21,11 +21,17 @@ public class Overtime : BaseEntity
     [Column("status")]
     public StatusLevel Status { get; set; }
 
-    [Column("manager_id")]
-    public Guid ManagerId { get; set; }
+    [Column("employee_guid")]
+    public Guid EmployeeGuid { get; set; }
+
+    [Column("payslip_guid")]
+    public Guid? PayslipGuid { get; set; }
+
 
     // Cardinality
     public ICollection<History>? Histories { get; set; }
 
-    public ICollection<Payslip>? Payslips { get; set; }
+    public Employee? Employee { get; set; }
+
+    public Payslip? Payslip { get; set; }
 }

@@ -39,5 +39,5 @@ public class Employee : BaseEntity
 
     public Payslip? Payslip { get; set; }
 
-    public ICollection<History>? Histories { get; set; }
+    public ICollection<Overtime>? Overtimes { get; set; }
 }
