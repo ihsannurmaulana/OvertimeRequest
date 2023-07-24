@@ -7,8 +7,8 @@ namespace API.Models;
 
 public class Employee : BaseEntity
 {
-    [Column("nik")]
-    public int Nik { get; set; }
+    [Column("nik", TypeName = "nchar(6)")]
+    public string Nik { get; set; }
 
     [Column("first_name", TypeName = "nvarchar(100)")]
     public string FirstName { get; set; }

@@ -14,7 +14,7 @@ namespace API.Migrations
                 columns: table => new
                 {
                     guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nik = table.Column<int>(type: "int", nullable: false),
+                    nik = table.Column<string>(type: "nchar(6)", nullable: false),
                     first_name = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     last_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     birth_date = table.Column<DateTime>(type: "datetime2", nullable: false),
