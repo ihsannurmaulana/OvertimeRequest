@@ -4,6 +4,8 @@ namespace API.DTOs.AccountRoles;
 
 public class GetAccountRoleDto
 {
+    public Guid Guid { get; set; }
+
     public Guid? AccountGuid { get; set; }
 
     public Guid? RoleGuid { get; set; }
@@ -12,6 +14,7 @@ public class GetAccountRoleDto
     {
         return new()
         {
+            Guid = getAccountRoleDto.Guid,
             AccountGuid = getAccountRoleDto.AccountGuid,
             RoleGuid = getAccountRoleDto.RoleGuid
         };
@@ -21,6 +24,7 @@ public class GetAccountRoleDto
     {
         return new()
         {
+            Guid = accountRole.Guid,
             AccountGuid = accountRole.AccountGuid,
             RoleGuid = accountRole.RoleGuid
         };
