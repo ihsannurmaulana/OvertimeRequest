@@ -9,6 +9,5 @@ public class History : BaseEntity
     public Guid OvertimeGuid { get; set; }
 
     // Cardinality
-
     public Overtime? Overtime { get; set; }
 }
