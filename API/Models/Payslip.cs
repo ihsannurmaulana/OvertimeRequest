@@ -15,13 +15,10 @@ public class Payslip : BaseEntity
     public double Salary { get; set; }
 
     [Column("employee_guid")]
-    public Guid EmployeeGuid { get; set; }
-
-    [Column("overtime_guid")]
-    public Guid OvertimeGuid { get; set; }
+    public Guid? EmployeeGuid { get; set; }
 
     // Cardinality
-    public Overtime? Overtimes { get; set; }
 
+    public ICollection<Overtime>? Overtimes { get; set; }
     public Employee? Employee { get; set; }
 }

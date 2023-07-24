@@ -52,34 +52,36 @@ public class OvertimeDbContext : DbContext
         // Create Relation
         // Employee - Employee
         modelBuilder.Entity<Employee>()
-            .HasOne(e => e.Manager)
-            .WithMany(e => e.Subordinates)
-            .HasForeignKey(e => e.ManagerId)
-            .HasPrincipalKey(e => e.Nik);
+                    .HasOne(employee => employee.Manager)
+                    .WithMany(employee => employee.Subordinates)
+                    .HasForeignKey(employee => employee.ManagerId)
+                    .HasPrincipalKey(employee => employee.Nik);
 
-        // Employee - History
+        // Employee - Overtime
         modelBuilder.Entity<Employee>()
-            .HasMany(employee => employee.Histories)
-            .WithOne(history => history.Employee)
-            .HasForeignKey(history => history.EmployeeGuid);
+                    .HasMany(employee => employee.Overtimes)
+                    .WithOne(overtime => overtime.Employee)
+                    .HasForeignKey(overtime => overtime.EmployeeGuid);
 
         // History - Overtime
         modelBuilder.Entity<History>()
-            .HasOne(history => history.Overtime)
-            .WithMany(overtime => overtime.Histories)
-            .HasForeignKey(history => history.OvertimeGuid);
+                    .HasOne(history => history.Overtime)
+                    .WithMany(overtime => overtime.Histories)
+                    .HasForeignKey(history => history.OvertimeGuid);
 
         // Payslip - Overtime
         modelBuilder.Entity<Payslip>()
-            .HasOne(payslip => payslip.Overtimes)
-            .WithMany(overtime => overtime.Payslips)
-            .HasForeignKey(payslip => payslip.OvertimeGuid);
+                    .HasMany(payslip => payslip.Overtimes)
+                    .WithOne(overtime => overtime.Payslip)
+                    .HasForeignKey(overtime => overtime.PayslipGuid)
+                    .OnDelete(DeleteBehavior.SetNull);
 
         // Payslip - Employee
         modelBuilder.Entity<Payslip>()
-            .HasOne(payslip => payslip.Employee)
-            .WithOne(employee => employee.Payslip)
-            .HasForeignKey<Payslip>(payslip => payslip.EmployeeGuid);
+                    .HasOne(payslip => payslip.Employee)
+                    .WithOne(employee => employee.Payslip)
+                    .HasForeignKey<Payslip>(payslip => payslip.EmployeeGuid)
+                    .OnDelete(DeleteBehavior.SetNull);
 
         // Employee - Account 
         modelBuilder.Entity<Employee>()
@@ -99,6 +101,4 @@ public class OvertimeDbContext : DbContext
                     .WithMany(role => role.AccountRoles)
                     .HasForeignKey(accountRole => accountRole.RoleGuid);
     }
-
-
 }
