@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Accounts;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -79,6 +80,34 @@ public class AccountController : ControllerBase
         });
     }
 
+    /*[AllowAnonymous]
+    [HttpPost("ForgotPassword")]
+    public IActionResult ForgotPassword(ForgotPasswordDto forgotPassword)
+    {
+        var isUpdated = _service.ForgotPassword(forgotPassword);
+        if (isUpdated == 0)
+            return NotFound(new ResponseHandler<GetAccountDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Email not found"
+            });
+
+        if (isUpdated is -1)
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetAccountDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving data from the database"
+            });
+
+        return Ok(new ResponseHandler<GetAccountDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Otp has been sent to your email"
+        });
+    }*/
 
     [HttpGet]
     public IActionResult GetAll()
