@@ -18,6 +18,29 @@ public class EmployeeController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("get-all-employee")]
+    public IActionResult GetAllEmployee()
+    {
+        var entities = _service.GetAllMaster();
+
+        if (!entities.Any())
+        {
+            return NotFound(new ResponseHandler<GetAllEmployeeDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<GetAllEmployeeDto>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data found",
+            Data = entities
+        });
+    }
 
     [HttpGet]
     public IActionResult GetAll()
