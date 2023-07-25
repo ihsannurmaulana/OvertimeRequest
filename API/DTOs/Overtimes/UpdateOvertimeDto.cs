@@ -12,7 +12,6 @@ public class UpdateOvertimeDto
     public string? Remarks { get; set; }
     public StatusLevel Status { get; set; }
     public Guid EmployeeGuid { get; set; }
-    public Guid? PayslipGuid { get; set; }
 
     public static implicit operator Overtime(UpdateOvertimeDto getOvertime)
     {
@@ -25,7 +24,6 @@ public class UpdateOvertimeDto
             Remarks = getOvertime.Remarks,
             Status = getOvertime.Status,
             EmployeeGuid = getOvertime.EmployeeGuid,
-            PayslipGuid = getOvertime.PayslipGuid,
         };
     }
 
@@ -40,7 +38,6 @@ public class UpdateOvertimeDto
             Remarks = overtime.Remarks,
             Status = overtime.Status,
             EmployeeGuid = overtime.EmployeeGuid,
-            PayslipGuid = overtime.PayslipGuid,
         };
     }
 }

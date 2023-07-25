@@ -18,6 +18,28 @@ public class HistoryController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("get-all-history-user")]
+    public IActionResult GetAllHistory()
+    {
+        var entities = _service.GetAllHistories();
+
+        if (!entities.Any())
+            return NotFound(new ResponseHandler<GetAllHistoryDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data not found"
+            });
+
+        return Ok(new ResponseHandler<IEnumerable<GetAllHistoryDto>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data found",
+            Data = entities
+        });
+    }
+
     [HttpGet]
     public IActionResult GetAll()
     {

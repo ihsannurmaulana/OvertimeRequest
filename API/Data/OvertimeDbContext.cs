@@ -68,13 +68,6 @@ public class OvertimeDbContext : DbContext
                     .WithMany(overtime => overtime.Histories)
                     .HasForeignKey(history => history.OvertimeGuid);
 
-        // Payslip - Overtime
-        modelBuilder.Entity<Payslip>()
-                    .HasMany(payslip => payslip.Overtimes)
-                    .WithOne(overtime => overtime.Payslip)
-                    .HasForeignKey(overtime => overtime.PayslipGuid)
-                    .OnDelete(DeleteBehavior.SetNull);
-
         // Payslip - Employee
         modelBuilder.Entity<Payslip>()
                     .HasOne(payslip => payslip.Employee)

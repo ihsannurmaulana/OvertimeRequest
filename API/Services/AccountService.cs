@@ -20,10 +20,11 @@ public class AccountService
     private readonly IRoleRepository _roleRepository;
 
     private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IEmailHandler _emailHandler;
 
     private readonly ITokenHandler _tokenHandler;
 
-    public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, ITokenHandler tokenHandler)
+    public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, ITokenHandler tokenHandler, IEmailHandler emailHandler)
     {
         _accountRepository = accountRepository;
         _context = context;
@@ -31,6 +32,7 @@ public class AccountService
         _roleRepository = roleRepository;
         _accountRoleRepository = accountRoleRepository;
         _tokenHandler = tokenHandler;
+        _emailHandler = emailHandler;
     }
 
     public bool RegistrationAccount(RegisterDto registerDto)
@@ -112,6 +114,51 @@ public class AccountService
             return "-2";
         }
     }
+
+    // Forgot Password
+    public ForgotPasswordDto ForgotPassword(string email)
+    {
+        var account = _accountRepository.GetEmployeeByEmail(email);
+        if (account is null)
+        {
+            return null;
+        }
+
+        var toDto = new ForgotPasswordDto
+        {
+            Email = account.Email,
+            Otp = GenerateHandler.OtpNumber(),
+            ExpiredTime = DateTime.Now.AddMinutes(5)
+        };
+
+        var relatedAccount = _accountRepository.GetByGuid(account.Guid);
+
+        var update = new Account
+        {
+            Guid = relatedAccount.Guid,
+            Email = relatedAccount.Email,
+            Password = relatedAccount.Password,
+            Otp = toDto.Otp,
+            IsActive = relatedAccount.IsActive,
+            IsUsed = relatedAccount.IsUsed,
+            ExpiredTime = DateTime.Now.AddMinutes(5)
+
+        };
+
+        var updateResult = _accountRepository.Update(update);
+
+        if (!updateResult)
+        {
+            return null;
+        }
+
+        _emailHandler.SendEmail(toDto.Email,
+                                "Forgot Password",
+                                $"Your OTP is {toDto.Otp}");
+
+        return toDto;
+    }
+
 
     public IEnumerable<GetAccountDto> GetAccount()
     {

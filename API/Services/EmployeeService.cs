@@ -75,6 +75,15 @@ public class EmployeeService
         return (GetEmployeeDto)employee;
     }
 
+    // GetManagerByGuid
+    public GetEmployeeDto? GetManagerByGuid(Guid guid)
+    {
+        var manager = _employeeRepository.GetManagerByGuid(guid);
+        if (manager is null) return null;
+
+        return (GetEmployeeDto)manager;
+    }
+
     // Create
     public GetEmployeeDto? CreateEmployee(NewEmployeeDto newEmployeeDto)
     {
