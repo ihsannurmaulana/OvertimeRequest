@@ -45,7 +45,8 @@ public class AccountService
                 BirthDate = registerDto.BirthDate,
                 Gender = registerDto.Gender,
                 HiringDate = registerDto.HiringDate,
-                PhoneNumber = registerDto.PhoneNumber
+                PhoneNumber = registerDto.PhoneNumber,
+                ManagerGuid = registerDto.ManagerGuid
             };
             employeeData.Nik = GenerateHandler.Nik(_employeeRepository.GetLastEmployeeNik());
 
