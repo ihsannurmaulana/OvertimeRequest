@@ -8,9 +8,12 @@ public class RegisterValidation : AbstractValidator<RegisterDto>
 {
     private readonly IEmployeeRepository _employeeRepository;
 
-    public RegisterValidation(IEmployeeRepository employeeRepository)
+    private readonly IAccountRepository _accountRepository;
+
+    public RegisterValidation(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
     {
         _employeeRepository = employeeRepository;
+        _accountRepository = accountRepository;
 
         RuleFor(p => p.FirstName)
            .NotEmpty();
@@ -28,12 +31,12 @@ public class RegisterValidation : AbstractValidator<RegisterDto>
 
         RuleFor(p => p.Email)
            .NotEmpty()
-           .Must(BeUniqueProperty).WithMessage("'Email' already registered")
+           .Must(BeUniqueAccount).WithMessage(p => $"{p.Email} already registered")
            .EmailAddress();
 
         RuleFor(p => p.PhoneNumber)
            .NotEmpty()
-           .Must(BeUniqueProperty).WithMessage("'Phone Number' already registered")
+           .Must(BeUniqueProperty).WithMessage(p => $"{p.PhoneNumber} already registered")
            .Matches(@"^\+[1-9]\d{1,20}$").WithMessage("Invalid phone number format.");
 
         RuleFor(p => p.Password)
@@ -47,10 +50,16 @@ public class RegisterValidation : AbstractValidator<RegisterDto>
         RuleFor(p => p.ConfirmPassword)
           .NotEmpty()
           .Equal(model => model.Password).WithMessage("Password and Confirm Password do not match.");
+        _accountRepository = accountRepository;
     }
 
     private bool BeUniqueProperty(string property)
     {
         return _employeeRepository.IsDuplicateValue(property);
+    }
+
+    private bool BeUniqueAccount(string property)
+    {
+        return _accountRepository.IsDuplicateValue(property);
     }
 }
