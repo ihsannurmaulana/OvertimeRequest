@@ -1,16 +1,115 @@
 ﻿using API.Contracts;
+using API.Data;
+using API.DTOs.AccountRoles;
 using API.DTOs.Accounts;
+using API.DTOs.Employees;
 using API.Models;
+using API.Utilities.Handlers;
+using System.Security.Claims;
 
 namespace API.Services;
 
 public class AccountService
 {
     private readonly IAccountRepository _accountRepository;
-    
-    public AccountService(IAccountRepository accountRepository)
+
+    private readonly OvertimeDbContext _context;
+
+    private readonly IEmployeeRepository _employeeRepository;
+
+    private readonly IRoleRepository _roleRepository;
+
+    private readonly IAccountRoleRepository _accountRoleRepository;
+
+    private readonly ITokenHandler _tokenHandler;
+
+    public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, ITokenHandler tokenHandler)
     {
         _accountRepository = accountRepository;
+        _context = context;
+        _employeeRepository = employeeRepository;
+        _roleRepository = roleRepository;
+        _accountRoleRepository = accountRoleRepository;
+        _tokenHandler = tokenHandler;
+    }
+
+    public bool RegistrationAccount(RegisterDto registerDto)
+    {
+        using var transaction = _context.Database.BeginTransaction();
+        try
+        {
+            Employee employeeData = new NewEmployeeDto
+            {
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                BirthDate = registerDto.BirthDate,
+                Gender = registerDto.Gender,
+                HiringDate = registerDto.HiringDate,
+                PhoneNumber = registerDto.PhoneNumber
+            };
+            employeeData.Nik = GenerateHandler.Nik(_employeeRepository.GetLastEmployeeNik());
+
+            var employee = _employeeRepository.Create(employeeData);
+
+            var account = _accountRepository.Create(new NewAccountDto
+            {
+                Guid = employeeData.Guid,
+                Email = registerDto.Email,
+                Password = HashingHandler.Hash(registerDto.Password)
+            });
+
+            var getRoleUser = _roleRepository.GetByName("User");
+            _accountRoleRepository.Create(new NewAccountRoleDto
+            {
+                AccountGuid = account.Guid,
+                RoleGuid = getRoleUser.Guid
+            });
+
+            transaction.Commit();
+            return true;
+        }
+        catch
+        {
+            transaction.Rollback();
+            return false;
+        }
+    }
+
+    public string LoginAccount(LoginDto login)
+    {
+        var employee = _accountRepository.GetEmployeeByEmail(login.Email);
+        if (employee is null) return "0";
+
+        var account = _accountRepository.GetByGuid(employee.Guid);
+        if (account is null)
+            return "0";
+
+        if (!HashingHandler.Validate(login.Password, account!.Password))
+            return "-1";
+
+        var employees = _employeeRepository.GetByGuid(employee.Guid);
+        try
+        {
+            var claims = new List<Claim>() {
+                new Claim("NIK", employees.Nik),
+                new Claim("FullName", $"{employees.FirstName} {employees.LastName}"),
+                new Claim("EmailAddress", login.Email)
+            };
+
+            var getAccountRole = _accountRoleRepository.GetAccountRolesByAccountGuid(employee.Guid);
+            var getRoleNameByAccountRole = from ar in getAccountRole
+                                           join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
+                                           select r.Name;
+
+            claims.AddRange(getRoleNameByAccountRole.Select(role => new Claim(ClaimTypes.Role, role)));
+
+            var getToken = _tokenHandler.GenerateToken(claims);
+            return getToken;
+        }
+        catch
+        {
+            return "-2";
+        }
     }
 
     public IEnumerable<GetAccountDto> GetAccount()
@@ -32,7 +131,7 @@ public class AccountService
         var account = _accountRepository.GetByGuid(guid);
         if (account is null) return null;
 
-        return (GetAccountDto) account;
+        return (GetAccountDto)account;
     }
 
     public GetAccountDto? CreateAccount(NewAccountDto newAccountDto)
@@ -40,7 +139,7 @@ public class AccountService
         var createdAccount = _accountRepository.Create(newAccountDto);
         if (createdAccount is null) return null;
 
-        return (GetAccountDto) createdAccount;
+        return (GetAccountDto)createdAccount;
     }
 
     public int UpdateAccount(UpdateAccountDto updateAccountDto)

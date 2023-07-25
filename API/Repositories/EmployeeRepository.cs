@@ -14,4 +14,10 @@ public class EmployeeRepository : GeneralRepository<Employee>, IEmployeeReposito
     {
         return _context.Set<Employee>().ToList().Select(e => e.Nik).LastOrDefault();
     }
+
+    public bool IsDuplicateValue(string value)
+    {
+        return _context.Set<Employee>()
+                       .FirstOrDefault(e => e.PhoneNumber.Contains(value)) is null;
+    }
 }

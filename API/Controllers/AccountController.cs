@@ -18,6 +18,67 @@ public class AccountController : ControllerBase
         _service = service;
     }
 
+    // Register
+    [HttpPost("Register")]
+    public IActionResult Register(RegisterDto register)
+    {
+        var isCreated = _service.RegistrationAccount(register);
+        if (!isCreated)
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<NewAccountDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving data from the database"
+            });
+
+        return Ok(new ResponseHandler<NewAccountDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Register Success"
+        });
+    }
+
+    // Login
+    [HttpPost("Login")]
+    public IActionResult Login(LoginDto login)
+    {
+        var loginResult = _service.LoginAccount(login);
+        if (loginResult == "0")
+            return NotFound(new ResponseHandler<GetAccountDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Account not found"
+            });
+
+        if (loginResult == "-1")
+            return BadRequest(new ResponseHandler<GetAccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Password is incorrect"
+            });
+
+        if (loginResult == "-2")
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetAccountDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving when creating token"
+            });
+        }
+
+        return Ok(new ResponseHandler<string>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Login Success",
+            Data = loginResult
+        });
+    }
+
 
     [HttpGet]
     public IActionResult GetAll()

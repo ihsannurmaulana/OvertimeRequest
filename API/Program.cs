@@ -3,7 +3,15 @@ using API.Contracts;
 using API.Data;
 using API.Repositories;
 using API.Services;
+using API.Utilities.Handlers;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
+using System.Text;
+using TokenHandler = API.Utilities.Handlers.TokenHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +42,32 @@ builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AccountRoleService>();
 builder.Services.AddScoped<PayslipService>();
 builder.Services.AddScoped<HistoryService>();
+
+// Register Fluent validation
+builder.Services.AddFluentValidationAutoValidation()
+       .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+// Register Handler
+builder.Services.AddScoped<GenerateHandler>();
+builder.Services.AddScoped<ITokenHandler, TokenHandler>();
+
+// Jwt Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+       .AddJwtBearer(options =>
+       {
+           options.RequireHttpsMetadata = false; // For development
+           options.SaveToken = true;
+           options.TokenValidationParameters = new TokenValidationParameters()
+           {
+               ValidateIssuer = true,
+               ValidIssuer = builder.Configuration["JWTService:Issuer"],
+               ValidateAudience = true,
+               ValidAudience = builder.Configuration["JWTService:Audience"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTService:Key"])),
+               ValidateLifetime = true,
+               ClockSkew = TimeSpan.Zero
+           };
+       });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
