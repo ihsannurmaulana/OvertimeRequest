@@ -8,11 +8,48 @@ namespace API.Services;
 public class EmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IAccountRepository _accountRepository;
 
-    public EmployeeService(IEmployeeRepository employeeRepository)
+    public EmployeeService(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
     {
         _employeeRepository = employeeRepository;
+        _accountRepository = accountRepository;
     }
+
+    // GetAllEmployeeMaster
+    public IEnumerable<GetAllEmployeeDto> GetAllMaster()
+    {
+        var master = (from employee in _employeeRepository.GetAll()
+                      join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
+                      select new GetAllEmployeeDto
+                      {
+                          Guid = employee.Guid,
+                          FullName = employee.FirstName + " " + employee.LastName,
+                          Nik = employee.Nik,
+                          Email = account.Email,
+                          BirthDate = employee.BirthDate,
+                          PhoneNumber = employee.PhoneNumber,
+                          Gender = employee.Gender,
+                          HiringDate = employee.HiringDate,
+                          ManagerGuid = employee.ManagerGuid
+                      }).ToList();
+
+        foreach (var getDataEmployee in master)
+        {
+            if (getDataEmployee.ManagerGuid != Guid.Empty)
+            {
+                // Cari data manager berdasarkan ManagerGuid
+                var manager = master.FirstOrDefault(e => e.Guid == getDataEmployee.ManagerGuid);
+                if (manager != null)
+                {
+                    getDataEmployee.Manager = $"{manager.Nik} - {manager.FullName}";
+                }
+            }
+        }
+
+        return master;
+    }
+
 
     // GetAll
     public IEnumerable<GetEmployeeDto> GetEmployee()
