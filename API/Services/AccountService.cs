@@ -58,8 +58,7 @@ public class AccountService
             {
                 Guid = employee.Guid,
                 Email = registerDto.Email,
-                Password = registerDto.Password,
-                //Password = HashingHandler.Hash(registerDto.Password),
+                Password = HashingHandler.Hash(registerDto.Password),
                 IsActive = false,
                 IsUsed = false,
                 Otp = 0,
@@ -91,7 +90,7 @@ public class AccountService
         var account = _accountRepository.GetEmployeeByEmail(login.Email);
         if (account is null) return "0";
 
-        if (!(login.Password == account.Password)) return "-1";
+        if (!HashingHandler.Validate(login.Password, account!.Password)) return "-1";
 
         var employees = _employeeRepository.GetByGuid(account.Guid);
         try
@@ -182,8 +181,7 @@ public class AccountService
         {
             Guid = account.Guid,
             Email = account.Email,
-            Password = changePasswordDto.NewPassword,
-            //Password = HashingHandler.Hash(changePasswordDto.NewPassword),
+            Password = HashingHandler.Hash(changePasswordDto.NewPassword),
             IsActive = account.IsActive,
             Otp = account.Otp,
             ExpiredTime = account.ExpiredTime,
