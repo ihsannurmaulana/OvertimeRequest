@@ -1,32 +1,29 @@
 ﻿using API.Contracts;
 using API.Data;
-using API.Models;
 using API.DTOs.AccountRoles;
 using API.DTOs.Accounts;
 using API.DTOs.Employees;
+using API.Models;
 using API.Utilities.Handlers;
 using System.Security.Claims;
-using System.ComponentModel.DataAnnotations;
 
 namespace API.Services;
 
 public class AccountService
 {
     private readonly IAccountRepository _accountRepository;
-    private readonly OvertimeDbContext _context;
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IRoleRepository _roleRepository;
-    private readonly IAccountRoleRepository _accountRoleRepository;
-    private readonly ITokenHandler _tokenHandler;
-    private readonly IEmailHandler _emailHandler;
 
-    public AccountService(IAccountRepository accountRepository, 
-                          OvertimeDbContext context,
-                          IEmployeeRepository employeeRepository,
-                          IRoleRepository roleRepository,
-                          IAccountRoleRepository accountRoleRepository,
-                          ITokenHandler tokenHandler,
-                          IEmailHandler emailHandler)
+    private readonly OvertimeDbContext _context;
+
+    private readonly IEmployeeRepository _employeeRepository;
+
+    private readonly IRoleRepository _roleRepository;
+
+    private readonly IAccountRoleRepository _accountRoleRepository;
+
+    private readonly ITokenHandler _tokenHandler;
+
+    public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, ITokenHandler tokenHandler)
     {
         _accountRepository = accountRepository;
         _context = context;
@@ -34,10 +31,8 @@ public class AccountService
         _roleRepository = roleRepository;
         _accountRoleRepository = accountRoleRepository;
         _tokenHandler = tokenHandler;
-        _emailHandler = emailHandler;
     }
 
-    //Register
     public bool RegistrationAccount(RegisterDto registerDto)
     {
         using var transaction = _context.Database.BeginTransaction();
@@ -81,7 +76,6 @@ public class AccountService
         }
     }
 
-    //Login
     public string LoginAccount(LoginDto login)
     {
         var employee = _accountRepository.GetEmployeeByEmail(login.Email);
@@ -117,34 +111,6 @@ public class AccountService
         {
             return "-2";
         }
-    }
-
-    //Forgot Password
-    public int ForgotPassword(ForgotPasswordDto forgotPassword)
-    {
-        var employee = _accountRepository.GetEmployeeByEmail(forgotPassword.Email);
-        if (employee is null)
-            return 0;
-
-        var account = _accountRepository.GetByGuid(employee.Guid);
-        if (account is null)
-            return -1;
-
-        var otp = new Random().Next(111111, 999999);
-        var isUpdated = _accountRepository.Update(new Account
-        {
-            Guid = account.Guid,
-            Password = account.Password
-        });
-
-        if (!isUpdated)
-            return -1;
-
-        _emailHandler.SendEmail(forgotPassword.Email,
-                                "Forgot Password",
-                                $"Your OTP is {otp}");
-
-        return 1;
     }
 
     public IEnumerable<GetAccountDto> GetAccount()

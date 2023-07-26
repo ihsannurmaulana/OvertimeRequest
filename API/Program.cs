@@ -51,13 +51,6 @@ builder.Services.AddFluentValidationAutoValidation()
 builder.Services.AddScoped<GenerateHandler>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 
-// Add SmtpClient
-builder.Services.AddTransient<IEmailHandler, EmailHandler>(_ => new EmailHandler(
-    builder.Configuration["EmailService:SmtpServer"],
-    int.Parse(builder.Configuration["EmailService:SmtpPort"]),
-    builder.Configuration["EmailService:FromEmailAddress"]
-));
-
 // Jwt Configuration
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        .AddJwtBearer(options =>
