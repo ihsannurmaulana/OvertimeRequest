@@ -9,9 +9,9 @@ public class UpdateAccountDto
     public string Email { get; set; }
     public string Password { get; set; }
     public bool IsActive { get; set; }
-    public int Otp { get; set; }
+    public int? Otp { get; set; }
     public bool IsUsed { get; set; }
-    public DateTime ExpiredTime { get; set; }
+    public DateTime? ExpiredTime { get; set; }
 
     public static implicit operator Account(UpdateAccountDto updateAccountDto)
     {
@@ -20,10 +20,11 @@ public class UpdateAccountDto
             Guid = updateAccountDto.Guid,
             Email = updateAccountDto.Email,
             Password = updateAccountDto.Password,
-            IsUsed = updateAccountDto.IsUsed,
-            Otp = updateAccountDto.Otp,
-            ExpiredTime = updateAccountDto.ExpiredTime,
             IsActive = updateAccountDto.IsActive,
+            Otp = updateAccountDto.Otp,
+            IsUsed = updateAccountDto.IsUsed,
+            ExpiredTime = updateAccountDto.ExpiredTime,
+            ModifiedDate = DateTime.UtcNow
         };
     }
 
@@ -34,10 +35,10 @@ public class UpdateAccountDto
             Guid = account.Guid,
             Email = account.Email,
             Password = account.Password,
-            IsUsed = account.IsUsed,
-            Otp = account.Otp,
-            ExpiredTime = account.ExpiredTime,
             IsActive = account.IsActive,
+            Otp = account.Otp,
+            IsUsed = account.IsUsed,
+            ExpiredTime = account.ExpiredTime
         };
     }
 }

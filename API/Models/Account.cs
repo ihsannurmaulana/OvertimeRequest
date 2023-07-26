@@ -12,7 +12,7 @@ public class Account : BaseEntity
     public string Password { get; set; }
 
     [Column("otp")]
-    public int Otp { get; set; }
+    public int? Otp { get; set; }
 
     [Column("is_used")]
     public bool IsUsed { get; set; }
@@ -21,7 +21,7 @@ public class Account : BaseEntity
     public bool IsActive { get; set; }
 
     [Column("expired_time")]
-    public DateTime ExpiredTime { get; set; }
+    public DateTime? ExpiredTime { get; set; }
 
 
     // Cardinality

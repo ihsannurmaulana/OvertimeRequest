@@ -46,6 +46,7 @@ public abstract class GeneralRepository<TEntity> : IGeneralRepository<TEntity>
         {
             _context.Set<TEntity>().Update(entity);
             _context.SaveChanges();
+
             return true;
         }
         catch

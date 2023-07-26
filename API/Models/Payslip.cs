@@ -18,7 +18,5 @@ public class Payslip : BaseEntity
     public Guid? EmployeeGuid { get; set; }
 
     // Cardinality
-    public ICollection<Overtime>? Overtimes { get; set; }
-
     public Employee? Employee { get; set; }
 }

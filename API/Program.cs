@@ -21,7 +21,13 @@ builder.Services.AddControllers();
 
 // Add DbContext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<OvertimeDbContext>(options => options.UseSqlServer(connectionString));
+// builder.Services.AddDbContext<OvertimeDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDbContext<OvertimeDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 
 
 // Register repositories
