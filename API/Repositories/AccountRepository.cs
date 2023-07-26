@@ -18,4 +18,6 @@ public class AccountRepository : GeneralRepository<Account>, IAccountRepository
     {
         return _context.Set<Account>().FirstOrDefault(e => e.Email == email);
     }
+
+
 }

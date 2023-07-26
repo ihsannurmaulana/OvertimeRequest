@@ -102,6 +102,64 @@ public class AccountController : ControllerBase
         });
     }
 
+    [HttpPost("change-password")]
+    public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
+    {
+        var isUpdated = _service.ChangePassword(changePasswordDto);
+        if (isUpdated == 0)
+            return NotFound(new ResponseHandler<UpdateAccountDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Email not found"
+            });
+
+        if (isUpdated == -1)
+        {
+            return BadRequest(new ResponseHandler<UpdateAccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is already used"
+            });
+        }
+
+        if (isUpdated == -2)
+        {
+            return BadRequest(new ResponseHandler<UpdateAccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is incorrect"
+            });
+        }
+
+        if (isUpdated == -3)
+        {
+            return BadRequest(new ResponseHandler<UpdateAccountDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Otp is expired"
+            });
+        }
+
+        if (isUpdated is -4)
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdateAccountDto>
+            {
+                Code = StatusCodes.Status500InternalServerError,
+                Status = HttpStatusCode.InternalServerError.ToString(),
+                Message = "Error retrieving data from the database"
+            });
+
+        return Ok(new ResponseHandler<UpdateAccountDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Password has been changed successfully"
+        });
+    }
+
 
     [HttpGet]
     public IActionResult GetAll()
@@ -202,7 +260,7 @@ public class AccountController : ControllerBase
     {
         var delete = _service.DeleteAccount(guid);
 
-        if (delete is -1)
+        if (delete == -1)
             return NotFound(new ResponseHandler<GetAccountDto>
             {
                 Code = StatusCodes.Status404NotFound,
@@ -210,7 +268,7 @@ public class AccountController : ControllerBase
                 Message = "Id not found"
             });
 
-        if (delete is 0)
+        if (delete == 0)
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetAccountDto>
             {
                 Code = StatusCodes.Status500InternalServerError,

@@ -50,7 +50,6 @@ public class RegisterValidation : AbstractValidator<RegisterDto>
         RuleFor(p => p.ConfirmPassword)
           .NotEmpty()
           .Equal(model => model.Password).WithMessage("Password and Confirm Password do not match.");
-        _accountRepository = accountRepository;
     }
 
     private bool BeUniqueProperty(string property)

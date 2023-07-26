@@ -1,8 +1,6 @@
 ﻿using API.Contracts;
 using API.Data;
-using API.DTOs.AccountRoles;
 using API.DTOs.Accounts;
-using API.DTOs.Employees;
 using API.Models;
 using API.Utilities.Handlers;
 using System.Security.Claims;
@@ -40,32 +38,42 @@ public class AccountService
         using var transaction = _context.Database.BeginTransaction();
         try
         {
-            Employee employeeData = new NewEmployeeDto
+            var employee = new Employee
             {
+                Guid = new Guid(),
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 BirthDate = registerDto.BirthDate,
                 Gender = registerDto.Gender,
                 HiringDate = registerDto.HiringDate,
                 PhoneNumber = registerDto.PhoneNumber,
-                ManagerGuid = registerDto.ManagerGuid
+                ManagerGuid = registerDto.ManagerGuid,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
             };
-            employeeData.Nik = GenerateHandler.Nik(_employeeRepository.GetLastEmployeeNik());
+            employee.Nik = GenerateHandler.Nik(_employeeRepository.GetLastEmployeeNik());
+            _employeeRepository.Create(employee);
 
-            var employee = _employeeRepository.Create(employeeData);
-
-            var account = _accountRepository.Create(new NewAccountDto
+            var account = new Account
             {
-                Guid = employeeData.Guid,
+                Guid = employee.Guid,
                 Email = registerDto.Email,
-                Password = HashingHandler.Hash(registerDto.Password)
-            });
+                Password = registerDto.Password,
+                //Password = HashingHandler.Hash(registerDto.Password),
+                IsActive = false,
+                IsUsed = false,
+                Otp = 0,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+                ExpiredTime = DateTime.Now.AddMinutes(10)
+            };
+            _accountRepository.Create(account);
 
-            var getRoleUser = _roleRepository.GetByName("User");
-            _accountRoleRepository.Create(new NewAccountRoleDto
+            var roleEmployee = _roleRepository.GetByName("User");
+            _accountRoleRepository.Create(new AccountRole
             {
                 AccountGuid = account.Guid,
-                RoleGuid = getRoleUser.Guid
+                RoleGuid = roleEmployee.Guid
             });
 
             transaction.Commit();
@@ -80,27 +88,22 @@ public class AccountService
 
     public string LoginAccount(LoginDto login)
     {
-        var employee = _accountRepository.GetEmployeeByEmail(login.Email);
-        if (employee is null) return "0";
+        var account = _accountRepository.GetEmployeeByEmail(login.Email);
+        if (account is null) return "0";
 
-        var account = _accountRepository.GetByGuid(employee.Guid);
-        if (account is null)
-            return "0";
+        if (!(login.Password == account.Password)) return "-1";
 
-        if (!HashingHandler.Validate(login.Password, account!.Password))
-            return "-1";
-
-        var employees = _employeeRepository.GetByGuid(employee.Guid);
+        var employees = _employeeRepository.GetByGuid(account.Guid);
         try
         {
             var claims = new List<Claim>() {
-                new Claim("NIK", employees.Nik),
+                new Claim("Nik", employees.Nik),
                 new Claim("FullName", $"{employees.FirstName} {employees.LastName}"),
                 new Claim("EmailAddress", login.Email)
             };
 
-            var getAccountRole = _accountRoleRepository.GetAccountRolesByAccountGuid(employee.Guid);
-            var getRoleNameByAccountRole = from ar in getAccountRole
+            var AccountRole = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);
+            var getRoleNameByAccountRole = from ar in AccountRole
                                            join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
                                            select r.Name;
 
@@ -159,6 +162,38 @@ public class AccountService
         return toDto;
     }
 
+    // Change Password
+    public int ChangePassword(ChangePasswordDto changePasswordDto)
+    {
+        var account = _accountRepository.GetEmployeeByEmail(changePasswordDto.Email);
+        if (account is null)
+            return 0;
+
+        if (account.IsUsed)
+            return -1;
+
+        if (account.Otp != changePasswordDto.Otp)
+            return -2;
+
+        if (account.ExpiredTime < DateTime.Now)
+            return -3;
+
+        var isUpdated = _accountRepository.Update(new Account
+        {
+            Guid = account.Guid,
+            Email = account.Email,
+            Password = changePasswordDto.NewPassword,
+            //Password = HashingHandler.Hash(changePasswordDto.NewPassword),
+            IsActive = account.IsActive,
+            Otp = account.Otp,
+            ExpiredTime = account.ExpiredTime,
+            IsUsed = true,
+            CreatedDate = account.CreatedDate,
+            ModifiedDate = DateTime.Now
+        });
+
+        return isUpdated ? 1 : -4;
+    }
 
     public IEnumerable<GetAccountDto> GetAccount()
     {
@@ -212,3 +247,5 @@ public class AccountService
             1;
     }
 }
+
+

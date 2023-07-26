@@ -8,9 +8,11 @@ public class GetAccountDto
     public string Email { get; set; }
     public string Password { get; set; }
     public bool IsActive { get; set; }
-    public int Otp { get; set; }
+    public int? Otp { get; set; }
     public bool IsUsed { get; set; }
-    public DateTime ExpiredTime { get; set; }
+    public DateTime? ExpiredTime { get; set; }
+    //public DateTime CreatedDate { get; set; }
+    //public DateTime ModifiedDate { get; set; }
 
     public static implicit operator Account(GetAccountDto getAccountDto)
     {
@@ -23,6 +25,8 @@ public class GetAccountDto
             Otp = getAccountDto.Otp,
             IsUsed = getAccountDto.IsUsed,
             ExpiredTime = getAccountDto.ExpiredTime
+            //CreatedDate = DateTime.MinValue,
+            //ModifiedDate = DateTime.MinValue,
         };
     }
 
@@ -32,7 +36,11 @@ public class GetAccountDto
         {
             Guid = account.Guid,
             Email = account.Email,
-            Password = account.Password
+            Password = account.Password,
+            IsActive = account.IsActive,
+            Otp = account.Otp,
+            IsUsed = account.IsUsed,
+            ExpiredTime = account.ExpiredTime
         };
     }
 }

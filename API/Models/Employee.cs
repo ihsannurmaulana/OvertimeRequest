@@ -34,9 +34,8 @@ public class Employee : BaseEntity
 
     // Cardinality
     public Employee? Manager { get; set; }
-
-    public ICollection<Employee>? Employees { get; set; } = new List<Employee>();
-
+    public ICollection<Employee>? Employees { get; set; }
+    //= new List<Employee>();
     public Account? Account { get; set; }
 
     public Payslip? Payslip { get; set; }

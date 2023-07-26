@@ -54,7 +54,8 @@ public class OvertimeDbContext : DbContext
         modelBuilder.Entity<Employee>()
                     .HasOne(employee => employee.Manager)
                     .WithMany(employee => employee.Employees)
-                    .HasForeignKey(employee => employee.ManagerGuid);
+                    .HasForeignKey(employee => employee.ManagerGuid)
+                    .OnDelete(DeleteBehavior.NoAction);
 
         // Employee - Overtime
         modelBuilder.Entity<Employee>()
@@ -72,13 +73,13 @@ public class OvertimeDbContext : DbContext
         modelBuilder.Entity<Payslip>()
                     .HasOne(payslip => payslip.Employee)
                     .WithOne(employee => employee.Payslip)
-                    .HasForeignKey<Payslip>(payslip => payslip.EmployeeGuid)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .HasForeignKey<Payslip>(payslip => payslip.EmployeeGuid);
+        //.OnDelete(DeleteBehavior.SetNull);
 
         // Employee - Account 
-        modelBuilder.Entity<Employee>()
-                    .HasOne(employee => employee.Account)
-                    .WithOne(account => account.Employee)
+        modelBuilder.Entity<Account>()
+                    .HasOne(account => account.Employee)
+                    .WithOne(employee => employee.Account)
                     .HasForeignKey<Account>(account => account.Guid);
 
         // Account - AccountRole 
@@ -88,9 +89,9 @@ public class OvertimeDbContext : DbContext
                     .HasForeignKey(accountRole => accountRole.AccountGuid);
 
         // AccountRole - Role
-        modelBuilder.Entity<AccountRole>()
-                    .HasOne(accountRole => accountRole.Role)
-                    .WithMany(role => role.AccountRoles)
-                    .HasForeignKey(accountRole => accountRole.RoleGuid);
+        modelBuilder.Entity<Role>()
+                    .HasMany(role => role.AccountRoles)
+                    .WithOne(accountRole => accountRole.Role)
+                    .HasForeignKey(AccountRole => AccountRole.RoleGuid);
     }
 }
