@@ -9,6 +9,15 @@ public class EmployeeRepository : GeneralRepository<Employee>, IEmployeeReposito
 
     public EmployeeRepository(OvertimeDbContext context) : base(context) { }
 
+    public Employee? GetManagerByGuid(Guid? guid)
+    {
+        var employee = _context.Set<Employee>().Find(guid);
+
+        var manager = _context.Set<Employee>().Find(employee.ManagerGuid);
+
+        _context.ChangeTracker.Clear();
+        return manager;
+    }
 
     public string? GetLastEmployeeNik()
     {

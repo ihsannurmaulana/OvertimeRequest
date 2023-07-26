@@ -24,14 +24,9 @@ public class Overtime : BaseEntity
     [Column("employee_guid")]
     public Guid EmployeeGuid { get; set; }
 
-    [Column("payslip_guid")]
-    public Guid? PayslipGuid { get; set; }
-
 
     // Cardinality
     public ICollection<History>? Histories { get; set; }
 
     public Employee? Employee { get; set; }
-
-    public Payslip? Payslip { get; set; }
 }

@@ -66,6 +66,27 @@ public class EmployeeController : ControllerBase
         });
     }
 
+    [HttpGet("get-manager/{guid}")]
+    public IActionResult GetMangerByGuid(Guid guid)
+    {
+        var employee = _service.GetManagerByGuid(guid);
+        if (employee is null)
+            return NotFound(new ResponseHandler<GetEmployeeDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data not found"
+            });
+
+        return Ok(new ResponseHandler<GetEmployeeDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data found",
+            Data = employee
+        });
+    }
+
     [HttpGet("{guid}")]
     public IActionResult GetByGuid(Guid guid)
     {

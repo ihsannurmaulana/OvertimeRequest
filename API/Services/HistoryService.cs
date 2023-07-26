@@ -6,11 +6,52 @@ namespace API.Services;
 public class HistoryService
 {
     private readonly IHistoryRepository _historyRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IOvertimeRepository _overtimeRepository;
 
-    public HistoryService(IHistoryRepository historyRepository)
+    public HistoryService(IHistoryRepository historyRepository, IEmployeeRepository employeeRepository, IOvertimeRepository overtimeRepository)
     {
         _historyRepository = historyRepository;
+        _employeeRepository = employeeRepository;
+        _overtimeRepository = overtimeRepository;
     }
+
+    // Get All History User
+    public IEnumerable<GetAllHistoryDto> GetAllHistories()
+    {
+        var master = (from history in _historyRepository.GetAll()
+                      join overtime in _overtimeRepository.GetAll() on history.OvertimeGuid equals overtime.Guid
+                      join employee in _employeeRepository.GetAll() on overtime.EmployeeGuid equals employee.Guid
+                      select new GetAllHistoryDto
+                      {
+                          Guid = history.Guid,
+                          OvertimeNumber = overtime.OvertimeNumber,
+                          FullName = employee.FirstName + " " + employee.LastName,
+                          Nik = employee.Nik,
+                          StartDate = overtime.StartDate,
+                          EndDate = overtime.EndDate,
+                          Submited = DateTime.Now,
+                          Status = overtime.Status,
+                          ManagerGuid = employee.ManagerGuid
+
+                      }).ToList();
+
+        foreach (var getDataEmployee in master)
+        {
+            if (getDataEmployee.ManagerGuid != Guid.Empty)
+            {
+                // Cari data manager berdasarkan ManagerGuid
+                var manager = master.FirstOrDefault(e => e.Guid == getDataEmployee.ManagerGuid);
+                if (manager != null)
+                {
+                    getDataEmployee.ApproveBy = $"{manager.Nik} - {manager.FullName}";
+                }
+            }
+        }
+
+        return master;
+    }
+
 
     public IEnumerable<GetHistoryDto> GetHistory()
     {

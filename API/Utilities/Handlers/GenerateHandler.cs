@@ -23,4 +23,19 @@ public class GenerateHandler
         var generateNumber = Convert.ToInt32(OverNumber) + 1;
         return generateNumber.ToString();
     }
+
+    public static int OtpNumber()
+    {
+        Random random = new Random();
+        HashSet<int> uniqueDigits = new HashSet<int>();
+        while (uniqueDigits.Count < 6)
+        {
+            int digit = random.Next(0, 9);
+            uniqueDigits.Add(digit);
+        }
+
+        int generatedOtp = uniqueDigits.Aggregate(0, (acc, digit) => acc * 10 + digit);
+
+        return generatedOtp;
+    }
 }

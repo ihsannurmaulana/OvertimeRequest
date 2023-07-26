@@ -11,7 +11,6 @@ public class NewOvertimeDTO
     public string Remarks { get; set; }
     public StatusLevel Status { get; set; }
     public Guid EmployeeGuid { get; set; }
-    public Guid? PayslipGuid { get; set; }
 
 
     public static implicit operator Overtime(NewOvertimeDTO newOver)
@@ -23,8 +22,7 @@ public class NewOvertimeDTO
             EndDate = newOver.EndDate,
             Remarks = newOver.Remarks,
             Status = newOver.Status,
-            EmployeeGuid = newOver.EmployeeGuid,
-            PayslipGuid = newOver.PayslipGuid,
+            EmployeeGuid = newOver.EmployeeGuid
         };
     }
 
@@ -36,8 +34,7 @@ public class NewOvertimeDTO
             EndDate = overtime.EndDate,
             Remarks = overtime.Remarks,
             Status = overtime.Status,
-            EmployeeGuid = overtime.EmployeeGuid,
-            PayslipGuid = overtime.PayslipGuid
+            EmployeeGuid = overtime.EmployeeGuid
         };
 
     }

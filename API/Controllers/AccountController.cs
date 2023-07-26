@@ -79,6 +79,29 @@ public class AccountController : ControllerBase
         });
     }
 
+    [HttpPost("forgot-password")]
+    public IActionResult ForgotPassword(string email)
+    {
+        var generateOtp = _service.ForgotPassword(email);
+        if (generateOtp is null)
+        {
+            return BadRequest(new ResponseHandler<ForgotPasswordDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Email Not Found"
+            });
+        }
+
+        return Ok(new ResponseHandler<ForgotPasswordDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Token is Generated",
+            Data = generateOtp
+        });
+    }
+
 
     [HttpGet]
     public IActionResult GetAll()
