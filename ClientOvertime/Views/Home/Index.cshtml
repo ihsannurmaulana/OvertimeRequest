@@ -13,24 +13,22 @@
         <!-- Spinner End -->
 
         <!-- Navbar & Hero Start -->
-        <div class="container-xxl position-relative p-0">
+        <div id="home-section" class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
-                    <h1 class="m-0"><i class="fa fa-search me-2"></i>ORM<span class="fs-5">System</span></h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                <h1 class="m-0"><i class="far fa-clock me-2"></i>ORM<span class="fs-5">System</span></h1>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
-                        <a href="service.html" class="nav-item nav-link">Service</a>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="#home-section" class="nav-item nav-link active">Home</a>
+                        <a href="#about-section" class="nav-item nav-link">About</a>
+                        <a href="#service-section" class="nav-item nav-link">Service</a>
+                        <a href="#contact-section" class="nav-item nav-link">Contact</a>
                     </div>
-                    <butaton type="button" class="btn text-secondary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
-                    <a href="https://htmlcodex.com/startup-company-website-template" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Login</a>
+                    <button type="button" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                 </div>
             </nav>
 
@@ -40,8 +38,8 @@
                         <div class="col-lg-6 text-center text-lg-start">
                             <h1 class="text-white mb-4 animated zoomIn">Welcome to Overtime Request Management</h1>
                             <p class="text-white pb-3 animated zoomIn">Value your worth, Claim your overtime benefit here!</p>
-                            <a href="" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft">Tutorial</a>
-                            <a href="" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">Apply</a>
+                            <a href="#tutorial-section" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft">Tutorial</a>
+                            <a href="#newsletter-section" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">Apply</a>
                         </div>
                         <div class="col-lg-6 text-center text-lg-start">
                             <img class="img-fluid" src="img/hero.png" alt="">
@@ -51,6 +49,53 @@
             </div>
         </div>
         <!-- Navbar & Hero End -->
+
+        <!-- Add a login modal with the login form -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="loginFormModal">
+                            <div class="mb-3">
+                                <label for="usernameModal" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="usernameModal" name="usernameModal" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="passwordModal" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="passwordModal" name="passwordModal" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of login modal with the login form -->
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                const loginFormModal = document.getElementById('loginFormModal');
+
+                loginFormModal.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const username = loginFormModal.elements.usernameModal.value;
+                    const password = loginFormModal.elements.passwordModal.value;
+
+                    // Perform your login logic here, such as sending a request to the server to verify credentials
+                    // For demonstration purposes, let's just show an alert indicating successful login
+                    alert(`Logged in with username: ${username}`);
+
+                    // Close the modal after successful login (you can remove this if you want to keep the modal open)
+                    loginModal.hide();
+                });
+            });
+        </script>
 
         <!-- Full Screen Search Start -->
         <div class="modal fade" id="searchModal" tabindex="-1">
@@ -71,7 +116,7 @@
         <!-- Full Screen Search End -->
 
         <!-- About Start -->
-        <div class="container-xxl py-5">
+        <div id="about-section" class="container-xxl py-5">
             <div class="container px-lg-5">
                 <div class="row g-5">
                     <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -79,7 +124,7 @@
                             <h6 class="position-relative text-primary ps-4">About Us</h6>
                             <h2 class="mt-2">Manage Your Overtime With <br>All In One Management System</h2>
                         </div>
-                        <p class="mb-4">Increase your work experience with all in one management system, where you can apply and track your overtime status in one time, easily and effectively!</p>
+                        <p class="mb-4">Increase your work experience with all in one solution, where you can apply and track your overtime status easily and effectively!</p>
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Easy Use</h6>
@@ -107,14 +152,14 @@
         <!-- About End -->
 
         <!-- Newsletter Start -->
-        <div class="container-xxl bg-primary newsletter my-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div id="newsletter-section" class="container-xxl bg-primary newsletter my-5 wow fadeInUp" data-wow-delay="0.1s">
             <div class="container px-lg-5">
                 <div class="row align-items-center" style="height: 250px;">
                     <div class="col-12 col-md-6">
-                        <h3 class="text-white">Ready to get started</h3>
+                        <h3 class="text-white">Ready to get started?</h3>
                         <small class="text-white">If you don't have an account, please contact your administrator.</small>
                         <div class="position-relative w-100 mt-3">
-                        <a href="" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">Login</a>
+                        <button type="button" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                         </div>
                     </div>
                 </div>
@@ -123,7 +168,7 @@
         <!-- Newsletter End -->
 
         <!-- Service Start -->
-        <div class="container-xxl py-5">
+        <div id="service-section" class="container-xxl py-5">
             <div class="container px-lg-5">
                 <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
                     <h6 class="position-relative d-inline text-primary ps-4">Our Services</h6>
@@ -166,7 +211,7 @@
         <!-- Service End -->
 
         <!-- Tutorial Start -->
-        <div class="container-xxl py-5">
+        <div id="tutorial-section"class="container-xxl py-5">
             <div class="container px-lg-5">
                 <div class="section-title position-relative text-center mb-5 pb-2 wow fadeInUp" data-wow-delay="0.1s">
                     <h6 class="position-relative d-inline text-primary ps-4">Tutorial</h6>
@@ -280,9 +325,9 @@
                         <h5 class="text-white mb-4">Get In Touch</h5>
                         <p><i class="fa fa-map-marker-alt me-3"></i>APL Tower 37th Floor, <br>West Jakarta, Indonesia</p>
                         <p><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                        <p><i class="fa fa-envelope me-3"></i>ihsanlana3@gmail.com</p>
+                        <p><i class="fa fa-envelope me-3"></i>ormsystem@gmail.com</p>
                     </div>
-                    <div class="col-md-6 col-lg-3">
+                    <div id="contact-section" class="col-md-6 col-lg-3">
                         <h5 class="text-white mb-4">Contact Us</h5>
                         <div class="d-flex flex-column pt-2">
                         <p><i class="fab fa-twitter"></i><span class="ms-2">ORM_System</span></p>
@@ -298,6 +343,16 @@
                         <a class="btn btn-link" href="">Privacy Policy</a>
                         <a class="btn btn-link" href="">Terms & Condition</a>
                     </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <h5 class="text-white mb-4">Find Us</h5>
+                        <div class="google-map-container">
+                            <!-- Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API key -->
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.283367547846!2d106.78519411432663!3d-6.227983262191153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f4083b2b8c99%3A0x1d4249868e6e92f4!2sAPL%20Tower!5e0!3m2!1sen!2sid!4v1626428306356!5m2!1sen!2sid"
+                                    width="100%" height="130" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="container px-lg-5">
@@ -314,7 +369,6 @@
                                 <a href="">Home</a>
                                 <a href="">Cookies</a>
                                 <a href="">Help</a>
-                               @* <a href="">FQAs</a>*@
                             </div>
                         </div>
                     </div>
