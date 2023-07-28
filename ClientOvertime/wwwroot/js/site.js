@@ -1,1 +1,3 @@
-﻿new DataTable('#data-table');
+﻿new DataTable('#data-table', {
+    scrollX: true
+});

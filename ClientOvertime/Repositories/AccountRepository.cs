@@ -10,14 +10,14 @@ namespace ClientOvertime.Repositories;
 public class AccountRepository : GeneralRepository<AccountVMGet, string>, IAccountRepository
 {
     public AccountRepository(string request = "accounts/") : base(request) { }
-    public async Task<ResponseHandler<EmployeeVMRegister>> CreateAccount(EmployeeVMRegister entity)
+    public async Task<ResponseHandler<EmployeeVM>> CreateAccount(EmployeeVM entity)
     {
-        ResponseHandler<EmployeeVMRegister> entityVM = null;
+        ResponseHandler<EmployeeVM> entityVM = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
         using (var response = _httpClient.PostAsync(_request + "register", content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
-            entityVM = JsonConvert.DeserializeObject<ResponseHandler<EmployeeVMRegister>>(apiResponse);
+            entityVM = JsonConvert.DeserializeObject<ResponseHandler<EmployeeVM>>(apiResponse);
         }
         return entityVM;
     }

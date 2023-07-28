@@ -6,5 +6,5 @@ namespace ClientOvertime.Contracts;
 
 public interface IAccountRepository : IGeneralRepository<AccountVMGet, string>
 {
-    Task<ResponseHandler<EmployeeVMRegister>> CreateAccount(EmployeeVMRegister entity);
+    Task<ResponseHandler<EmployeeVM>> CreateAccount(EmployeeVM entity);
 }

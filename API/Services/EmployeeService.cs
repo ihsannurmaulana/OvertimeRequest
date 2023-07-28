@@ -1,4 +1,5 @@
 ﻿using API.Contracts;
+using API.DTOs.Accounts;
 using API.DTOs.Employees;
 using API.Models;
 using API.Utilities.Handlers;
@@ -85,10 +86,24 @@ public class EmployeeService
     // GetByGuid
     public EmployeeDtoGet? GetEmployeeByGuid(Guid guid)
     {
+
         var employee = _employeeRepository.GetByGuid(guid);
+        var account = _accountRepository.GetByGuid(employee.Guid);
+        var employeeDtoGet = new EmployeeDtoGet();
+
+        employeeDtoGet.Guid = employee.Guid;
+        employeeDtoGet.Nik = employee.Nik;
+        employeeDtoGet.FirstName = employee.FirstName;
+        employeeDtoGet.LastName = employee.LastName;
+        employeeDtoGet.BirthDate = employee.BirthDate;
+        employeeDtoGet.Gender = employee.Gender;
+        employeeDtoGet.HiringDate = employee.HiringDate;
+        employeeDtoGet.Email = account.Email;
+        employeeDtoGet.PhoneNumber = employee.PhoneNumber;
+        employeeDtoGet.ManagerGuid = employee.ManagerGuid;
         if (employee is null) return null;
 
-        return (EmployeeDtoGet)employee;
+        return employeeDtoGet;
     }
 
     // GetManagerByGuid
@@ -118,6 +133,19 @@ public class EmployeeService
         var getEmployee = _employeeRepository.GetByGuid(employeeDto.Guid);
 
         if (getEmployee is null) return -1; // Employee not found
+        var account = _accountRepository.GetByGuid(getEmployee.Guid);
+        var accountDtoUpdate = new AccountDtoUpdate();
+        if (account is null) return -1;
+
+        accountDtoUpdate.Guid = account.Guid;
+        accountDtoUpdate.Email = employeeDto.Email;
+        accountDtoUpdate.Password = account.Password;
+        accountDtoUpdate.IsActive = account.IsActive;
+        accountDtoUpdate.Otp = account.Otp;
+        accountDtoUpdate.IsUsed = account.IsUsed;
+        accountDtoUpdate.ExpiredTime = account.ExpiredTime;
+
+        var accountIsUpdated = _accountRepository.Update(accountDtoUpdate);
 
         var isUpdate = _employeeRepository.Update(employeeDto);
         return !isUpdate ? 0 : // Employee failed to update
