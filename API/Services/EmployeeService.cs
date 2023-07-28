@@ -9,19 +9,35 @@ public class EmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IAccountRepository _accountRepository;
+    private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
+    public EmployeeService(IEmployeeRepository employeeRepository, IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository)
     {
         _employeeRepository = employeeRepository;
         _accountRepository = accountRepository;
+        _accountRoleRepository = accountRoleRepository;
+        _roleRepository = roleRepository;
+    }
+
+
+    public IEnumerable<EmployeeDtoGetAll> GetManager()
+    {
+        var allEmployee = GetAllMaster();
+
+        var managerEmployees = allEmployee.Where(employee => employee.RoleName == "Manager");
+
+        return managerEmployees;
     }
 
     // GetAllEmployeeMaster
-    public IEnumerable<GetAllEmployeeDto> GetAllMaster()
+    public IEnumerable<EmployeeDtoGetAll> GetAllMaster()
     {
         var master = (from employee in _employeeRepository.GetAll()
                       join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
-                      select new GetAllEmployeeDto
+                      join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
+                      join role in _roleRepository.GetAll() on accountRole.RoleGuid equals role.Guid
+                      select new EmployeeDtoGetAll
                       {
                           Guid = employee.Guid,
                           FullName = employee.FirstName + " " + employee.LastName,
@@ -31,7 +47,8 @@ public class EmployeeService
                           PhoneNumber = employee.PhoneNumber,
                           Gender = employee.Gender,
                           HiringDate = employee.HiringDate,
-                          ManagerGuid = employee.ManagerGuid
+                          ManagerGuid = employee.ManagerGuid,
+                          RoleName = role.Name
                       }).ToList();
 
         foreach (var getDataEmployee in master)
@@ -50,42 +67,41 @@ public class EmployeeService
         return master;
     }
 
-
     // GetAll
-    public IEnumerable<GetEmployeeDto> GetEmployee()
+    public IEnumerable<EmployeeDtoGet> GetEmployee()
     {
         var employees = _employeeRepository.GetAll().ToList();
-        if (!employees.Any()) return Enumerable.Empty<GetEmployeeDto>();
-        List<GetEmployeeDto> employeeDtos = new();
+        if (!employees.Any()) return Enumerable.Empty<EmployeeDtoGet>();
+        List<EmployeeDtoGet> employeeDtos = new();
 
         foreach (var employee in employees)
         {
-            employeeDtos.Add((GetEmployeeDto)employee);
+            employeeDtos.Add((EmployeeDtoGet)employee);
         }
 
         return employeeDtos;
     }
 
     // GetByGuid
-    public GetEmployeeDto? GetEmployeeByGuid(Guid guid)
+    public EmployeeDtoGet? GetEmployeeByGuid(Guid guid)
     {
         var employee = _employeeRepository.GetByGuid(guid);
         if (employee is null) return null;
 
-        return (GetEmployeeDto)employee;
+        return (EmployeeDtoGet)employee;
     }
 
     // GetManagerByGuid
-    public GetEmployeeDto? GetManagerByGuid(Guid guid)
+    public EmployeeDtoGet? GetManagerByGuid(Guid guid)
     {
         var manager = _employeeRepository.GetManagerByGuid(guid);
         if (manager is null) return null;
 
-        return (GetEmployeeDto)manager;
+        return (EmployeeDtoGet)manager;
     }
 
     // Create
-    public GetEmployeeDto? CreateEmployee(NewEmployeeDto newEmployeeDto)
+    public EmployeeDtoGet? CreateEmployee(EmployeeDtoCreate newEmployeeDto)
     {
         Employee employee = newEmployeeDto;
         employee.Nik = GenerateHandler.Nik(_employeeRepository.GetLastEmployeeNik());
@@ -93,11 +109,11 @@ public class EmployeeService
         var createdEmployee = _employeeRepository.Create(employee);
         if (createdEmployee is null) return null; // Employee failed to create
 
-        return (GetEmployeeDto)createdEmployee; //Employee created
+        return (EmployeeDtoGet)createdEmployee; //Employee created
     }
 
     // Update
-    public int UpdateEmployee(UpdateEmployeeDto employeeDto)
+    public int UpdateEmployee(EmployeeDtoUpdate employeeDto)
     {
         var getEmployee = _employeeRepository.GetByGuid(employeeDto.Guid);
 

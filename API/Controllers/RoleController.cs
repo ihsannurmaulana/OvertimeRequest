@@ -24,14 +24,14 @@ public class RoleController : ControllerBase
         var entities = _service.GetRole();
 
         if (!entities.Any())
-            return NotFound(new ResponseHandler<GetRoleDto>
+            return NotFound(new ResponseHandler<RoleDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Data not found"
             });
 
-        return Ok(new ResponseHandler<IEnumerable<GetRoleDto>>
+        return Ok(new ResponseHandler<IEnumerable<RoleDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -45,14 +45,14 @@ public class RoleController : ControllerBase
     {
         var role = _service.GetRoleByGuid(guid);
         if (role is null)
-            return NotFound(new ResponseHandler<GetRoleDto>
+            return NotFound(new ResponseHandler<RoleDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Data not found"
             });
 
-        return Ok(new ResponseHandler<GetRoleDto>
+        return Ok(new ResponseHandler<RoleDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -62,18 +62,18 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(NewRoleDto newRoleDto)
+    public IActionResult Create(RoleDtoCreate newRoleDto)
     {
         var createdRole = _service.CreateRole(newRoleDto);
         if (createdRole is null)
-            return BadRequest(new ResponseHandler<GetRoleDto>
+            return BadRequest(new ResponseHandler<RoleDtoGet>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
                 Message = "Data not created"
             });
 
-        return Ok(new ResponseHandler<GetRoleDto>
+        return Ok(new ResponseHandler<RoleDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -83,11 +83,11 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult Update(UpdateRoleDto updateRoleDto)
+    public IActionResult Update(RoleDtoUpdate updateRoleDto)
     {
         var update = _service.UpdateRole(updateRoleDto);
         if (update is -1)
-            return NotFound(new ResponseHandler<UpdateRoleDto>
+            return NotFound(new ResponseHandler<RoleDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -95,14 +95,14 @@ public class RoleController : ControllerBase
             });
 
         if (update is 0)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdateRoleDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<RoleDtoUpdate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<UpdateRoleDto>
+        return Ok(new ResponseHandler<RoleDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -116,7 +116,7 @@ public class RoleController : ControllerBase
         var delete = _service.DeleteRole(guid);
 
         if (delete is -1)
-            return NotFound(new ResponseHandler<GetRoleDto>
+            return NotFound(new ResponseHandler<RoleDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -124,14 +124,14 @@ public class RoleController : ControllerBase
             });
 
         if (delete is 0)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetRoleDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<RoleDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<GetRoleDto>
+        return Ok(new ResponseHandler<RoleDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),

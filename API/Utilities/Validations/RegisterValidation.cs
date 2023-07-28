@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace API.Utilities.Validations;
 
-public class RegisterValidation : AbstractValidator<RegisterDto>
+public class RegisterValidation : AbstractValidator<AccountDtoRegister>
 {
     private readonly IEmployeeRepository _employeeRepository;
 

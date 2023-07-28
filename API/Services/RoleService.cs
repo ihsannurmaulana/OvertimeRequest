@@ -12,37 +12,37 @@ public class RoleService
         _roleRepository = roleRepository;
     }
 
-    public IEnumerable<GetRoleDto> GetRole()
+    public IEnumerable<RoleDtoGet> GetRole()
     {
         var roles = _roleRepository.GetAll().ToList();
-        if (!roles.Any()) return Enumerable.Empty<GetRoleDto>();
-        List<GetRoleDto> roleDtos = new();
+        if (!roles.Any()) return Enumerable.Empty<RoleDtoGet>();
+        List<RoleDtoGet> roleDtos = new();
 
         foreach (var role in roles)
         {
-            roleDtos.Add((GetRoleDto)role);
+            roleDtos.Add((RoleDtoGet)role);
         }
 
         return roleDtos;
     }
 
-    public GetRoleDto? GetRoleByGuid(Guid guid)
+    public RoleDtoGet? GetRoleByGuid(Guid guid)
     {
         var role = _roleRepository.GetByGuid(guid);
         if (role is null) return null; // Role not found
 
-        return (GetRoleDto)role; // Role found
+        return (RoleDtoGet)role; // Role found
     }
 
-    public GetRoleDto? CreateRole(NewRoleDto newRoleDto)
+    public RoleDtoGet? CreateRole(RoleDtoCreate newRoleDto)
     {
         var createdRole = _roleRepository.Create(newRoleDto);
         if (createdRole is null) return null; // Role failed to create
 
-        return (GetRoleDto)createdRole; // Role created
+        return (RoleDtoGet)createdRole; // Role created
     }
 
-    public int UpdateRole(UpdateRoleDto updateRoleDto)
+    public int UpdateRole(RoleDtoUpdate updateRoleDto)
     {
         var getRole = _roleRepository.GetByGuid(updateRoleDto.Guid);
 

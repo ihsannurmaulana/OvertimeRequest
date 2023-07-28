@@ -46,14 +46,14 @@ public class HistoryController : ControllerBase
         var entities = _service.GetHistory();
 
         if (!entities.Any())
-            return NotFound(new ResponseHandler<GetHistoryDto>
+            return NotFound(new ResponseHandler<HistoryDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Data not found"
             });
 
-        return Ok(new ResponseHandler<IEnumerable<GetHistoryDto>>
+        return Ok(new ResponseHandler<IEnumerable<HistoryDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -67,14 +67,14 @@ public class HistoryController : ControllerBase
     {
         var history = _service.GetHistoryByGuid(guid);
         if (history is null)
-            return NotFound(new ResponseHandler<GetHistoryDto>
+            return NotFound(new ResponseHandler<HistoryDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Data not found"
             });
 
-        return Ok(new ResponseHandler<GetHistoryDto>
+        return Ok(new ResponseHandler<HistoryDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -84,18 +84,18 @@ public class HistoryController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(NewHistoryDto newHistoryDto)
+    public IActionResult Create(HistoryDtoCreate newHistoryDto)
     {
         var createdHistory = _service.CreateHistory(newHistoryDto);
         if (createdHistory is null)
-            return BadRequest(new ResponseHandler<GetHistoryDto>
+            return BadRequest(new ResponseHandler<HistoryDtoGet>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
                 Message = "Data not created"
             });
 
-        return Ok(new ResponseHandler<GetHistoryDto>
+        return Ok(new ResponseHandler<HistoryDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -105,11 +105,11 @@ public class HistoryController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult Update(UpdateHistoryDto updateHistoryDto)
+    public IActionResult Update(HistoryDtoUpadate updateHistoryDto)
     {
         var update = _service.UpdateHistory(updateHistoryDto);
         if (update is -1)
-            return NotFound(new ResponseHandler<UpdateHistoryDto>
+            return NotFound(new ResponseHandler<HistoryDtoUpadate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -117,14 +117,14 @@ public class HistoryController : ControllerBase
             });
 
         if (update is 0)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdateHistoryDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<HistoryDtoUpadate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<UpdateHistoryDto>
+        return Ok(new ResponseHandler<HistoryDtoUpadate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -138,7 +138,7 @@ public class HistoryController : ControllerBase
         var delete = _service.DeleteHistory(guid);
 
         if (delete is -1)
-            return NotFound(new ResponseHandler<GetHistoryDto>
+            return NotFound(new ResponseHandler<HistoryDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -146,14 +146,14 @@ public class HistoryController : ControllerBase
             });
 
         if (delete is 0)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetHistoryDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<HistoryDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<GetHistoryDto>
+        return Ok(new ResponseHandler<HistoryDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),

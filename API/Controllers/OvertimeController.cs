@@ -25,7 +25,7 @@ public class OvertimeController : ControllerBase
 
         if (!over.Any())
         {
-            return NotFound(new ResponseHandler<GetOvertimeDTO>
+            return NotFound(new ResponseHandler<OvertimeDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -33,7 +33,7 @@ public class OvertimeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<IEnumerable<GetOvertimeDTO>>
+        return Ok(new ResponseHandler<IEnumerable<OvertimeDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -47,14 +47,14 @@ public class OvertimeController : ControllerBase
     {
         var over = _service.GetOvertimeByGuid(guid);
         if (over is null)
-            return NotFound(new ResponseHandler<GetOvertimeDTO>
+            return NotFound(new ResponseHandler<OvertimeDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Data Not Found"
             });
 
-        return Ok(new ResponseHandler<GetOvertimeDTO>
+        return Ok(new ResponseHandler<OvertimeDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -65,12 +65,12 @@ public class OvertimeController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(NewOvertimeDTO newOvertime)
+    public IActionResult Create(OvertimeDtoCreate newOvertime)
     {
         var over = _service.CreateOvertime(newOvertime);
         if (over is null)
         {
-            return BadRequest(new ResponseHandler<GetOvertimeDTO>
+            return BadRequest(new ResponseHandler<OvertimeDtoGet>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
@@ -78,7 +78,7 @@ public class OvertimeController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<GetOvertimeDTO>
+        return Ok(new ResponseHandler<OvertimeDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -88,12 +88,12 @@ public class OvertimeController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult Update(UpdateOvertimeDto updateOvertime)
+    public IActionResult Update(OvertimeDtoUpdate updateOvertime)
     {
         var over = _service.UpdateOvertime(updateOvertime);
         if (over == -1)
         {
-            return NotFound(new ResponseHandler<UpdateOvertimeDto>
+            return NotFound(new ResponseHandler<OvertimeDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -102,7 +102,7 @@ public class OvertimeController : ControllerBase
         }
         else if (over == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdateOvertimeDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<OvertimeDtoUpdate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -111,7 +111,7 @@ public class OvertimeController : ControllerBase
         }
         else
         {
-            return Ok(new ResponseHandler<UpdateOvertimeDto>
+            return Ok(new ResponseHandler<OvertimeDtoUpdate>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
@@ -127,7 +127,7 @@ public class OvertimeController : ControllerBase
         var overDelete = _service.DeleteOvertime(guid);
         if (overDelete == -1)
         {
-            return NotFound(new ResponseHandler<GetOvertimeDTO>
+            return NotFound(new ResponseHandler<OvertimeDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -136,14 +136,14 @@ public class OvertimeController : ControllerBase
         }
         else if (overDelete == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetOvertimeDTO>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<OvertimeDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error to delete data from the database"
             });
         }
-        else return Ok(new ResponseHandler<GetOvertimeDTO>
+        else return Ok(new ResponseHandler<OvertimeDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
