@@ -33,7 +33,7 @@ public class AccountService
         _emailHandler = emailHandler;
     }
 
-    public bool RegistrationAccount(RegisterDto registerDto)
+    public bool RegistrationAccount(AccountDtoRegister registerDto)
     {
         using var transaction = _context.Database.BeginTransaction();
         try
@@ -85,7 +85,7 @@ public class AccountService
         }
     }
 
-    public string LoginAccount(LoginDto login)
+    public string LoginAccount(AccountDtoLogin login)
     {
         var account = _accountRepository.GetEmployeeByEmail(login.Email);
         if (account is null) return "0";
@@ -118,7 +118,7 @@ public class AccountService
     }
 
     // Forgot Password
-    public ForgotPasswordDto ForgotPassword(string email)
+    public AccountDtoForgotPassword ForgotPassword(string email)
     {
         var account = _accountRepository.GetEmployeeByEmail(email);
         if (account is null)
@@ -126,7 +126,7 @@ public class AccountService
             return null;
         }
 
-        var toDto = new ForgotPasswordDto
+        var toDto = new AccountDtoForgotPassword
         {
             Email = account.Email,
             Otp = GenerateHandler.OtpNumber(),
@@ -162,7 +162,7 @@ public class AccountService
     }
 
     // Change Password
-    public int ChangePassword(ChangePasswordDto changePasswordDto)
+    public int ChangePassword(AccountDtoChangePassword changePasswordDto)
     {
         var account = _accountRepository.GetEmployeeByEmail(changePasswordDto.Email);
         if (account is null)
@@ -193,37 +193,37 @@ public class AccountService
         return isUpdated ? 1 : -4;
     }
 
-    public IEnumerable<GetAccountDto> GetAccount()
+    public IEnumerable<AccountDtoGet> GetAccount()
     {
         var accounts = _accountRepository.GetAll().ToList();
-        if (!accounts.Any()) return Enumerable.Empty<GetAccountDto>();
-        List<GetAccountDto> accountDtos = new();
+        if (!accounts.Any()) return Enumerable.Empty<AccountDtoGet>();
+        List<AccountDtoGet> accountDtos = new();
 
         foreach (var account in accounts)
         {
-            accountDtos.Add((GetAccountDto)account);
+            accountDtos.Add((AccountDtoGet)account);
         }
 
         return accountDtos;
     }
 
-    public GetAccountDto? GetAccountByGuid(Guid guid)
+    public AccountDtoGet? GetAccountByGuid(Guid guid)
     {
         var account = _accountRepository.GetByGuid(guid);
         if (account is null) return null;
 
-        return (GetAccountDto)account;
+        return (AccountDtoGet)account;
     }
 
-    public GetAccountDto? CreateAccount(NewAccountDto newAccountDto)
+    public AccountDtoGet? CreateAccount(AccountDtoCreate newAccountDto)
     {
         var createdAccount = _accountRepository.Create(newAccountDto);
         if (createdAccount is null) return null;
 
-        return (GetAccountDto)createdAccount;
+        return (AccountDtoGet)createdAccount;
     }
 
-    public int UpdateAccount(UpdateAccountDto updateAccountDto)
+    public int UpdateAccount(AccountDtoUpdate updateAccountDto)
     {
         var getAccount = _accountRepository.GetByGuid(updateAccountDto.Guid);
 

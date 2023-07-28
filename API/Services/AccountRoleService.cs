@@ -13,37 +13,37 @@ public class AccountRoleService
         _accountRoleRepository = accountRoleRepository;
     }
 
-    public IEnumerable<GetAccountRoleDto> GetAccountRole()
+    public IEnumerable<AccountRoleDtoGet> GetAccountRole()
     {
         var accountRoles = _accountRoleRepository.GetAll().ToList();
-        if (!accountRoles.Any()) return Enumerable.Empty<GetAccountRoleDto>();
-        List<GetAccountRoleDto> accountRoleDtos = new();
+        if (!accountRoles.Any()) return Enumerable.Empty<AccountRoleDtoGet>();
+        List<AccountRoleDtoGet> accountRoleDtos = new();
 
         foreach (var accountRole in accountRoles)
         {
-            accountRoleDtos.Add((GetAccountRoleDto)accountRole);
+            accountRoleDtos.Add((AccountRoleDtoGet)accountRole);
         }
 
         return accountRoleDtos;
     }
 
-    public GetAccountRoleDto? GetAccountRoleByGuid(Guid guid)
+    public AccountRoleDtoGet? GetAccountRoleByGuid(Guid guid)
     {
         var accountRole = _accountRoleRepository.GetByGuid(guid);
         if (accountRole is null) return null;
 
-        return (GetAccountRoleDto) accountRole;
+        return (AccountRoleDtoGet) accountRole;
     }
 
-    public GetAccountRoleDto? CreateAccountRole(NewAccountRoleDto newAccountRoleDto)
+    public AccountRoleDtoGet? CreateAccountRole(AccountRoleDtoCreate newAccountRoleDto)
     {
         var createdAccountRole = _accountRoleRepository.Create(newAccountRoleDto);
         if (createdAccountRole is null) return null;
 
-        return (GetAccountRoleDto)createdAccountRole;
+        return (AccountRoleDtoGet)createdAccountRole;
     }
 
-    public int UpdateAccountRole(UpdateAccountRoleDto updateAccountRoleDto)
+    public int UpdateAccountRole(AccountRoleDtoUpdate updateAccountRoleDto)
     {
         var getAccountRole = _accountRoleRepository.GetByGuid(updateAccountRoleDto.Guid);
 

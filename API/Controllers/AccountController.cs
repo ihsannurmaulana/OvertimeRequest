@@ -20,18 +20,18 @@ public class AccountController : ControllerBase
 
     // Register
     [HttpPost("Register")]
-    public IActionResult Register(RegisterDto register)
+    public IActionResult Register(AccountDtoRegister register)
     {
         var isCreated = _service.RegistrationAccount(register);
         if (!isCreated)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<NewAccountDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoCreate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<NewAccountDto>
+        return Ok(new ResponseHandler<AccountDtoCreate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -41,11 +41,11 @@ public class AccountController : ControllerBase
 
     // Login
     [HttpPost("Login")]
-    public IActionResult Login(LoginDto login)
+    public IActionResult Login(AccountDtoLogin login)
     {
         var loginResult = _service.LoginAccount(login);
         if (loginResult == "0")
-            return NotFound(new ResponseHandler<GetAccountDto>
+            return NotFound(new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -53,7 +53,7 @@ public class AccountController : ControllerBase
             });
 
         if (loginResult == "-1")
-            return BadRequest(new ResponseHandler<GetAccountDto>
+            return BadRequest(new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
@@ -62,7 +62,7 @@ public class AccountController : ControllerBase
 
         if (loginResult == "-2")
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetAccountDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -85,7 +85,7 @@ public class AccountController : ControllerBase
         var generateOtp = _service.ForgotPassword(email);
         if (generateOtp is null)
         {
-            return BadRequest(new ResponseHandler<ForgotPasswordDto>
+            return BadRequest(new ResponseHandler<AccountDtoForgotPassword>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
@@ -93,7 +93,7 @@ public class AccountController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<ForgotPasswordDto>
+        return Ok(new ResponseHandler<AccountDtoForgotPassword>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -103,11 +103,11 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("change-password")]
-    public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
+    public IActionResult ChangePassword(AccountDtoChangePassword changePasswordDto)
     {
         var isUpdated = _service.ChangePassword(changePasswordDto);
         if (isUpdated == 0)
-            return NotFound(new ResponseHandler<UpdateAccountDto>
+            return NotFound(new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -116,7 +116,7 @@ public class AccountController : ControllerBase
 
         if (isUpdated == -1)
         {
-            return BadRequest(new ResponseHandler<UpdateAccountDto>
+            return BadRequest(new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
@@ -126,7 +126,7 @@ public class AccountController : ControllerBase
 
         if (isUpdated == -2)
         {
-            return BadRequest(new ResponseHandler<UpdateAccountDto>
+            return BadRequest(new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
@@ -136,7 +136,7 @@ public class AccountController : ControllerBase
 
         if (isUpdated == -3)
         {
-            return BadRequest(new ResponseHandler<UpdateAccountDto>
+            return BadRequest(new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
@@ -145,14 +145,14 @@ public class AccountController : ControllerBase
         }
 
         if (isUpdated is -4)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdateAccountDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<UpdateAccountDto>
+        return Ok(new ResponseHandler<AccountDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -168,7 +168,7 @@ public class AccountController : ControllerBase
 
         if (!entities.Any())
         {
-            return NotFound(new ResponseHandler<GetAccountDto>
+            return NotFound(new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -176,7 +176,7 @@ public class AccountController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<IEnumerable<GetAccountDto>>
+        return Ok(new ResponseHandler<IEnumerable<AccountDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -190,14 +190,14 @@ public class AccountController : ControllerBase
     {
         var account = _service.GetAccountByGuid(guid);
         if (account is null)
-            return NotFound(new ResponseHandler<GetAccountDto>
+            return NotFound(new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
                 Message = "Data not found"
             });
 
-        return Ok(new ResponseHandler<GetAccountDto>
+        return Ok(new ResponseHandler<AccountDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -207,18 +207,18 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(NewAccountDto newAccountDto)
+    public IActionResult Create(AccountDtoCreate newAccountDto)
     {
         var createdAccount = _service.CreateAccount(newAccountDto);
         if (createdAccount is null)
-            return BadRequest(new ResponseHandler<GetAccountDto>
+            return BadRequest(new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.BadRequest.ToString(),
                 Message = "Data not created"
             });
 
-        return Ok(new ResponseHandler<GetAccountDto>
+        return Ok(new ResponseHandler<AccountDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -228,11 +228,11 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult Update(UpdateAccountDto updateAccountDto)
+    public IActionResult Update(AccountDtoUpdate updateAccountDto)
     {
         var update = _service.UpdateAccount(updateAccountDto);
         if (update is -1)
-            return NotFound(new ResponseHandler<UpdateAccountDto>
+            return NotFound(new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -240,14 +240,14 @@ public class AccountController : ControllerBase
             });
 
         if (update is 0)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdateAccountDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoUpdate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<UpdateAccountDto>
+        return Ok(new ResponseHandler<AccountDtoUpdate>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -261,7 +261,7 @@ public class AccountController : ControllerBase
         var delete = _service.DeleteAccount(guid);
 
         if (delete == -1)
-            return NotFound(new ResponseHandler<GetAccountDto>
+            return NotFound(new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -269,14 +269,14 @@ public class AccountController : ControllerBase
             });
 
         if (delete == 0)
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetAccountDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
                 Message = "Error retrieving data from the database"
             });
 
-        return Ok(new ResponseHandler<GetAccountDto>
+        return Ok(new ResponseHandler<AccountDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),

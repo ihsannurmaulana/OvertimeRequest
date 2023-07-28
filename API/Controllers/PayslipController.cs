@@ -23,7 +23,7 @@ public class PayslipController : ControllerBase
         var payslip = _payslipService.GetPayslip();
         if (!payslip.Any())
         {
-            return NotFound(new ResponseHandler<GetPayslipDto>
+            return NotFound(new ResponseHandler<PayslipDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -31,7 +31,7 @@ public class PayslipController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<IEnumerable<GetPayslipDto>>
+        return Ok(new ResponseHandler<IEnumerable<PayslipDtoGet>>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -46,7 +46,7 @@ public class PayslipController : ControllerBase
         var payslip = _payslipService.GetPayslipDtoByGuid(guid);
         if (payslip is null)
         {
-            return NotFound(new ResponseHandler<GetPayslipDto>
+            return NotFound(new ResponseHandler<PayslipDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -54,7 +54,7 @@ public class PayslipController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<GetPayslipDto>
+        return Ok(new ResponseHandler<PayslipDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -64,12 +64,12 @@ public class PayslipController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(NewPayslipDto newPayslip)
+    public IActionResult Create(PayslipDtoCreate newPayslip)
     {
         var payslip = _payslipService.CreatePayslip(newPayslip);
         if (payslip is null)
         {
-            return BadRequest(new ResponseHandler<GetPayslipDto>
+            return BadRequest(new ResponseHandler<PayslipDtoGet>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -77,7 +77,7 @@ public class PayslipController : ControllerBase
             });
         }
 
-        return Ok(new ResponseHandler<GetPayslipDto>
+        return Ok(new ResponseHandler<PayslipDtoGet>
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
@@ -125,7 +125,7 @@ public class PayslipController : ControllerBase
         var payslip = _payslipService.DeletePayslip(guid);
         if (payslip == -1)
         {
-            return NotFound(new ResponseHandler<GetPayslipDto>
+            return NotFound(new ResponseHandler<PayslipDtoGet>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -134,7 +134,7 @@ public class PayslipController : ControllerBase
         }
         else if (payslip == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<GetPayslipDto>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<PayslipDtoGet>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -143,7 +143,7 @@ public class PayslipController : ControllerBase
         }
         else
         {
-            return Ok(new ResponseHandler<GetPayslipDto>
+            return Ok(new ResponseHandler<PayslipDtoGet>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),

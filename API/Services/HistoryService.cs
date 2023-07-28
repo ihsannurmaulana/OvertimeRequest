@@ -53,38 +53,38 @@ public class HistoryService
     }
 
 
-    public IEnumerable<GetHistoryDto> GetHistory()
+    public IEnumerable<HistoryDtoGet> GetHistory()
     {
         var histories = _historyRepository.GetAll().ToList();
-        if (!histories.Any()) return Enumerable.Empty<GetHistoryDto>(); // No histories found
-        List<GetHistoryDto> historyDtos = new();
+        if (!histories.Any()) return Enumerable.Empty<HistoryDtoGet>(); // No histories found
+        List<HistoryDtoGet> historyDtos = new();
 
         foreach (var history in histories)
         {
-            historyDtos.Add((GetHistoryDto)history);
+            historyDtos.Add((HistoryDtoGet)history);
         }
 
         return historyDtos; // Histories found
     }
 
-    public GetHistoryDto? GetHistoryByGuid(Guid guid)
+    public HistoryDtoGet? GetHistoryByGuid(Guid guid)
     {
         var history = _historyRepository.GetByGuid(guid);
 
         if (history is null) return null;
 
-        return (GetHistoryDto)history;
+        return (HistoryDtoGet)history;
     }
 
-    public GetHistoryDto? CreateHistory(NewHistoryDto newHistoryDto)
+    public HistoryDtoGet? CreateHistory(HistoryDtoCreate newHistoryDto)
     {
         var createdHistory = _historyRepository.Create(newHistoryDto);
         if (createdHistory is null) return null;
 
-        return (GetHistoryDto)createdHistory;
+        return (HistoryDtoGet)createdHistory;
     }
 
-    public int UpdateHistory(UpdateHistoryDto updateHistoryDto)
+    public int UpdateHistory(HistoryDtoUpadate updateHistoryDto)
     {
         var getHistory = _historyRepository.GetByGuid(updateHistoryDto.Guid);
 

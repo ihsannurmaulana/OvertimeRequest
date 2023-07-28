@@ -14,39 +14,39 @@ public class OvertimeService
         _overtimeRepository = overtimeRepository;
     }
 
-    public IEnumerable<GetOvertimeDTO> GetOvertime()
+    public IEnumerable<OvertimeDtoGet> GetOvertime()
     {
         var overtime = _overtimeRepository.GetAll().ToList();
-        if (!overtime.Any()) return Enumerable.Empty<GetOvertimeDTO>();
-        List<GetOvertimeDTO> overtimeDTO = new();
+        if (!overtime.Any()) return Enumerable.Empty<OvertimeDtoGet>();
+        List<OvertimeDtoGet> overtimeDTO = new();
 
         foreach (var over in overtime)
         {
-            overtimeDTO.Add((GetOvertimeDTO)over);
+            overtimeDTO.Add((OvertimeDtoGet)over);
         }
 
         return overtimeDTO;
     }
 
-    public GetOvertimeDTO? GetOvertimeByGuid(Guid guid)
+    public OvertimeDtoGet? GetOvertimeByGuid(Guid guid)
     {
         var overtime = _overtimeRepository.GetByGuid(guid);
         if (overtime is null) return null;
 
-        return (GetOvertimeDTO)overtime;
+        return (OvertimeDtoGet)overtime;
     }
 
-    public GetOvertimeDTO? CreateOvertime(NewOvertimeDTO newOvertime)
+    public OvertimeDtoGet? CreateOvertime(OvertimeDtoCreate newOvertime)
     {
         Overtime overtime = newOvertime;
         overtime.OvertimeNumber = GenerateHandler.OverNumber(_overtimeRepository.GetLastOvertimeNumber());
         var createdOvertime = _overtimeRepository.Create(overtime);
         if (createdOvertime is null) return null;
 
-        return (GetOvertimeDTO)createdOvertime;
+        return (OvertimeDtoGet)createdOvertime;
     }
 
-    public int UpdateOvertime(UpdateOvertimeDto updOvertime)
+    public int UpdateOvertime(OvertimeDtoUpdate updOvertime)
     {
         var getOvertime = _overtimeRepository.GetByGuid(updOvertime.Guid);
         if (getOvertime is null) return -1;

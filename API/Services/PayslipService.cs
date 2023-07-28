@@ -13,24 +13,24 @@ public class PayslipService
         _payslipRepository = payslipRepository;
     }
 
-    public IEnumerable<GetPayslipDto> GetPayslip()
+    public IEnumerable<PayslipDtoGet> GetPayslip()
     {
         var payslip = _payslipRepository.GetAll().ToList();
         if (!payslip.Any())
         {
-            return Enumerable.Empty<GetPayslipDto>();
+            return Enumerable.Empty<PayslipDtoGet>();
         }
-        List<GetPayslipDto> payslipDtos = new();
+        List<PayslipDtoGet> payslipDtos = new();
 
         foreach (var pays in payslip)
         {
-            payslipDtos.Add((GetPayslipDto)pays);
+            payslipDtos.Add((PayslipDtoGet)pays);
         }
 
         return payslipDtos;
     }
 
-    public GetPayslipDto? GetPayslipDtoByGuid(Guid guid)
+    public PayslipDtoGet? GetPayslipDtoByGuid(Guid guid)
     {
         var payslip = _payslipRepository.GetByGuid(guid);
         if (payslip == null)
@@ -38,16 +38,16 @@ public class PayslipService
             return null;
         }
 
-        return (GetPayslipDto)payslip;
+        return (PayslipDtoGet)payslip;
     }
 
-    public GetPayslipDto? CreatePayslip(NewPayslipDto newPayslip)
+    public PayslipDtoGet? CreatePayslip(PayslipDtoCreate newPayslip)
     {
         Payslip payslips = newPayslip;
         var payslip = _payslipRepository.Create(payslips);
         if (payslip == null) return null;
 
-        return (GetPayslipDto)payslip;
+        return (PayslipDtoGet)payslip;
     }
 
     public int UpdatePayslips(UpdatePayslip updatePayslip)
