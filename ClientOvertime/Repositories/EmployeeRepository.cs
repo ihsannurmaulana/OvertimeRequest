@@ -5,17 +5,17 @@ using Newtonsoft.Json;
 
 namespace ClientOvertime.Repositories;
 
-public class EmployeeRepository : GeneralRepository<EmployeeVMRegister, Guid>, IEmployeeRepository
+public class EmployeeRepository : GeneralRepository<EmployeeVM, Guid>, IEmployeeRepository
 {
     public EmployeeRepository(string request = "employees/") : base(request) { }
 
-    public async Task<ResponseHandler<IEnumerable<EmployeeVMRegister>>> GetEmployees()
+    public async Task<ResponseHandler<IEnumerable<EmployeeVM>>> GetEmployees()
     {
-        ResponseHandler<IEnumerable<EmployeeVMRegister>> entityVM = null;
+        ResponseHandler<IEnumerable<EmployeeVM>> entityVM = null;
         using (var response = await _httpClient.GetAsync(_request + "get-all-employee"))
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
-            entityVM = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeVMRegister>>>(apiResponse);
+            entityVM = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<EmployeeVM>>>(apiResponse);
         }
         return entityVM;
     }

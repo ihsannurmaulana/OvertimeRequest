@@ -3,9 +3,9 @@ using ClientOvertime.ViewModels.Employees;
 
 namespace ClientOvertime.Contracts;
 
-public interface IEmployeeRepository : IGeneralRepository<EmployeeVMRegister, Guid>
+public interface IEmployeeRepository : IGeneralRepository<EmployeeVM, Guid>
 {
-    Task<ResponseHandler<IEnumerable<EmployeeVMRegister>>> GetEmployees();
+    Task<ResponseHandler<IEnumerable<EmployeeVM>>> GetEmployees();
 
     Task<ResponseHandler<IEnumerable<ManagerVM>>> GetManager();
 }

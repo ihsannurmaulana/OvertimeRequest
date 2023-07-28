@@ -60,7 +60,7 @@ public class GeneralRepository<TEntity, TId> : IGeneralRepository<TEntity, TId>
     {
         ResponseHandler<TEntity> entityVM = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-        using (var response = _httpClient.PutAsync(_request, content).Result)
+        using (var response = _httpClient.PutAsync(_request + "?guid=" + id, content).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);
@@ -72,7 +72,7 @@ public class GeneralRepository<TEntity, TId> : IGeneralRepository<TEntity, TId>
     {
         ResponseHandler<TEntity> entityVM = null;
         StringContent content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
-        using (var response = _httpClient.DeleteAsync(_request + id).Result)
+        using (var response = _httpClient.DeleteAsync(_request + "?guid=" + id).Result)
         {
             string apiResponse = await response.Content.ReadAsStringAsync();
             entityVM = JsonConvert.DeserializeObject<ResponseHandler<TEntity>>(apiResponse);

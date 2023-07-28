@@ -2,7 +2,7 @@
 
 namespace ClientOvertime.ViewModels.Employees;
 
-public class EmployeeVMRegister
+public class EmployeeVM
 {
     public Guid Guid { get; set; }
     public string Nik { get; set; }
