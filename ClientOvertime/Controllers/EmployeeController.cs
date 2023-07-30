@@ -1,6 +1,8 @@
 ﻿using API.Models;
 using ClientOvertime.Contracts;
+using ClientOvertime.ViewModels.AccountRoles;
 using ClientOvertime.ViewModels.Employees;
+using ClientOvertime.ViewModels.Roles;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientOvertime.Controllers;
@@ -9,11 +11,15 @@ public class EmployeeController : Controller
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IAccountRepository _accountRepository;
+    private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IRoleRepository _roleRepository;
 
-    public EmployeeController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository)
+    public EmployeeController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository)
     {
         _employeeRepository = employeeRepository;
         _accountRepository = accountRepository;
+        _roleRepository = roleRepository;
+        _accountRoleRepository = accountRoleRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -80,6 +86,7 @@ public class EmployeeController : Controller
             updateEmployee.HiringDate = employee.Data.HiringDate;
             updateEmployee.PhoneNumber = employee.Data.PhoneNumber;
             updateEmployee.Manager = employee.Data.Manager;
+            updateEmployee.RoleName = employee.Data.RoleName;
             updateEmployee.ManagerGuid = employee.Data.ManagerGuid;
             updateEmployee.Password = employee.Data.Password;
             updateEmployee.ConfirmPassword = employee.Data.ConfirmPassword;
@@ -94,8 +101,32 @@ public class EmployeeController : Controller
             listManagers = result.Data.ToList();
         }
 
+        var resultAccountRole = await _accountRoleRepository.Get();
+        var listAccountRole = new List<AccountRoleVM>();
+
+        if (resultAccountRole.Data != null) listAccountRole = resultAccountRole.Data.ToList();
+
+        var resultRole = await _roleRepository.Get();
+        var listRoles = new List<RoleVM>();
+        if (result.Data != null)
+        {
+            listRoles = resultRole.Data.ToList();
+        }
+
+        var accountRoleEmployee = new AccountRoleVM();
+        foreach (var i in listAccountRole)
+        {
+            if (i.AccountGuid == employee.Data.Guid)
+            {
+                accountRoleEmployee = i;
+            }
+        }
+
         // add to view data
         ViewData["Managers"] = listManagers;
+        ViewData["AccountRole"] = accountRoleEmployee;
+        ViewData["Roles"] = listRoles;
+
         return View(updateEmployee);
     }
 

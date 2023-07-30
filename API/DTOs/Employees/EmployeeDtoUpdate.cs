@@ -15,6 +15,7 @@ public class EmployeeDtoUpdate
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public Guid? ManagerGuid { get; set; }
+    public Guid RoleGuid { get; set; }
 
 
     public static implicit operator Employee(EmployeeDtoUpdate updateemployeeDto)
