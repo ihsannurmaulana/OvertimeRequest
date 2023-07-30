@@ -18,9 +18,26 @@ namespace ClientOvertime.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        //[AllowAnonymous]
+        [HttpGet("/Unauthorized")]
+        public IActionResult Unauthorized()
         {
-            return View();
+            return View("401");
+        }
+
+
+        //[AllowAnonymous]
+        [Route("/Forbidden")]
+        public IActionResult Forbidden()
+        {
+            return View("403");
+        }
+
+        //[AllowAnonymous]
+        [Route("/NotFound")]
+        public IActionResult Notfound()
+        {
+            return View("404");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -19,4 +19,5 @@ public class EmployeeVM
     public string RoleName { get; set; }
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
+    public Guid RoleGuid { get; set; }
 }

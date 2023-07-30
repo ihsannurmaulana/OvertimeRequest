@@ -1,4 +1,5 @@
 ﻿using API.Contracts;
+using API.DTOs.AccountRoles;
 using API.DTOs.Accounts;
 using API.DTOs.Employees;
 using API.Models;
@@ -146,6 +147,16 @@ public class EmployeeService
         accountDtoUpdate.ExpiredTime = account.ExpiredTime;
 
         var accountIsUpdated = _accountRepository.Update(accountDtoUpdate);
+
+        var accountRole = _accountRoleRepository.GetAccountRoles(account.Guid);
+        var accountRoleUpdate = new AccountRoleDtoUpdate();
+        if (accountRole is null) return -1;
+
+        accountRoleUpdate.Guid = accountRole.Guid;
+        accountRoleUpdate.AccountGuid = accountRole.AccountGuid;
+        accountRoleUpdate.RoleGuid = employeeDto.RoleGuid;
+
+        var accountRoleIsUpdate = _accountRoleRepository.Update(accountRoleUpdate);
 
         var isUpdate = _employeeRepository.Update(employeeDto);
         return !isUpdate ? 0 : // Employee failed to update
