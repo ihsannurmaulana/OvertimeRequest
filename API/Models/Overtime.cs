@@ -18,6 +18,13 @@ public class Overtime : BaseEntity
     [Column("remarks", TypeName = "nvarchar(255)")]
     public string Remarks { get; set; }
 
+    [Column("paid")]
+    public double PaidOvertime { get; set; }
+
+    [Column("remaining")]
+    public int Remaining { get; set; }
+
+
     [Column("status")]
     public StatusLevel Status { get; set; }
 

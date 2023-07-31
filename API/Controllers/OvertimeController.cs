@@ -152,4 +152,52 @@ public class OvertimeController : ControllerBase
 
     }
 
+    [HttpGet("dummy")]
+    public IActionResult GetAllDummy()
+    {
+        var over = _service.GetAllDummy();
+
+        if (!over.Any())
+        {
+            return NotFound(new ResponseHandler<OvertimeRemainingDto>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<OvertimeRemainingDto>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data found",
+            Data = over
+        });
+    }
+
+    [HttpPost("dummy")]
+    public IActionResult CreateDum(OvertimeCreateDummyDto newOvertime)
+    {
+
+        var over = _service.CreateDummy(newOvertime);
+        if (over is null)
+        {
+            return BadRequest(new ResponseHandler<OvertimeRemainingDto>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Status = HttpStatusCode.BadRequest.ToString(),
+                Message = "Unsuccesful to Create"
+            });
+        }
+
+        return Ok(new ResponseHandler<OvertimeRemainingDto>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Successfull to Create",
+            Data = over
+        });
+    }
+
 }
