@@ -28,7 +28,7 @@
                         <a href="#service-section" class="nav-item nav-link">Service</a>
                         <a href="#contact-section" class="nav-item nav-link">Contact</a>
                     </div>
-                    <button type="button" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                <button type="button" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3"><a href="Account/Login">Login</a></button>
                 </div>
             </nav>
 
@@ -49,53 +49,6 @@
             </div>
         </div>
         <!-- Navbar & Hero End -->
-
-        <!-- Add a login modal with the login form -->
-        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="loginFormModal">
-                            <div class="mb-3">
-                                <label for="usernameModal" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="usernameModal" name="usernameModal" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="passwordModal" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="passwordModal" name="passwordModal" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End of login modal with the login form -->
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
-                const loginFormModal = document.getElementById('loginFormModal');
-
-                loginFormModal.addEventListener('submit', function (event) {
-                    event.preventDefault();
-
-                    const username = loginFormModal.elements.usernameModal.value;
-                    const password = loginFormModal.elements.passwordModal.value;
-
-                    // Perform your login logic here, such as sending a request to the server to verify credentials
-                    // For demonstration purposes, let's just show an alert indicating successful login
-                    alert(`Logged in with username: ${username}`);
-
-                    // Close the modal after successful login (you can remove this if you want to keep the modal open)
-                    loginModal.hide();
-                });
-            });
-        </script>
 
         <!-- Full Screen Search Start -->
         <div class="modal fade" id="searchModal" tabindex="-1">

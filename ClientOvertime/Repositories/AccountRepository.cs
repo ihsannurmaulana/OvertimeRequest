@@ -21,4 +21,16 @@ public class AccountRepository : GeneralRepository<AccountVMGet, string>, IAccou
         }
         return entityVM;
     }
+
+    public async Task<ResponseHandler<string>> Login(AccountVMLogin accountVmLogin)
+    {
+        ResponseHandler<string> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(accountVmLogin), Encoding.UTF8, "application/json");
+        using (var response = _httpClient.PostAsync(_request + "Login", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseHandler<string>>(apiResponse);
+        }
+        return entityVM;
+    }
 }
