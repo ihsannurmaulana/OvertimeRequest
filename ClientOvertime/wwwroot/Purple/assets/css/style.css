@@ -51,7 +51,7 @@
 /* === SCSS Compass Functions === */
 
 @-webkit-keyframes flash {
-    0% {
+  0% {
     opacity: 1; }
   25% {
     opacity: 0; }
