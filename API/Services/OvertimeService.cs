@@ -65,4 +65,37 @@ public class OvertimeService
         return !isDelete ? 0 : 1;
     }
 
+
+    public OvertimeRemainingDto? CreateDummy(OvertimeCreateDummyDto over)
+    {
+        Overtime overtime = over;
+        if (overtime.Status == 0)
+        {
+            overtime.OvertimeNumber = GenerateHandler.OverNumber(_overtimeRepository.GetLastOvertimeNumber());
+            overtime.StartDate = over.StartDate;
+            overtime.EndDate = over.EndDate;
+            var createdOver = _overtimeRepository.CreateOver(overtime);
+            if (createdOver is null) return null;
+
+            return (OvertimeRemainingDto)createdOver;
+        }
+        return null;
+
+    }
+
+    public IEnumerable<OvertimeRemainingDto>? GetAllDummy()
+    {
+        var overtime = _overtimeRepository.GetAll().ToList();
+        if (!overtime.Any()) return Enumerable.Empty<OvertimeRemainingDto>();
+        List<OvertimeRemainingDto> overtimeDTO = new();
+
+        foreach (var over in overtime)
+        {
+            overtimeDTO.Add((OvertimeRemainingDto)over);
+        }
+
+        return overtimeDTO;
+    }
+
+
 }
