@@ -1,6 +1,7 @@
 ﻿using API.Utilities.Handlers;
 using ClientOvertime.Contracts;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace ClientOvertime.Repositories;
@@ -20,6 +21,7 @@ public class GeneralRepository<TEntity, TId> : IGeneralRepository<TEntity, TId>
         {
             BaseAddress = new Uri("https://localhost:7104/api/")
         };
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWTToken"));
     }
 
     public async Task<ResponseHandler<IEnumerable<TEntity>>> Get()
