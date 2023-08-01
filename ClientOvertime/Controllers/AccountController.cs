@@ -1,5 +1,7 @@
-﻿using ClientOvertime.Contracts;
+﻿using API.DTOs.Accounts;
+using ClientOvertime.Contracts;
 using ClientOvertime.ViewModels.Accounts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientOvertime.Controllers;
@@ -41,11 +43,69 @@ public class AccountController : Controller
         return View();
     }
 
+    /*[HttpGet]*/
+    public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(AccountVMForgotPassword accountVmForgotPassword)
+    {
+        var result = await _accountRepository.ForgotPassword(accountVmForgotPassword);
+
+        if (result is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        else if (result.Code == 400)
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+            return View();
+        }
+        else if (result.Code == 200)
+        {
+            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+            return RedirectToAction("ChangePassword", "Account");
+        }
+
+        return View();
+    }
+
+    /*[HttpGet]*/
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(AccountVMChangePassword accountVmChangePassword)
+    {
+        var result = await _accountRepository.ChangePassword(accountVmChangePassword);
+
+        if (result is null)
+        {
+            return RedirectToAction("Error", "Home");
+        }
+        else if (result.Code == 400)
+        {
+            ModelState.AddModelError(string.Empty, result.Message);
+            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
+            return View();
+        }
+        else if (result.Code == 200)
+        {
+            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
+            return RedirectToAction("Login", "Account");
+        }
+
+        return View();
+    }
+
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
         return RedirectToAction("Index", "Home");
     }
-
-
 }
