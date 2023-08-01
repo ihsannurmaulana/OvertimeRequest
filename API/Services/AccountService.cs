@@ -18,19 +18,22 @@ public class AccountService
     private readonly IRoleRepository _roleRepository;
 
     private readonly IAccountRoleRepository _accountRoleRepository;
+    private readonly IOvertimeRepository _overtimeRepository;
+
     private readonly IEmailHandler _emailHandler;
 
     private readonly ITokenHandler _tokenHandler;
 
-    public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, ITokenHandler tokenHandler, IEmailHandler emailHandler)
+    public AccountService(IAccountRepository accountRepository, OvertimeDbContext context, IEmployeeRepository employeeRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, IOvertimeRepository overtimeRepository, IEmailHandler emailHandler, ITokenHandler tokenHandler)
     {
         _accountRepository = accountRepository;
         _context = context;
         _employeeRepository = employeeRepository;
         _roleRepository = roleRepository;
         _accountRoleRepository = accountRoleRepository;
-        _tokenHandler = tokenHandler;
+        _overtimeRepository = overtimeRepository;
         _emailHandler = emailHandler;
+        _tokenHandler = tokenHandler;
     }
 
     public bool RegistrationAccount(AccountDtoRegister registerDto)
@@ -88,6 +91,9 @@ public class AccountService
     public string LoginAccount(AccountDtoLogin login)
     {
         var account = _accountRepository.GetEmployeeByEmail(login.Email);
+        var employee = _employeeRepository.GetByGuid(account.Guid);
+        //var overtime = _overtimeRepository.GetByGuid(over.Guid);
+        var manager = employee.ManagerGuid != null ? _employeeRepository.GetByGuid(employee.ManagerGuid.Value) : null;
         if (account is null) return "0";
 
         if (!HashingHandler.Validate(login.Password, account!.Password)) return "-1";
@@ -96,9 +102,12 @@ public class AccountService
         try
         {
             var claims = new List<Claim>() {
+                new Claim("Guid", employee.Guid.ToString()),
                 new Claim("Nik", employees.Nik),
                 new Claim("FullName", $"{employees.FirstName} {employees.LastName}"),
-                new Claim("EmailAddress", login.Email)
+                new Claim("EmailAddress", login.Email),
+                //new Claim("Remaining", overtime.Remaining.ToString()),
+                new Claim("Manager", manager != null ? $"{manager.FirstName} {manager.LastName}" : "N/A")
             };
 
             var AccountRole = _accountRoleRepository.GetAccountRolesByAccountGuid(account.Guid);

@@ -1,4 +1,5 @@
 ﻿using ClientOvertime.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,7 +19,7 @@ namespace ClientOvertime.Controllers
             return View();
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet("/Unauthorized")]
         public IActionResult Unauthorized()
         {
@@ -26,14 +27,14 @@ namespace ClientOvertime.Controllers
         }
 
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Route("/Forbidden")]
         public IActionResult Forbidden()
         {
             return View("403");
         }
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [Route("/NotFound")]
         public IActionResult Notfound()
         {

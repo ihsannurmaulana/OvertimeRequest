@@ -1,0 +1,82 @@
+﻿@using ClientOvertime.ViewModels.Overtimes;
+@model ClientOvertime.ViewModels.Overtimes.OvertimeVMRequest
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_LayoutDashboard";
+    var guid = User.Claims.FirstOrDefault(x => x.Type == "Guid")?.Value;
+    var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+    var manager = User.Claims.FirstOrDefault(x => x.Type == "Manager")?.Value;
+    var remaining = User.Claims.FirstOrDefault(x => x.Type == "Remaining")?.Value;
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-account-plus"></i>
+            </span> Request Overtime
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form action="Create" method="POST">
+                        <input asp-for="EmployeeGuid" class="form-control" hidden value="@guid" />
+                        <input asp-for="Status" class="form-control" value="0" hidden />
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h6>Full Name  &nbsp  &nbsp:</h6>
+                                </div>
+                                <div class="col-5">
+                                    <p>@fullName</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h6>Manager  &nbsp  &nbsp  &nbsp:</h6>
+                                </div>
+                                <div class="col-5">
+                                    <p>@manager</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h6>Remaining &nbsp  &nbsp:</h6>
+                                </div>
+                                <div class="col-5">
+                                    <p>@remaining</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h6 asp-for="StartDate" class="control-label">Start Date:</h6>
+                            <input asp-for="StartDate" class="form-control"/>
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EndDate" class="control-label">End Date:</label>
+                            <input asp-for="EndDate" class="form-control"/>
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Remarks" class="control-label">Remarks</label>
+                            <textarea asp-for="Remarks" class="form-control"></textarea>
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button class="btn btn-primary" type="submit">Create</button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

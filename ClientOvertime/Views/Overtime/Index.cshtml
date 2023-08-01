@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ClientOvertime.ViewModels.Overtimes.OvertimeVMRequest>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutDashboard";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> Employee
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="card-title h3">Datatables History</h3>
+                    <table class="table datatable table-hover table-responsive" id="data-table">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OvertimeNumber)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Paid)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Remarks)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Remaining)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EmployeeGuid)
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OvertimeNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Paid)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Remarks)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Remaining)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EmployeeGuid)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
