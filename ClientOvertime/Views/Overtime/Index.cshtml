@@ -48,8 +48,11 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.Status)
                                 </th>
-                                <th>
+@*                                <th>
                                     @Html.DisplayNameFor(model => model.EmployeeGuid)
+                                </th>*@
+								<th>
+                                    @Html.DisplayNameFor(model => model.FullName)
                                 </th>
                                 <th>Action</th>
                             </tr>
@@ -78,12 +81,16 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </td>
-                                <td>
+@*                                <td>
                                     @Html.DisplayFor(modelItem => item.EmployeeGuid)
+                                </td>*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
                                 </td>
                                 <td>
                                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
                                 </td>
+                                
                             </tr>
                             }
                         </tbody>
