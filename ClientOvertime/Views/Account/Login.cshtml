@@ -8,26 +8,32 @@
             <div class="row flex-grow">
                 <div class="col-lg-4 mx-auto">
                     <div class="auth-form-light text-left p-5">
-                        <div class="brand-logo">
-                            <img src="~/Purple/assets/images/logo.svg" />
+                        <div class="brand-logo text-center">
+                            <img src="~/Purple/assets/images/logo.png" />
                         </div>
                         <h4>Hello! let's get started</h4>
                         <h6 class="font-weight-light">Sign in to continue.</h6>
-                        <form class="pt-3" action="~/Account/Login" method="POST">
+                        <form class="pt-3" action="~/Account/Login" method="POST" onsubmit="return validateForm()">
                             <div class="form-group">
                                 <input type="email"
                                        class="form-control form-control-lg"
                                        id="exampleInputEmail1"
-                                       placeholder="Username" asp-for="Email"/>
+                                       placeholder="Username"
+                                       asp-for="Email"
+                                       required />
+                                <span class="text-danger" id="emailWarning" style="display: none;">Please enter your email.</span>
                             </div>
                             <div class="form-group">
                                 <input type="password"
                                        class="form-control form-control-lg"
                                        id="exampleInputPassword1"
-                                       placeholder="Password" asp-for="Password" />
+                                       placeholder="Password"
+                                       asp-for="Password"
+                                       required />
+                                <span class="text-danger" id="passwordWarning" style="display: none;">Please enter your password.</span>
                             </div>
                             <div class="mt-3">
-                                <button class="btn btn-primary w-100" type="submit">Login</button>
+                                <button class="btn btn-info btn-rounded w-100" type="submit">Login</button>
                             </div>
                             <div class="my-2 d-flex justify-content-between align-items-center">
                                 <div class="form-check">
@@ -48,3 +54,28 @@
     <!-- page-body-wrapper ends -->
 </div>
 <!-- container-scroller -->
+
+<script>
+    function validateForm() {
+        var email = document.getElementById('exampleInputEmail1').value;
+        var password = document.getElementById('exampleInputPassword1').value;
+        var emailWarning = document.getElementById('emailWarning');
+        var passwordWarning = document.getElementById('passwordWarning');
+
+        if (email === '') {
+            emailWarning.style.display = 'block';
+            return false;
+        } else {
+            emailWarning.style.display = 'none';
+        }
+
+        if (password === '') {
+            passwordWarning.style.display = 'block';
+            return false;
+        } else {
+            passwordWarning.style.display = 'none';
+        }
+
+        return true;
+    }
+</script>
