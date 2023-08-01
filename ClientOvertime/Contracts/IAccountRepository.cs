@@ -1,4 +1,5 @@
-﻿using API.Utilities.Handlers;
+﻿using API.DTOs.Accounts;
+using API.Utilities.Handlers;
 using ClientOvertime.ViewModels.Accounts;
 using ClientOvertime.ViewModels.Employees;
 
@@ -8,4 +9,6 @@ public interface IAccountRepository : IGeneralRepository<AccountVMGet, string>
 {
     Task<ResponseHandler<EmployeeVM>> CreateAccount(EmployeeVM entity);
     public Task<ResponseHandler<string>> Login(AccountVMLogin accountVmLogin);
+    public Task<ResponseHandler<string>> ForgotPassword(AccountVMForgotPassword accountVmForgotPassword);
+    public Task<ResponseHandler<string>> ChangePassword(AccountVMChangePassword accountVmChangePassword);
 }
