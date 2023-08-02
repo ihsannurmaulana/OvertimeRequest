@@ -222,4 +222,27 @@ public class OvertimeController : ControllerBase
 		});
 	}
 
+	[HttpGet("manager/{guid}")]
+	public IActionResult GetAllByGuidManager(Guid guid)
+	{
+		var over = _service.GetAllByGuidManager(guid);
+		if (over is null)
+		{
+			return NotFound(new ResponseHandler<OvertimeRemainingDto>
+			{
+				Code = StatusCodes.Status404NotFound,
+				Status = HttpStatusCode.NotFound.ToString(),
+				Message = "Data Not Found"
+			});
+		}
+		return Ok(new ResponseHandler<IEnumerable<OvertimeRemainingDto>>
+		{
+			Code = StatusCodes.Status200OK,
+			Status = HttpStatusCode.OK.ToString(),
+			Message = "Data Found",
+			Data = over
+		});
+	}
+
+
 }

@@ -10,6 +10,7 @@ public interface IOvertimeRepository : IGeneralRepository<Overtime>
 	public int TotalPaidWeekend(int totalHour, double salaryPerHours);
 	public IEnumerable<OvertimeRemainingDto> ListRemainingOvertime();
 	public IEnumerable<OvertimeRemainingDto> ListRemainingOvertime(Guid id);
+	public IEnumerable<OvertimeRemainingDto> ListRemainingOvertimeByManagerGuid(Guid managerGuid);
 	public OvertimeRemainingDto RemainingOvertimeByEmployeeGuid(Guid id);
 
 }
