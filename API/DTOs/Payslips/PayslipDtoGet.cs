@@ -8,7 +8,7 @@ public class PayslipDtoGet
     public DateTime Date { get; set; }
     public double Salary { get; set; }
     public double Allowace { get; set; }
-    public Guid? EmployeeGuid { get; set; }
+    public Guid EmployeeGuid { get; set; }
     public string EmployeeName { get; set; }
 
 

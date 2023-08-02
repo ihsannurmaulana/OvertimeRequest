@@ -6,7 +6,7 @@ public class PayslipDtoCreate
 {
     public double Salary { get; set; }
     //public double Allowace { get; set; }
-    public Guid? EmployeeGuid { get; set; }
+    public Guid EmployeeGuid { get; set; }
 
     public static implicit operator Payslip(PayslipDtoCreate newPayslips)
     {

@@ -15,7 +15,7 @@ public class Payslip : BaseEntity
     public double Salary { get; set; }
 
     [Column("employee_guid")]
-    public Guid? EmployeeGuid { get; set; }
+    public Guid EmployeeGuid { get; set; }
 
     // Cardinality
     public Employee? Employee { get; set; }
