@@ -4,9 +4,8 @@ namespace API.DTOs.Payslips;
 
 public class PayslipDtoCreate
 {
-    public DateTime Date { get; set; }
     public double Salary { get; set; }
-    public double Allowace { get; set; }
+    //public double Allowace { get; set; }
     public Guid? EmployeeGuid { get; set; }
 
     public static implicit operator Payslip(PayslipDtoCreate newPayslips)
@@ -14,9 +13,8 @@ public class PayslipDtoCreate
         return new()
         {
             Guid = new Guid(),
-            Date = newPayslips.Date,
             Salary = newPayslips.Salary,
-            Allowance = newPayslips.Allowace,
+            //Allowance = newPayslips.Allowace,
             EmployeeGuid = newPayslips.EmployeeGuid,
         };
     }
@@ -25,8 +23,7 @@ public class PayslipDtoCreate
     {
         return new()
         {
-            Date = payslip.Date,
-            Allowace = payslip.Allowance,
+            //Allowace = payslip.Allowance,
             Salary = payslip.Salary,
             EmployeeGuid = payslip.EmployeeGuid
         };

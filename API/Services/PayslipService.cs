@@ -7,27 +7,47 @@ namespace API.Services;
 public class PayslipService
 {
     private readonly IPayslipRepository _payslipRepository;
+    private readonly IEmployeeRepository _employeeRepository;
 
-    public PayslipService(IPayslipRepository payslipRepository)
+    public PayslipService(IPayslipRepository payslipRepository, IEmployeeRepository employeeRepository)
     {
         _payslipRepository = payslipRepository;
+        _employeeRepository = employeeRepository;
     }
 
     public IEnumerable<PayslipDtoGet> GetPayslip()
     {
-        var payslip = _payslipRepository.GetAll().ToList();
-        if (!payslip.Any())
+        var master = (from e in _employeeRepository.GetAll()
+                      join p in _payslipRepository.GetAll() on e.Guid equals p.EmployeeGuid
+                      where e.Guid == p.EmployeeGuid
+                      select new PayslipDtoGet
+                      {
+                          Guid = p.Guid,
+                          Date = DateTime.Now,
+                          EmployeeGuid = e.Guid,
+                          Allowace = p.Allowance,
+                          Salary = p.Salary,
+                          EmployeeName = e.FirstName + " " + e.LastName
+                      }).ToList();
+        if (!master.Any())
         {
             return Enumerable.Empty<PayslipDtoGet>();
         }
-        List<PayslipDtoGet> payslipDtos = new();
+        return master;
+        //var employee = _employeeRepository.GetAll();
+        //var payslip = _payslipRepository.GetAll().ToList();
+        //if (!payslip.Any())
+        //{
+        //    return Enumerable.Empty<PayslipDtoGet>();
+        //}
+        //List<PayslipDtoGet> payslipDtos = new();
 
-        foreach (var pays in payslip)
-        {
-            payslipDtos.Add((PayslipDtoGet)pays);
-        }
+        //foreach (var pays in payslip)
+        //{
+        //    payslipDtos.Add((PayslipDtoGet)pays);
+        //}
 
-        return payslipDtos;
+        //return payslipDtos;
     }
 
     public PayslipDtoGet? GetPayslipDtoByGuid(Guid guid)

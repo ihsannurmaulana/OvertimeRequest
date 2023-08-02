@@ -9,13 +9,15 @@ namespace API.Services;
 
 public class EmployeeService
 {
+    private readonly IPayslipRepository _payslipRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly IAccountRoleRepository _accountRoleRepository;
     private readonly IRoleRepository _roleRepository;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository)
+    public EmployeeService(IPayslipRepository payslipRepository, IEmployeeRepository employeeRepository, IAccountRepository accountRepository, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository)
     {
+        _payslipRepository = payslipRepository;
         _employeeRepository = employeeRepository;
         _accountRepository = accountRepository;
         _accountRoleRepository = accountRoleRepository;
@@ -35,6 +37,7 @@ public class EmployeeService
     // GetAllEmployeeMaster
     public IEnumerable<EmployeeDtoGetAll> GetAllMaster()
     {
+        var payslips = _payslipRepository.GetAll();
         var master = (from employee in _employeeRepository.GetAll()
                       join account in _accountRepository.GetAll() on employee.Guid equals account.Guid
                       join accountRole in _accountRoleRepository.GetAll() on account.Guid equals accountRole.AccountGuid
@@ -53,18 +56,31 @@ public class EmployeeService
                           RoleName = role.Name
                       }).ToList();
 
+        var managerEmployees = master.Where(employee => employee.RoleName == "Manager");
+
         foreach (var getDataEmployee in master)
         {
-            if (getDataEmployee.ManagerGuid != Guid.Empty)
+            foreach (var manager in managerEmployees)
             {
-                // Cari data manager berdasarkan ManagerGuid
-                var manager = master.FirstOrDefault(e => e.Guid == getDataEmployee.ManagerGuid);
-                if (manager != null)
+                if (getDataEmployee.ManagerGuid == manager.Guid)
                 {
                     getDataEmployee.Manager = $"{manager.Nik} - {manager.FullName}";
+                    break;
                 }
             }
+
+            foreach (var payslip in payslips)
+            {
+                if (payslip.EmployeeGuid == getDataEmployee.Guid) 
+                {
+                    getDataEmployee.Salary = payslip.Salary;
+                    break;
+                }
+
+            }
         }
+
+
 
         return master;
     }

@@ -2,6 +2,7 @@
 using ClientOvertime.Contracts;
 using ClientOvertime.ViewModels.AccountRoles;
 using ClientOvertime.ViewModels.Employees;
+using ClientOvertime.ViewModels.Payslips;
 using ClientOvertime.ViewModels.Roles;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +14,15 @@ public class EmployeeController : Controller
     private readonly IAccountRepository _accountRepository;
     private readonly IAccountRoleRepository _accountRoleRepository;
     private readonly IRoleRepository _roleRepository;
+    private readonly IPayslipRepository _payslipRepository;
 
-    public EmployeeController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository)
+    public EmployeeController(IEmployeeRepository employeeRepository, IAccountRepository accountRepository, IRoleRepository roleRepository, IAccountRoleRepository accountRoleRepository, IPayslipRepository payslipRepository)
     {
         _employeeRepository = employeeRepository;
         _accountRepository = accountRepository;
         _roleRepository = roleRepository;
         _accountRoleRepository = accountRoleRepository;
+        _payslipRepository = payslipRepository;
     }
 
     public async Task<IActionResult> Index()
@@ -70,6 +73,20 @@ public class EmployeeController : Controller
     public async Task<IActionResult> Update(Guid guid)
     {
         var employee = await _employeeRepository.Get(guid);
+
+        var payslips = await _payslipRepository.Get();
+        var payslipDtos = new List<PayslipVMGet>();
+        if (payslips.Data is not null) payslipDtos = payslips.Data.ToList();
+        var payslipDto = new PayslipVMGet();
+        foreach (var payslip in payslipDtos)
+        {
+            if (payslip.EmployeeGuid == employee.Data.Guid)
+            {
+                payslipDto = payslip;
+                break;
+            }
+        }
+
         var updateEmployee = new EmployeeVM();
         if (employee.Data?.Guid is null)
         {
@@ -86,6 +103,7 @@ public class EmployeeController : Controller
             updateEmployee.HiringDate = employee.Data.HiringDate;
             updateEmployee.PhoneNumber = employee.Data.PhoneNumber;
             updateEmployee.Manager = employee.Data.Manager;
+            updateEmployee.Salary = payslipDto.Salary;
             updateEmployee.RoleName = employee.Data.RoleName;
             updateEmployee.ManagerGuid = employee.Data.ManagerGuid;
             updateEmployee.Password = employee.Data.Password;
@@ -134,8 +152,25 @@ public class EmployeeController : Controller
     public async Task<IActionResult> Update(EmployeeVM employeeVM)
     {
         var result = await _employeeRepository.Put(employeeVM.Guid, employeeVM);
-        if (result.Code == 200)
 
+        var payslips = await _payslipRepository.Get();
+        var payslipDtos = new List<PayslipVMGet>();
+        if (payslips.Data is not null) payslipDtos = payslips.Data.ToList();
+        var payslipDto = new PayslipVMGet();
+        foreach (var payslip in payslipDtos)
+        {
+            if (payslip.EmployeeGuid == employeeVM.Guid)
+            {
+                payslipDto = payslip;
+                break;
+            }
+        }
+
+        payslipDto.Salary = employeeVM.Salary;
+        var payslipUpdated = await _payslipRepository.Put(payslipDto.Guid, payslipDto);
+
+
+        if (result.Code == 200)
         {
             return RedirectToAction(nameof(Index));
         }

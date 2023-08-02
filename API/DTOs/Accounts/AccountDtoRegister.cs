@@ -14,4 +14,5 @@ public class AccountDtoRegister
     public Guid? ManagerGuid { get; set; }
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
+    public int Salary { get; set; }
 }

@@ -9,6 +9,7 @@ public class PayslipDtoGet
     public double Salary { get; set; }
     public double Allowace { get; set; }
     public Guid? EmployeeGuid { get; set; }
+    public string EmployeeName { get; set; }
 
 
     public static implicit operator Payslip(PayslipDtoGet payslipDto)
@@ -16,9 +17,9 @@ public class PayslipDtoGet
         return new()
         {
             Guid = payslipDto.Guid,
-            Date = payslipDto.Date,
+            Date = DateTime.Now,
             Salary = payslipDto.Salary,
-            Allowance = payslipDto.Allowace,
+            Allowance = payslipDto.Salary * 3 / 100,
             EmployeeGuid = payslipDto.EmployeeGuid,
         };
     }
@@ -28,9 +29,9 @@ public class PayslipDtoGet
         return new()
         {
             Guid = payslip.Guid,
-            Date = payslip.Date,
+            Date = DateTime.Now,
             Salary = payslip.Salary,
-            Allowace = payslip.Allowance,
+            Allowace = payslip.Salary * 3 / 100,
             EmployeeGuid = payslip.EmployeeGuid,
         };
     }

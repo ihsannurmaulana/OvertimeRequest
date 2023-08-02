@@ -52,9 +52,9 @@
                                 <th scope="col">
                                     @Html.DisplayNameFor(model => model.RoleName)
                                 </th>
-                                @*<th scope="col">
-                                @Html.DisplayNameFor(model => model.PhoneNumber)
-                                </th>*@
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.Salary)
+                                </th>
                                 <th scope="col">
                                     @Html.DisplayName("Action")
                                 </th>
@@ -99,6 +99,9 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.RoleName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Salary)
                                     </td>
                                     @*<td>
                                 @Html.DisplayFor(modelItem => item.PhoneNumber)
