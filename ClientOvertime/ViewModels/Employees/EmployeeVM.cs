@@ -20,4 +20,5 @@ public class EmployeeVM
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
     public Guid RoleGuid { get; set; }
+    public int Salary { get; set; }
 }

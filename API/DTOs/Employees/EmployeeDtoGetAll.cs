@@ -15,4 +15,5 @@ public class EmployeeDtoGetAll
     public Guid? ManagerGuid { get; set; }
     public string? Manager { get; set; }
     public string RoleName { get; set; }
+    public double Salary { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿@using ClientOvertime.ViewModels.AccountRoles;
 @using ClientOvertime.ViewModels.Employees;
 @using ClientOvertime.ViewModels.Roles;
+@using ClientOvertime.ViewModels.Payslips;
 @model ClientOvertime.ViewModels.Employees.EmployeeVM
 
 @{
@@ -76,6 +77,11 @@
                 <div class="form-group">
                     <label asp-for="HiringDate" class="control-label"></label>
                     <input asp-for="HiringDate" class="form-control" type="date" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Salary" class="control-label"></label>
+                    <input asp-for="Salary" class="form-control"/>
                     <span class="text-danger"></span>
                 </div>
                 <div class="col-md-12 mb-2">
