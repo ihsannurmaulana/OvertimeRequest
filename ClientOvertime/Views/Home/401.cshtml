@@ -45,9 +45,9 @@
                         <div class="row mt-5">
                             <div class="col-12 text-center mt-xl-2">
                                 <button type="button"
-                                        class="btn btn-gradient-info btn-rounded btn-fw">
-                                    <a class="text-white font-weight-medium"
-                                       asp-controller="Home" asp-action="Index">Back to home</a>
+                                        class="btn btn-gradient-info btn-rounded btn-fw" id="countdown">
+                                    5
+                                    @*<a class="text-white font-weight-medium" id="countdown">5</a>*@
                                 </button>
                             </div>
                         </div>
@@ -64,6 +64,17 @@
             <!-- content-wrapper ends -->
         </div>
         <!-- page-body-wrapper ends -->
+        <script>
+            let timer = 5
+            setInterval(() => {
+                document.getElementById('countdown').innerHTML = timer;
+                timer--;
+
+                if (timer === 0) {
+                    location.href = "/Account/Login";
+                }
+            }, 1000)
+        </script>
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->

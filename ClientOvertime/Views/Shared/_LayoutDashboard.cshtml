@@ -83,53 +83,73 @@
                     </li>
 
                     <!--Start Sidebar-->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!--Dashboard-->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                                <span class="menu-title">Dashboard</span>
+                                <i class="mdi mdi-home menu-icon"></i>
+                            </a>
+                        </li>
 
-                    <!--Dashboard-->
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
-                            <span class="menu-title">Dashboard</span>
-                            <i class="mdi mdi-home menu-icon"></i>
-                        </a>
-                    </li>
-                    <!--Employee-->
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Employee" asp-action="Index">
-                            <span class="menu-title">Employee</span>
-                            <i class="mdi mdi-account-multiple menu-icon"></i>
-                        </a>
-                    </li>
+                        <!--Employee-->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Employee" asp-action="Index">
+                                    <span class="menu-title">Employee</span>
+                                    <i class="mdi mdi-account-multiple menu-icon"></i>
+                                </a>
+                            </li>
+                        }
 
-                    <!--Overtime Request-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Overtime/Create">
-                            <span class="menu-title">Overtime Request</span>
-                            <i class="mdi mdi-av-timer menu-icon"></i>
-                        </a>
-                    </li>
+                        <!--Overtime Request-->
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Overtime/Create">
+                                    <span class="menu-title">Overtime Request</span>
+                                    <i class="mdi mdi-av-timer menu-icon"></i>
+                                </a>
+                            </li>
+                        }
 
-                    <!--Overtime History-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Overtime/Index">
-                            <span class="menu-title">Overtime History</span>
-                            <i class="mdi mdi-av-timer menu-icon"></i>
-                        </a>
-                    </li>
+                        <!--Overtime History-->
+                        @if (User.IsInRole("Admin") || User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Overtime/Index">
+                                    <span class="menu-title">Overtime History</span>
+                                    <i class="mdi mdi-av-timer menu-icon"></i>
+                                </a>
+                            </li>
 
-                    <!--Overtime History-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Payslip/Index">
-                            <span class="menu-title">Payslip Employee (admin)</span>
-                            <i class="mdi mdi-av-timer menu-icon"></i>
-                        </a>
-                    </li>
-                    <!--Overtime By Manager-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Overtime/GetByManager">
-                            <span class="menu-title">Overtime (Manager)</span>
-                            <i class="mdi mdi-av-timer menu-icon"></i>
-                        </a>
-                    </li>
-                    <!--End Sidebar-->
+                        }
+
+                        <!--Overtime Payslip-->
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Payslip/Index">
+                                    <span class="menu-title">Payslip History</span>
+                                    <i class="mdi mdi-cash-multiple menu-icon"></i>
+                                </a>
+                            </li>
+                        }
+
+                        <!--Overtime By Manager-->
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Overtime/GetByManager">
+                                    <span class="menu-title">Overtime (Manager)</span>
+                                    <i class="mdi mdi-av-timer menu-icon"></i>
+                                </a>
+                            </li>
+                        }
+                        <!--End Sidebar-->
+                    }
                 </ul>
             </nav>
             <div class="main-panel">

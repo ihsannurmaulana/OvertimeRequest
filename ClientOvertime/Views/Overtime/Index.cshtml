@@ -89,7 +89,10 @@
                                     @Html.DisplayFor(modelItem => item.EmployeeGuid)
                                 </td>*@
                                 <td>
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                                    <form action="/overtime/detail" method="GET">
+                                        <input type="hidden" value="@item.Guid" name="guid" />
+                                        <button type="submit" class="btn btn-primary m-1">Detail</button>
+                                    </form>
                                 </td>
                                 
                             </tr>
