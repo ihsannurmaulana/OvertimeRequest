@@ -1,0 +1,106 @@
+﻿@model ClientOvertime.ViewModels.Overtimes.OvertimeVMRequest
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "_LayoutDashboard";
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-av-timer"></i>
+            </span> Request Overtime
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form action="~/overtime/detail" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @* <div class="form-group">
+                        <label asp-for="Guid" class="control-label"></label>
+                        <input asp-for="Guid" class="form-control" />
+                        <span asp-validation-for="Guid" class="text-danger"></span>
+                        </div>*@
+                        <div class="form-group">
+                            <label asp-for="FullName" class="control-label"></label>
+                            <input asp-for="FullName" class="form-control" disabled />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="OvertimeNumber" class="control-label"></label>
+                            <input asp-for="OvertimeNumber" class="form-control" disabled />
+                            <span asp-validation-for="OvertimeNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreatedDate" class="control-label"></label>
+                            <input asp-for="CreatedDate" class="form-control" disabled />
+                            <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label asp-for="StartDate" class="control-label"></label>
+                                    <input asp-for="StartDate" class="form-control" disabled />
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label asp-for="EndDate" class="control-label"></label>
+                                    <input asp-for="EndDate" class="form-control" disabled />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Remarks" class="control-label"></label>
+                            <textarea asp-for="Remarks" class="form-control" disabled></textarea>
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label"></label>
+                            <input asp-for="Status" class="form-control" disabled />
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                        @*<div class="form-group">
+                        <label asp-for="EmployeeGuid" class="control-label"></label>
+                        <input asp-for="EmployeeGuid" class="form-control" />
+                        <span asp-validation-for="EmployeeGuid" class="text-danger"></span>
+                        </div>*@
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label asp-for="Paid" class="control-label"></label>
+                                    <input asp-for="Paid" class="form-control" disabled />
+                                    <span asp-validation-for="Paid" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label asp-for="Remaining" class="control-label"></label>
+                                    <input asp-for="Remaining" class="form-control" disabled />
+                                    <span asp-validation-for="Remaining" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @*<input type="submit" value="Save" class="btn btn-primary" />*@
+                            <a asp-controller="Overtime" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@

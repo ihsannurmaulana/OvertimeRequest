@@ -4,6 +4,7 @@ using ClientOvertime.ViewModels.AccountRoles;
 using ClientOvertime.ViewModels.Employees;
 using ClientOvertime.ViewModels.Payslips;
 using ClientOvertime.ViewModels.Roles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientOvertime.Controllers;
@@ -25,6 +26,7 @@ public class EmployeeController : Controller
         _payslipRepository = payslipRepository;
     }
 
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index()
     {
         var result = await _employeeRepository.GetEmployees();
@@ -37,6 +39,7 @@ public class EmployeeController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create()
     {
         var result = await _employeeRepository.GetManager();
@@ -53,6 +56,7 @@ public class EmployeeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create(EmployeeVM newEmployeeVM)
     {
         var result = await _accountRepository.CreateAccount(newEmployeeVM);
@@ -70,6 +74,7 @@ public class EmployeeController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(Guid guid)
     {
         var employee = await _employeeRepository.Get(guid);
@@ -149,6 +154,7 @@ public class EmployeeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(EmployeeVM employeeVM)
     {
         var result = await _employeeRepository.Put(employeeVM.Guid, employeeVM);
@@ -184,6 +190,7 @@ public class EmployeeController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid guid)
     {
         var result = await _employeeRepository.Delete(guid);

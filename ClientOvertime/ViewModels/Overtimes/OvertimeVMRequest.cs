@@ -4,6 +4,7 @@ namespace ClientOvertime.ViewModels.Overtimes;
 
 public class OvertimeVMRequest
 {
+    public Guid Guid { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Remarks { get; set; }
