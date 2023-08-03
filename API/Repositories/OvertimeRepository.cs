@@ -181,7 +181,7 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
 							  Remarks = o.Remarks,
 							  Status = o.Status,
 							  EmployeeGuid = o.EmployeeGuid,
-						  }).Where(sta => sta.Status == 0).ToList();
+						  }).Where(sta => sta.Status == Utilities.Enums.StatusLevel.Waiting).ToList();
 
 			return master;
 		}
