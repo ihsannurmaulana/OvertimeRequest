@@ -24,7 +24,7 @@
                         </button>
                     </a>
                     <!-- Table with stripped rows -->
-                    <table class="table datatable table-hover table-responsive table-striped" id="data-table">
+                    <table class="table datatable table-hover table-responsive table-striped" id="data-table" style="width: 100%">
                         <thead>
                             <tr>
                                 <th scope="col">
@@ -117,7 +117,7 @@
                                             <div class="col-6">
                                                 <form action="/employee/delete" method="POST">
                                                     <input type="hidden" value="@item.Guid" name="guid" />
-                                                    <button type="submit" class="btn btn-danger delete-employee"><i class="mdi mdi-delete-forever"></i></button>
+                                                    <button type="submit" class="btn btn-danger m-1 delete-employee"><i class="mdi mdi-delete-forever"></i></button>
                                                 </form>
                                             </div>
                                         </div>
