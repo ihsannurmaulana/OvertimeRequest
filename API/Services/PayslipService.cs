@@ -8,11 +8,13 @@ public class PayslipService
 {
     private readonly IPayslipRepository _payslipRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IOvertimeRepository _overtimeRepository;
 
-    public PayslipService(IPayslipRepository payslipRepository, IEmployeeRepository employeeRepository)
+    public PayslipService(IPayslipRepository payslipRepository, IEmployeeRepository employeeRepository, IOvertimeRepository overtimeRepository)
     {
         _payslipRepository = payslipRepository;
         _employeeRepository = employeeRepository;
+        _overtimeRepository = overtimeRepository;
     }
 
     public IEnumerable<PayslipDtoGet> GetPayslip()
@@ -88,5 +90,111 @@ public class PayslipService
 
         var isDelete = _payslipRepository.Delete(payslip);
         return !isDelete ? 0 : 1;
+    }
+
+    public IEnumerable<PayslipDtoGetMaster> GetAllOver()
+    {
+        var payslip = (from p in _payslipRepository.GetAll()
+                       join o in _overtimeRepository.GetAll() on p.EmployeeGuid equals o.EmployeeGuid
+                       select new
+                       {
+
+                           guid = o.EmployeeGuid,
+                           totalOver = o.PaidOvertime,
+                       }).ToList().GroupBy(a => a.guid).Select(b => new PayslipDtoGetMaster()
+                       {
+                           EmployeeGuid = b.Key,
+                           PaidOvertime = b.Sum(c => c.totalOver)
+                       }).ToList();
+        return payslip;
+    }
+
+    public IEnumerable<PayslipDtoGetMaster> GetAllOver(Guid guid)
+    {
+        var payslip = (from p in _payslipRepository.GetAll()
+                       join o in _overtimeRepository.GetAll() on p.EmployeeGuid equals o.EmployeeGuid
+                       where p.Guid == guid
+                       select new
+                       {
+
+                           guid = o.EmployeeGuid,
+                           totalOver = o.PaidOvertime,
+                       }).ToList().GroupBy(a => a.guid).Select(b => new PayslipDtoGetMaster()
+                       {
+                           EmployeeGuid = b.Key,
+                           PaidOvertime = b.Sum(c => c.totalOver)
+                       }).ToList();
+        return payslip;
+    }
+    public IEnumerable<PayslipDtoGetMaster> GetAllOverEmpGuid(Guid guid)
+    {
+        var payslip = (from p in _payslipRepository.GetAll()
+                       join o in _overtimeRepository.GetAll() on p.EmployeeGuid equals o.EmployeeGuid
+                       where p.EmployeeGuid == guid
+                       select new
+                       {
+
+                           guid = o.EmployeeGuid,
+                           totalOver = o.PaidOvertime,
+                       }).ToList().GroupBy(a => a.guid).Select(b => new PayslipDtoGetMaster()
+                       {
+                           EmployeeGuid = b.Key,
+                           PaidOvertime = b.Sum(c => c.totalOver)
+                       }).ToList();
+        return payslip;
+    }
+
+    public IEnumerable<PayslipDtoGetMaster> GetAllMasterOver()
+    {
+        var payslip = GetAllOver();
+        var employee = (from p in _payslipRepository.GetAll()
+                        join pay in payslip on p.EmployeeGuid equals pay.EmployeeGuid
+                        select new PayslipDtoGetMaster
+                        {
+                            Guid = p.Guid,
+                            Salary = p.Salary,
+                            Allowance = p.Allowance,
+                            Date = p.Date,
+                            PaidOvertime = pay.PaidOvertime,
+                            TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
+                            EmployeeGuid = pay.EmployeeGuid,
+                        }).ToList();
+        return employee;
+    }
+
+    public IEnumerable<PayslipDtoGetMaster> GetAllMasterOverbyGuid(Guid guid)
+    {
+        var payslip = GetAllOver(guid);
+        var employee = (from p in _payslipRepository.GetAll()
+                        join pay in payslip on p.EmployeeGuid equals pay.EmployeeGuid
+                        select new PayslipDtoGetMaster
+                        {
+                            Guid = p.Guid,
+                            Salary = p.Salary,
+                            Allowance = p.Allowance,
+                            Date = p.Date,
+                            PaidOvertime = pay.PaidOvertime,
+                            TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
+                            EmployeeGuid = pay.EmployeeGuid,
+                        }).ToList();
+        return employee;
+    }
+
+    public IEnumerable<PayslipDtoGetMaster> GetAllMasterOverbyEmpGuid(Guid guid)
+    {
+        var payslip = GetAllMasterOverbyEmpGuid(guid);
+        var employee = (from p in _payslipRepository.GetAll()
+                        join pay in payslip on p.EmployeeGuid equals pay.EmployeeGuid
+                        select new PayslipDtoGetMaster
+                        {
+                            Guid = p.Guid,
+                            Salary = p.Salary,
+                            Allowance = p.Allowance,
+                            Date = p.Date,
+                            PaidOvertime = pay.PaidOvertime,
+                            TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
+                            EmployeeGuid = pay.EmployeeGuid,
+                        }).ToList();
+        return employee;
     }
 }

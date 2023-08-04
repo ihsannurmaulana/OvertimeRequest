@@ -151,5 +151,73 @@ public class PayslipController : ControllerBase
             });
         }
     }
+    [HttpGet("dummy")]
+    public IActionResult GetPayslipOver()
+    {
+        var payslip = _payslipService.GetAllMasterOver();
+        if (!payslip.Any())
+        {
+            return NotFound(new ResponseHandler<PayslipDtoGetMaster>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<PayslipDtoGetMaster>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data Found",
+            Data = payslip
+        });
+    }
+
+    [HttpGet("dummy/{guid}")]
+    public IActionResult GetPayslipOver(Guid guid)
+    {
+        var payslip = _payslipService.GetAllMasterOverbyGuid(guid);
+        if (!payslip.Any())
+        {
+            return NotFound(new ResponseHandler<PayslipDtoGetMaster>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<PayslipDtoGetMaster>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data Found",
+            Data = payslip
+        });
+    }
+
+    [HttpGet("dummy/emp/{guid}")]
+    public IActionResult GetPayslipOverEmp(Guid guid)
+    {
+        var payslip = _payslipService.GetAllMasterOverbyEmpGuid(guid);
+        if (!payslip.Any())
+        {
+            return NotFound(new ResponseHandler<PayslipDtoGetMaster>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Status = HttpStatusCode.NotFound.ToString(),
+                Message = "Data Not Found"
+            });
+        }
+
+        return Ok(new ResponseHandler<IEnumerable<PayslipDtoGetMaster>>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Data Found",
+            Data = payslip
+        });
+    }
 
 }

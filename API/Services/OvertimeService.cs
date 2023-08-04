@@ -97,7 +97,7 @@ public class OvertimeService
                           Remarks = o.Remarks,
                           StartDate = o.StartDate,
                           Status = o.Status,
-                          CreatedDate = DateTime.Now
+                          CreatedDate = o.StartDate,
                       }).ToList();
         return master;
 
@@ -127,6 +127,7 @@ public class OvertimeService
         if (over.Status == Utilities.Enums.StatusLevel.Rejected)
         {
             over.Remaining += Convert.ToInt32((over.EndDate - over.StartDate).TotalHours);
+            over.PaidOvertime = 0;
         }
         else if (over.Status == Utilities.Enums.StatusLevel.Accepted || over.Status == Utilities.Enums.StatusLevel.Waiting)
         {
