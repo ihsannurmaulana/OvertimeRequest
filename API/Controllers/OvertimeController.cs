@@ -45,21 +45,29 @@ public class OvertimeController : ControllerBase
 	[HttpGet("dummy/{guid}")]
 	public IActionResult GetOvertimeByGuid(Guid guid)
 	{
-		var over = _service.GetOvertimeByGuid(guid);
+		var over = _service.GetAllDummy();
+		var employee = new OvertimeRemainingDto();
+
+		foreach (var item in over)
+		{
+			if (item.Guid == guid) employee = item;
+		}
+
 		if (over is null)
-			return NotFound(new ResponseHandler<OvertimeDtoGet>
+			return NotFound(new ResponseHandler<OvertimeRemainingDto>
 			{
 				Code = StatusCodes.Status404NotFound,
 				Status = HttpStatusCode.NotFound.ToString(),
-				Message = "Data Not Found"
+				Message = "Data Not Found",
+				Data = null
 			});
 
-		return Ok(new ResponseHandler<OvertimeDtoGet>
+		return Ok(new ResponseHandler<OvertimeRemainingDto>
 		{
 			Code = StatusCodes.Status200OK,
 			Status = HttpStatusCode.OK.ToString(),
 			Message = "Data Found",
-			Data = over
+			Data = employee
 
 		});
 	}
