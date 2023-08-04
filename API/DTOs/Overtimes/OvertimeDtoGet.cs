@@ -12,6 +12,10 @@ public class OvertimeDtoGet
     public string? Remarks { get; set; }
     public StatusLevel Status { get; set; }
     public Guid EmployeeGuid { get; set; }
+    public string FullName { get; set; }
+    public int Remaining { get; set; }
+    public double Paid { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public static implicit operator Overtime(OvertimeDtoGet getOvertime)
     {
