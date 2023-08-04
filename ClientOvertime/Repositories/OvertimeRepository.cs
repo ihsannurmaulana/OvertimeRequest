@@ -1,5 +1,7 @@
-﻿using API.Utilities.Handlers;
+﻿using System.Text;
+using API.Utilities.Handlers;
 using ClientOvertime.Contracts;
+using ClientOvertime.Controllers;
 using ClientOvertime.ViewModels.Overtimes;
 using Newtonsoft.Json;
 
@@ -21,6 +23,17 @@ public class OvertimeRepository : GeneralRepository<OvertimeVMRequest, Guid>, IO
 			entityVM = JsonConvert.DeserializeObject<ResponseHandler<IEnumerable<OvertimeVMRequest>>>(apiResponse);
 		};
 		return entityVM;
-
 	}
+
+	public async Task<ResponseHandler<ApprovalManager>> PutApproval(ApprovalManager entity)
+    {
+        ResponseHandler<ApprovalManager> entityVM = null;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        using (var response = _httpClient.PutAsync(_request + "update", content).Result)
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entityVM = JsonConvert.DeserializeObject<ResponseHandler<ApprovalManager>>(apiResponse);
+        }
+        return entityVM;
+    }
 }
