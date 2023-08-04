@@ -1,4 +1,5 @@
-﻿using ClientOvertime.Contracts;
+﻿using API.Utilities.Enums;
+using ClientOvertime.Contracts;
 using ClientOvertime.ViewModels.Overtimes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -115,6 +116,32 @@ public class OvertimeController : Controller
 		return View(resultOvertime);
 	}
 
+	[HttpPost]
+	[Authorize]
+	public async Task<IActionResult> ApprovalManager(OvertimeVMRequest overtimeVMRequest)
+	{
+		var approvalManager = new ApprovalManager(); 
+		switch (overtimeVMRequest.Status)
+		{
+			case StatusLevel.Accepted:
+				approvalManager.Guid = overtimeVMRequest.Guid; 
+				approvalManager.Status = StatusLevel.Accepted; 
+				break;
+			case StatusLevel.Rejected:
+				approvalManager.Guid = overtimeVMRequest.Guid; 
+				approvalManager.Status = StatusLevel.Rejected; 
+				break;
+			case StatusLevel.Waiting:
+				approvalManager.Guid = overtimeVMRequest.Guid; 
+				approvalManager.Status = StatusLevel.Waiting; 
+				break;
+		}
+
+		var repository = await _repository.PutApproval(approvalManager);
+
+		return  RedirectToAction("GetByManager", "Overtime");
+	}
+
 	[HttpGet]
 	[Authorize(Roles = "Manager")]
 	public async Task<IActionResult> GetByManager()
@@ -130,8 +157,11 @@ public class OvertimeController : Controller
 		}
 		return View(employees);
 	}
+}
 
 
-
-
+public class ApprovalManager
+{
+	public Guid Guid { get; set; }
+	public StatusLevel Status { get; set; }
 }

@@ -17,13 +17,13 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card mt-4">
                 <div class="card-body">
-                    <form action="~/overtime/detail" method="post">
+                    <form action="~/overtime/approvalmanager" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        @* <div class="form-group">
+                        <div class="form-group" hidden>
                         <label asp-for="Guid" class="control-label"></label>
                         <input asp-for="Guid" class="form-control" />
                         <span asp-validation-for="Guid" class="text-danger"></span>
-                        </div>*@
+                        </div>
                         <div class="form-group">
                             <label asp-for="FullName" class="control-label"></label>
                             <input asp-for="FullName" class="form-control" disabled />
@@ -97,6 +97,7 @@
                             @*<input type="submit" value="Save" class="btn btn-primary" />*@
                             @if (User.IsInRole("Manager"))
                             {
+                                <button class="btn btn-primary" type="submit">Update</button>
                                 <a asp-controller="Overtime" asp-action="GetByManager" class="btn btn-secondary">Back to List</a>
                             }
                             @if (User.IsInRole("User") || User.IsInRole("Admin"))

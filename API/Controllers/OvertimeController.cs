@@ -252,7 +252,7 @@ public class OvertimeController : ControllerBase
 		});
 	}
 
-	[HttpPut("update")]
+	[HttpPut("dummy/update")]
 	public IActionResult UpdateOver(OvertimeUpdateStatus updateOvertime)
 	{
 		var over = _service.UpdateStatusRemaining(updateOvertime);
