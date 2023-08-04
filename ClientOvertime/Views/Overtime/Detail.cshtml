@@ -60,11 +60,18 @@
                             <textarea asp-for="Remarks" class="form-control" disabled></textarea>
                             <span asp-validation-for="Remarks" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Status" class="control-label"></label>
-                            <input asp-for="Status" class="form-control" disabled />
-                            <span asp-validation-for="Status" class="text-danger"></span>
-                        </div>
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label"></label>
+                                <select asp-for="Status" class="form-control">
+                                    <option value="0">Accepted</option>
+                                    <option value="1">Rejected</option>
+                                    <option value="2">Waiting</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                        }
                         @*<div class="form-group">
                         <label asp-for="EmployeeGuid" class="control-label"></label>
                         <input asp-for="EmployeeGuid" class="form-control" />
@@ -88,7 +95,15 @@
                         </div>
                         <div class="form-group">
                             @*<input type="submit" value="Save" class="btn btn-primary" />*@
-                            <a asp-controller="Overtime" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <a asp-controller="Overtime" asp-action="GetByManager" class="btn btn-secondary">Back to List</a>
+                            }
+                            @if (User.IsInRole("User") || User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Overtime" asp-action="Index" class="btn btn-secondary">Back to List</a>
+                            }
+                            
                         </div>
                     </form>
                 </div>
