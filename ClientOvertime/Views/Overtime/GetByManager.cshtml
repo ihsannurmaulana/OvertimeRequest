@@ -22,28 +22,7 @@
 							<thead>
 								<tr>
 									<th>
-										@Html.DisplayNameFor(model => model.StartDate)
-									</th>
-									<th>
-										@Html.DisplayNameFor(model => model.EndDate)
-									</th>
-									<th>
-										@Html.DisplayNameFor(model => model.Remarks)
-									</th>
-									<th>
-										@Html.DisplayNameFor(model => model.Status)
-									</th>
-@*									<th>
-										@Html.DisplayNameFor(model => model.EmployeeGuid)
-									</th>*@
-									<th>
 										@Html.DisplayNameFor(model => model.OvertimeNumber)
-									</th>
-									<th>
-										@Html.DisplayNameFor(model => model.Paid)
-									</th>
-									<th>
-										@Html.DisplayNameFor(model => model.Remaining)
 									</th>
 									<th>
 										@Html.DisplayNameFor(model => model.FullName)
@@ -51,6 +30,27 @@
 									<th>
 										@Html.DisplayNameFor(model => model.CreatedDate)
 									</th>
+									<th>
+										@Html.DisplayNameFor(model => model.Status)
+									</th>
+@*									<th>
+										@Html.DisplayNameFor(model => model.StartDate)
+									</th>
+									<th>
+										@Html.DisplayNameFor(model => model.EndDate)
+									</th>*@
+									@*<th>
+										@Html.DisplayNameFor(model => model.Remarks)
+									</th>*@
+@*									<th>
+										@Html.DisplayNameFor(model => model.EmployeeGuid)
+									</th>*@
+									@*<th>
+										@Html.DisplayNameFor(model => model.Paid)
+									</th>
+									<th>
+										@Html.DisplayNameFor(model => model.Remaining)
+									</th>*@
 									<th></th>
 								</tr>
 							</thead>
@@ -59,28 +59,7 @@
 								{
 									<tr>
 										<td>
-											@Html.DisplayFor(modelItem => item.StartDate)
-										</td>
-										<td>
-											@Html.DisplayFor(modelItem => item.EndDate)
-										</td>
-										<td>
-											@Html.DisplayFor(modelItem => item.Remarks)
-										</td>
-										<td>
-											@Html.DisplayFor(modelItem => item.Status)
-										</td>
-										@*<td>
-											@Html.DisplayFor(modelItem => item.EmployeeGuid)
-										</td>*@
-										<td>
 											@Html.DisplayFor(modelItem => item.OvertimeNumber)
-										</td>
-										<td>
-											@Html.DisplayFor(modelItem => item.Paid)
-										</td>
-										<td>
-											@Html.DisplayFor(modelItem => item.Remaining)
 										</td>
 										<td>
 											@Html.DisplayFor(modelItem => item.FullName)
@@ -89,10 +68,32 @@
 											@Html.DisplayFor(modelItem => item.CreatedDate)
 										</td>
 										<td>
-											@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-											@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-											@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+											@Html.DisplayFor(modelItem => item.Status)
 										</td>
+										@*<td>
+											@Html.DisplayFor(modelItem => item.StartDate)
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.EndDate)
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.Remarks)
+										</td>*@
+										@*<td>
+											@Html.DisplayFor(modelItem => item.EmployeeGuid)
+										</td>*@
+@*										<td>
+											@Html.DisplayFor(modelItem => item.Paid)
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.Remaining)
+										</td>*@
+									<td>
+										<form action="/overtime/detail" method="GET">
+											<input type="hidden" value="@item.Guid" name="guid" />
+											<button type="submit" class="btn btn-primary m-1">Detail</button>
+										</form>
+									</td>
 									</tr>
 								}
 							</tbody>
