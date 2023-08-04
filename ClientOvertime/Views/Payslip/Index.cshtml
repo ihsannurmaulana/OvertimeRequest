@@ -18,7 +18,7 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h3 class="card-title h3">Datatables Payslips</h3>
-                    <table class="table datatable table-hover table-responsive" id="data-table">
+                    <table class="table datatable table-hover table-responsive table-striped" id="data-table">
                         <thead>
                             <tr>
                                 @*<th>
@@ -46,6 +46,9 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
+                                    @{
+                                        var culture = new System.Globalization.CultureInfo("id-ID");
+                                    }
                                     @*<td>
                                 @Html.DisplayFor(modelItem => item.Guid)
                                 </td>*@
@@ -53,7 +56,10 @@
                                         @Html.DisplayFor(modelItem => item.EmployeeName)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Date)
+                                        @{
+                                            var formatDate = item.Date.ToString("dd MMMM yyyy", culture);
+                                        }
+                                        @Html.DisplayFor(modelItem => formatDate)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Salary)

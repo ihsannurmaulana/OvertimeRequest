@@ -24,7 +24,7 @@
                         </button>
                     </a>
                     <!-- Table with stripped rows -->
-                    <table class="table datatable table-hover table-responsive" id="data-table">
+                    <table class="table datatable table-hover table-responsive table-striped" id="data-table">
                         <thead>
                             <tr>
                                 <th scope="col">
@@ -43,18 +43,18 @@
                                 <th scope="col">
                                     @Html.DisplayNameFor(model => model.Manager)
                                 </th>
-                                <th scope="col">
+                               @* <th scope="col">
                                     @Html.DisplayNameFor(model => model.HiringDate)
-                                </th>
+                                </th>*@
                                 <th scope="col">
                                     @Html.DisplayNameFor(model => model.Email)
                                 </th>
                                 <th scope="col">
                                     @Html.DisplayNameFor(model => model.RoleName)
                                 </th>
-                                <th scope="col">
+                                @*<th scope="col">
                                     @Html.DisplayNameFor(model => model.Salary)
-                                </th>
+                                </th>*@
                                 <th scope="col">
                                     @Html.DisplayName("Action")
                                 </th>
@@ -88,21 +88,21 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Manager)
                                     </td>
-                                    <td>
+                                   @* <td>
                                         @{
                                             var formatHiringDate = item.HiringDate.ToString("dd MMMM yyyy", culture);
                                         }
                                         @Html.DisplayFor(modelItem => formatHiringDate)
-                                    </td>
+                                    </td>*@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Email)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.RoleName)
                                     </td>
-                                    <td>
+                                    @*<td>
                                         @Html.DisplayFor(modelItem => item.Salary)
-                                    </td>
+                                    </td>*@
                                     @*<td>
                                 @Html.DisplayFor(modelItem => item.PhoneNumber)
                                 </td>*@
@@ -115,9 +115,9 @@
                                                 </form>
                                             </div>
                                             <div class="col-6">
-                                                <form action="/employee/delete" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus data ini ?')">
+                                                <form action="/employee/delete" method="POST">
                                                     <input type="hidden" value="@item.Guid" name="guid" />
-                                                    <button class="btn btn-danger m-1" type="submit" onclick="return true"><i class="mdi mdi-delete-forever"></i></button>
+                                                    <button type="submit" class="btn btn-danger delete-employee"><i class="mdi mdi-delete-forever"></i></button>
                                                 </form>
                                             </div>
                                         </div>
@@ -133,3 +133,41 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('tbody');
+            tableBody.addEventListener('click', function (event) {
+                const deleteButton = event.target.closest('.delete-employee');
+                if (deleteButton) {
+                    event.preventDefault();
+                    const form = deleteButton.closest('form');
+                    const guid = form.querySelector('input[name="guid"]').value;
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You won\'t be able to recover this data!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // If the user confirms, submit the form
+                            Swal.fire(
+                                'Deleted!',
+                                'Your data has been Deleted.',
+                                'success'
+                            ).then(() => {
+                                form.submit();
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
