@@ -98,7 +98,8 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
 		var endDate = targetDate.AddDays(-30);
 		var overRem = (from c in _context.Overtimes
 					   join emp in _context.Employees on c.EmployeeGuid equals emp.Guid
-					   where (c.Status == Utilities.Enums.StatusLevel.Accepted && c.StartDate >= endDate && c.EndDate <= targetDate && emp.Guid == guid)
+					   where (c.Status == Utilities.Enums.StatusLevel.Accepted || c.Status == Utilities.Enums.StatusLevel.Waiting
+					   && c.StartDate >= endDate && c.EndDate <= targetDate && emp.Guid == guid)
 					   select new OvertimeRemainingDto()
 					   {
 						   Guid = c.Guid,
