@@ -182,6 +182,7 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
                               Remarks = o.Remarks,
                               Status = o.Status,
                               EmployeeGuid = o.EmployeeGuid,
+                              CreatedDate = DateTime.Now
                           }).Where(sta => sta.Status == Utilities.Enums.StatusLevel.Waiting
                           || sta.Status == Utilities.Enums.StatusLevel.Accepted || sta.Status == Utilities.Enums.StatusLevel.Rejected).ToList();
 
