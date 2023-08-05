@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-md-12 mb-2">
                     <label for="ManagerGuid" class="form-label">Manager</label>
-                    <select asp-for="ManagerGuid" class="form-select" id="validationCustom02" required>
+                    <select asp-for="ManagerGuid" class="form-select" id="validationCustom02">
                         <option> </option>
                         @{
                             foreach (var item in (IEnumerable<ManagerVM>)ViewData["Managers"])
