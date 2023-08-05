@@ -20,9 +20,9 @@
                     <form action="~/overtime/approvalmanager" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group" hidden>
-                        <label asp-for="Guid" class="control-label"></label>
-                        <input asp-for="Guid" class="form-control" />
-                        <span asp-validation-for="Guid" class="text-danger"></span>
+                            <label asp-for="Guid" class="control-label"></label>
+                            <input asp-for="Guid" class="form-control" />
+                            <span asp-validation-for="Guid" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="FullName" class="control-label"></label>
@@ -60,39 +60,61 @@
                             <textarea asp-for="Remarks" class="form-control" disabled></textarea>
                             <span asp-validation-for="Remarks" class="text-danger"></span>
                         </div>
-                        @if (User.IsInRole("Manager"))
-                        {
-                            <div class="form-group">
-                                <label asp-for="Status" class="control-label"></label>
-                                <select asp-for="Status" class="form-control">
-                                    <option value="0">Accepted</option>
-                                    <option value="1">Rejected</option>
-                                    <option value="2">Waiting</option>
-                                </select>
-                                <span asp-validation-for="Status" class="text-danger"></span>
-                            </div>
-                        }
+
                         @*<div class="form-group">
                         <label asp-for="EmployeeGuid" class="control-label"></label>
                         <input asp-for="EmployeeGuid" class="form-control" />
                         <span asp-validation-for="EmployeeGuid" class="text-danger"></span>
                         </div>*@
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <label asp-for="Paid" class="control-label"></label>
-                                    <input asp-for="Paid" class="form-control" disabled />
-                                    <span asp-validation-for="Paid" class="text-danger"></span>
+
+
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <div class="row">
+
+                                <div class="col-8">
+
+                                    <div class="form-group">
+                                        <label asp-for="Status" class="control-label"></label>
+                                        <select asp-for="Status" class="form-control">
+                                            <option value="0">Accepted</option>
+                                            <option value="1">Rejected</option>
+                                            <option value="2">Waiting</option>
+                                        </select>
+                                        <span asp-validation-for="Status" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label asp-for="Remaining" class="control-label"></label>
+                                        <input asp-for="Remaining" class="form-control" disabled />
+                                        <span asp-validation-for="Remaining" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                        @if (User.IsInRole("User") || User.IsInRole("User"))
+                        {
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="Remaining" class="control-label"></label>
+                                        <input asp-for="Remaining" class="form-control" disabled />
+                                        <span asp-validation-for="Remaining" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label asp-for="Paid" class="control-label"></label>
+                                        <input asp-for="Paid" class="form-control" disabled />
+                                        <span asp-validation-for="Paid" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label asp-for="Remaining" class="control-label"></label>
-                                    <input asp-for="Remaining" class="form-control" disabled />
-                                    <span asp-validation-for="Remaining" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
+                        }
                         <div class="form-group">
                             @*<input type="submit" value="Save" class="btn btn-primary" />*@
                             @if (User.IsInRole("Manager"))
@@ -104,7 +126,7 @@
                             {
                                 <a asp-controller="Overtime" asp-action="Index" class="btn btn-secondary">Back to List</a>
                             }
-                            
+
                         </div>
                     </form>
                 </div>
@@ -119,4 +141,17 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@
+
+@*@section Scripts{
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                readOnly: true, // Tambahkan opsi read-only di sini
+                sourceEditing: false // Nonaktifkan fitur source code editing
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 }*@

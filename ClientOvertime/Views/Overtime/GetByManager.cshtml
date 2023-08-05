@@ -74,7 +74,23 @@
                                         @Html.DisplayFor(modelItem => formatCreatedDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Status)
+                                        @if (item.Status == API.Utilities.Enums.StatusLevel.Accepted)
+                                        {
+                                            <label class="badge badge-info">Accepted</label>
+                                        }
+                                        else if (item.Status == API.Utilities.Enums.StatusLevel.Rejected)
+                                        {
+                                            <label class="badge badge-danger">Rejected</label>
+                                        }
+                                        else if (item.Status == API.Utilities.Enums.StatusLevel.Waiting)
+                                        {
+                                            <label class="badge badge-warning">Pending</label>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.Status)
+                                        }
+                                        @*@Html.DisplayFor(modelItem => item.Status == )*@
                                     </td>
                                     @*<td>
                                 @Html.DisplayFor(modelItem => item.StartDate)
@@ -97,7 +113,7 @@
                                     <td>
                                         <form action="/overtime/detail" method="GET">
                                             <input type="hidden" value="@item.Guid" name="guid" />
-                                            <button type="submit" class="btn btn-primary m-1">Detail</button>
+                                            <button type="submit" class="btn btn-primary m-1"><i class="mdi mdi-information-outline"></i> Detail</button>
                                         </form>
                                     </td>
                                 </tr>
