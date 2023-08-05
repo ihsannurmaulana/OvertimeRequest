@@ -148,6 +148,7 @@ public class PayslipService
     {
         var payslip = GetAllOver();
         var employee = (from p in _payslipRepository.GetAll()
+                        join e in _employeeRepository.GetAll() on p.EmployeeGuid equals e.Guid
                         join pay in payslip on p.EmployeeGuid equals pay.EmployeeGuid
                         select new PayslipDtoGetMaster
                         {
@@ -158,6 +159,7 @@ public class PayslipService
                             PaidOvertime = pay.PaidOvertime,
                             TotalSalary = p.Salary + pay.TotalSalary - p.Allowance,
                             EmployeeGuid = pay.EmployeeGuid,
+                            FullName = e.FirstName + " " + e.LastName,
                         }).ToList();
         return employee;
     }

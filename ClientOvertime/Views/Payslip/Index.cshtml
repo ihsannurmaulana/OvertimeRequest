@@ -25,7 +25,7 @@
                                 @Html.DisplayNameFor(model => model.Guid)
                                 </th>*@
                                 <th>
-                                    @Html.DisplayNameFor(model => model.EmployeeName)
+                                    @Html.DisplayNameFor(model => model.FullName)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Date)
@@ -34,7 +34,13 @@
                                     @Html.DisplayNameFor(model => model.Salary)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Allowace)
+                                    @Html.DisplayNameFor(model => model.Allowance)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PaidOvertime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TotalSalary)
                                 </th>
                                 @* <th>
                                 @Html.DisplayNameFor(model => model.EmployeeGuid)
@@ -53,7 +59,7 @@
                                 @Html.DisplayFor(modelItem => item.Guid)
                                 </td>*@
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                                        @Html.DisplayFor(modelItem => item.FullName)
                                     </td>
                                     <td>
                                         @{
@@ -65,7 +71,13 @@
                                         @Html.DisplayFor(modelItem => item.Salary)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Allowace)
+                                        @Html.DisplayFor(modelItem => item.Allowance)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PaidOvertime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalSalary)
                                     </td>
                                     @* <td>
                                 @Html.DisplayFor(modelItem => item.EmployeeGuid)

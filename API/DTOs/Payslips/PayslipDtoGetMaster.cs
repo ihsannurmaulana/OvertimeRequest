@@ -11,6 +11,7 @@ namespace API.DTOs.Payslips
         public double PaidOvertime { get; set; }
         public double TotalSalary { get; set; }
         public Guid EmployeeGuid { get; set; }
+        public string FullName { get; set; }
 
         public static implicit operator Payslip(PayslipDtoGetMaster payslipDto)
         {
