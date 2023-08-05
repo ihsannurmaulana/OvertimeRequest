@@ -104,10 +104,10 @@ public class AccountService
     public string LoginAccount(AccountDtoLogin login)
     {
         var account = _accountRepository.GetEmployeeByEmail(login.Email);
+        if (account == null) return "0";
         var employee = _employeeRepository.GetByGuid(account.Guid);
         var overtime = _overtimeRepository.RemainingOvertimeByEmployeeGuid(account.Guid);
         var manager = employee.ManagerGuid != null ? _employeeRepository.GetByGuid(employee.ManagerGuid.Value) : null;
-        if (account is null) return "0";
 
         if (!HashingHandler.Validate(login.Password, account!.Password)) return "-1";
 

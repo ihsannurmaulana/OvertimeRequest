@@ -26,22 +26,19 @@ public class AccountController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Login(AccountVMLogin accountVmLogin)
     {
-        var result = await _accountRepository.Login(accountVmLogin);
-        if (result is null)
+        var account = await _accountRepository.Login(accountVmLogin);
+        switch (account.Code)
         {
-            return RedirectToAction("Error", "Home");
+            case 200:
+                HttpContext.Session.SetString("JWTToken", account.Data);
+                return RedirectToAction("Index", "Dashboard");
+            case 400:
+                TempData["Error"] = account.Message;
+                return Redirect("~/Account/Login");
+            default:
+                TempData["Error"] = account.Message;
+                return Redirect("~/Account/Login");
         }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            HttpContext.Session.SetString("JWTToken", result.Data);
-            return RedirectToAction("Index", "Dashboard");
-        }
-        return View();
     }
 
     [HttpGet]

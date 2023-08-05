@@ -1,5 +1,9 @@
 ﻿@{
     var fullName = User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+    var successMessage = TempData["Success"] as string;
+    var failMessage = TempData["Error"] as string;
+    var emailMessage = TempData["EmailError"] as string;
+    var phoneMessage = TempData["PhoneError"] as string;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +27,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
 </head>
 <body>
@@ -132,15 +137,15 @@
                         }
 
                         <!--Overtime Payslip-->
-                        @if (User.IsInRole("User") || User.IsInRole("Admin"))
-                        {
+                        @*@if (User.IsInRole("User") || User.IsInRole("Admin"))
+                        {*@
                             <li class="nav-item">
                                 <a class="nav-link" href="/Payslip/Index">
                                     <span class="menu-title">Payslip History</span>
                                     <i class="mdi mdi-cash-multiple menu-icon"></i>
                                 </a>
                             </li>
-                        }
+                        @*}*@
 
                         <!--Overtime By Manager-->
                         @if (User.IsInRole("Manager"))
@@ -173,6 +178,50 @@
         </div>
         <!-- page-body-wrapper ends -->
     </div>
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "closeButton": true,
+                    "progressBar": true,
+                    "timeOut": 3000
+                };
+                toastr.success('@successMessage');
+            });
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(failMessage) || !string.IsNullOrEmpty(emailMessage) || !string.IsNullOrEmpty(phoneMessage))
+    {
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "closeButton": true,
+                    "progressBar": true,
+                    "timeOut": 3000
+                };
+                toastr.error('@failMessage', '@emailMessage');
+            });
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(phoneMessage))
+    {
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "closeButton": true,
+                    "progressBar": true,
+                    "timeOut": 3000
+                };
+                toastr.error('@phoneMessage');
+            });
+        </script>
+    }
     <!-- container-scroller -->
     <!-- Data Tables-->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -180,6 +229,8 @@
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- plugins:js -->
     <script src="~/Purple/assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

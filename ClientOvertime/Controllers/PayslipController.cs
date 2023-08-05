@@ -16,7 +16,7 @@ public class PayslipController : Controller
         _employeeRepository = employeeRepository;
     }
 
-    [Authorize(Roles = ("Admin, User"))]
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var EmployeeGuid = User.Claims.FirstOrDefault(x => x.Type == "Guid")?.Value;
