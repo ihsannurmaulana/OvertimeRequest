@@ -6,6 +6,16 @@
     Layout = "_LayoutDashboard";
 }
 
+@*@if (TempData["EmailError"] != null)
+{
+    <div id="EmailError" class="alert alert-danger">@TempData["EmailError"]</div>
+}
+
+@if (TempData["PhoneError"] != null)
+{
+    <div id="PhoneError" class="alert alert-danger">@TempData["PhoneError"]</div>
+}*@
+
 <div class="content-wrapper">
     <div class="page-header">
         <h3 class="page-title">
@@ -21,14 +31,14 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="FirstName" class="control-label"></label>
-                            <input asp-for="FirstName" class="form-control" required/>
+                            <input asp-for="FirstName" class="form-control" required />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label asp-for="LastName" class="control-label"></label>
-                            <input asp-for="LastName" class="form-control"/>
+                            <input asp-for="LastName" class="form-control" />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
@@ -118,3 +128,23 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        // Fungsi untuk menyembunyikan pesan kesuksesan setelah 5 detik
+        function hideSuccessMessage() {
+            setTimeout(function () {
+                $(".alert-danger").fadeOut(1000, function () {
+                    $(this).remove();
+                });
+            }, 3000); // 5000 milidetik = 5 detik
+        }
+
+        // Panggil fungsi untuk menyembunyikan pesan kesuksesan jika ada
+        $(document).ready(function () {
+            hideSuccessMessage();
+        });
+    </script>
+
+}
