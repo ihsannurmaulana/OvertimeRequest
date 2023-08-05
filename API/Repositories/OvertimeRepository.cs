@@ -112,7 +112,7 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
                            Remaining = c.Remaining,
                            Remarks = c.Remarks,
                            Status = c.Status,
-                           CreatedDate = DateTime.Now
+                           CreatedDate = c.StartDate
                        }).ToList();
         return overRem;
     }
@@ -182,7 +182,7 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
                               Remarks = o.Remarks,
                               Status = o.Status,
                               EmployeeGuid = o.EmployeeGuid,
-                              CreatedDate = DateTime.Now
+                              CreatedDate = o.StartDate
                           }).Where(sta => sta.Status == Utilities.Enums.StatusLevel.Waiting
                           || sta.Status == Utilities.Enums.StatusLevel.Accepted || sta.Status == Utilities.Enums.StatusLevel.Rejected).ToList();
 
