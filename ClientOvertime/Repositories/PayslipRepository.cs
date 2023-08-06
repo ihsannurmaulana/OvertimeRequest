@@ -34,4 +34,15 @@ public class PayslipRepository : GeneralRepository<PayslipVMGet, Guid>, IPayslip
         }
         return entityVM;
     }
+
+    public async Task<ResponseHandler<double>> GetStatistic()
+    {
+        ResponseHandler<double> entity = null;
+        using (var response = await _httpClient.GetAsync(_request + "/total-expense"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<double>>(apiResponse);
+        }
+        return entity;
+    }
 }

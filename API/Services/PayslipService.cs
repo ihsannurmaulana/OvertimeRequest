@@ -226,4 +226,14 @@ public class PayslipService
                         }).ToList();
         return employee;
     }
+
+    public double GetTotalSalaryExpense()
+    {
+        var payslips = _payslipRepository.GetAll();
+
+        // Calculate total salary expense by summing up all salaries
+        double totalExpense = payslips.Sum(p => p.Salary);
+
+        return totalExpense;
+    }
 }
