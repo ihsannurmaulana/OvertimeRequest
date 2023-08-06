@@ -52,25 +52,19 @@ public class AccountController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> ForgotPassword(AccountVMForgotPassword accountVmForgotPassword)
     {
-        var result = await _accountRepository.ForgotPassword(accountVmForgotPassword);
-
-        if (result is null)
+        var account = await _accountRepository.ForgotPassword(accountVmForgotPassword);
+        switch (account.Code)
         {
-            return RedirectToAction("Error", "Home");
+            case 200:
+                TempData["Success"] = account.Message;
+                return Redirect("~/Account/ChangePassword");
+            case 400:
+                TempData["Error"] = account.Message;
+                return Redirect("~/Account/ForgotPassword");
+            default:
+                TempData["Error"] = account.Message;
+                return Redirect("~/Account/ForgotPassword");
         }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-            return View("ChangePassword");
-        }
-
-        return View();
     }
 
     [HttpGet]
@@ -84,25 +78,19 @@ public class AccountController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> ChangePassword(AccountVMChangePassword accountVmChangePassword)
     {
-        var result = await _accountRepository.ChangePassword(accountVmChangePassword);
-
-        if (result is null)
+        var account = await _accountRepository.ChangePassword(accountVmChangePassword);
+        switch (account.Code)
         {
-            return RedirectToAction("Error", "Home");
+            case 200:
+                TempData["Success"] = account.Message;
+                return Redirect("~/Account/Login");
+            case 400:
+                TempData["Error"] = account.Message;
+                return Redirect("~/Account/ChangePassword");
+            default:
+                TempData["Error"] = account.Message;
+                return Redirect("~/Account/ChangePassword");
         }
-        else if (result.Code == 400)
-        {
-            ModelState.AddModelError(string.Empty, result.Message);
-            TempData["Error"] = $"Something Went Wrong! - {result.Message}!";
-            return View();
-        }
-        else if (result.Code == 200)
-        {
-            TempData["Success"] = $"Data has been Successfully Registered! - {result.Message}!";
-            return View("Login");
-        }
-
-        return View();
     }
 
     [AllowAnonymous]

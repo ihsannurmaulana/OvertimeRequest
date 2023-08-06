@@ -18,3 +18,10 @@ public class PayslipVMGet
     public Guid EmployeeGuid { get; set; }
     public string FullName { get; set; }
 }
+
+public class PayslipsViewModelUpdate
+{
+    public Guid Guid { get; set; }
+    public int Salary { get; set; }
+    public Guid EmployeeGuid { get; set; }
+}

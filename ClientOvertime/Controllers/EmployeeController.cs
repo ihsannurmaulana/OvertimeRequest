@@ -1,5 +1,4 @@
-﻿using API.Models;
-using ClientOvertime.Contracts;
+﻿using ClientOvertime.Contracts;
 using ClientOvertime.ViewModels.AccountRoles;
 using ClientOvertime.ViewModels.Employees;
 using ClientOvertime.ViewModels.Payslips;
@@ -171,28 +170,31 @@ public class EmployeeController : Controller
         var payslips = await _payslipRepository.Get();
         var payslipDtos = new List<PayslipVMGet>();
         if (payslips.Data is not null) payslipDtos = payslips.Data.ToList();
-        var payslipDto = new PayslipVMGet();
+        var payslipDto = new PayslipsViewModelUpdate();
         foreach (var payslip in payslipDtos)
         {
             if (payslip.EmployeeGuid == employeeVM.Guid)
             {
-                payslipDto = payslip;
+                payslipDto.Guid = payslip.Guid;
+                payslipDto.EmployeeGuid = payslip.EmployeeGuid;
+                payslipDto.Salary = employeeVM.Salary;
                 break;
             }
         }
 
         payslipDto.Salary = employeeVM.Salary;
-        var payslipUpdated = await _payslipRepository.Put(payslipDto.Guid, payslipDto);
+        var payslipUpdated = await _payslipRepository.PutSalary(payslipDto.Guid, payslipDto);
 
 
         if (result.Code == 200)
         {
+            TempData["Success"] = result.Message;
             return RedirectToAction(nameof(Index));
         }
-        else if (result.Status == "409")
+        else if (result.Status == "401")
         {
-            ModelState.AddModelError(string.Empty, result.Message);
-            return View();
+            TempData["Error"] = result.Message;
+            return Redirect("~/Employee/Update");
         }
 
         return View();
@@ -202,16 +204,18 @@ public class EmployeeController : Controller
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid guid)
     {
-        var result = await _employeeRepository.Delete(guid);
-        var employee = new Employee();
-        if (result.Data?.Guid is null)
+        var employee = await _employeeRepository.Delete(guid);
+        switch (employee.Code)
         {
-            return RedirectToAction(nameof(Index));
+            case 200:
+                TempData["Success"] = employee.Message;
+                return Redirect("~/Employee/Index");
+            case 400:
+                TempData["Error"] = employee.Message;
+                return Redirect("~/Employee/Index");
+            default:
+                TempData["Error"] = "Failed to delete employee";
+                return Redirect("~/Employee/Index");
         }
-        else
-        {
-            employee.Guid = result.Data.Guid;
-        }
-        return RedirectToAction(nameof(Index));
     }
 }

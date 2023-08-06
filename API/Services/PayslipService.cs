@@ -72,7 +72,7 @@ public class PayslipService
         return (PayslipDtoGet)payslip;
     }
 
-    public int UpdatePayslips(UpdatePayslip updatePayslip)
+    public int UpdatePayslips(PayslipDtoUpdate updatePayslip)
     {
         var payslipps = _payslipRepository.GetByGuid(updatePayslip.Guid);
         if (payslipps == null)
