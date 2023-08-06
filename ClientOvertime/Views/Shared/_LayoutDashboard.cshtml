@@ -102,6 +102,7 @@
                             </a>
                         </li>
 
+
                         <!--Employee-->
                         @if (User.IsInRole("Admin"))
                         {
@@ -149,16 +150,16 @@
 
                         <!--Overtime Payslip-->
                         @*@if (User.IsInRole("User") || User.IsInRole("Admin"))
-                        {*@
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Payslip/Index">
-                                    <span class="menu-title">Payslip History</span>
-                                    <i class="mdi mdi-cash-multiple menu-icon"></i>
-                                </a>
-                            </li>
+                    {*@
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Payslip/Index">
+                                <span class="menu-title">Payslip History</span>
+                                <i class="mdi mdi-cash-multiple menu-icon"></i>
+                            </a>
+                        </li>
                         @*}*@
 
-                     
+
                         <!--End Sidebar-->
                     }
                 </ul>

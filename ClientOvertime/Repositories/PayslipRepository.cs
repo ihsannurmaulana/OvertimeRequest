@@ -45,4 +45,15 @@ public class PayslipRepository : GeneralRepository<PayslipVMGet, Guid>, IPayslip
         }
         return entity;
     }
+
+    public async Task<ResponseHandler<double>> GetStatistic(Guid guid)
+    {
+        ResponseHandler<double> entity = null;
+        using (var response = await _httpClient.GetAsync(_request + "/total-paid-overtime" + "?guid=" + guid))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<double>>(apiResponse);
+        }
+        return entity;
+    }
 }

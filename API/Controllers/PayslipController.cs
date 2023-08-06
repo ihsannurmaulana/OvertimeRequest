@@ -234,4 +234,18 @@ public class PayslipController : ControllerBase
         });
     }
 
+    [HttpGet("dummy/total-paid-overtime")]
+    public IActionResult GetTotalPaidOvertime(Guid guid)
+    {
+        double totalExpense = _payslipService.GetTotalOvertime(guid);
+
+        return Ok(new ResponseHandler<double>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Total Salary Expense Calculated",
+            Data = totalExpense
+        });
+    }
+
 }

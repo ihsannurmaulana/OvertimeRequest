@@ -236,4 +236,11 @@ public class PayslipService
 
         return totalExpense;
     }
+
+    public double GetTotalOvertime(Guid guid)
+    {
+        var payslips = GetAllMasterOverbyEmpGuid(guid);
+        double totalOvertime = payslips.Sum(p => p.PaidOvertime);
+        return totalOvertime;
+    }
 }
