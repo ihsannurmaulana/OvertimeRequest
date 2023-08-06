@@ -21,9 +21,9 @@
                     <table class="table datatable table-hover table-responsive table-striped" id="data-table" style="width: 100%">
                         <thead>
                             <tr>
-                                @*<th>
+                                <th hidden>
                                 @Html.DisplayNameFor(model => model.Guid)
-                                </th>*@
+                                </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.FullName)
                                 </th>
@@ -45,7 +45,6 @@
                                 @* <th>
                                 @Html.DisplayNameFor(model => model.EmployeeGuid)
                                 </th>*@
-
                             </tr>
                         </thead>
                         <tbody>
@@ -55,9 +54,9 @@
                                     @{
                                         var culture = new System.Globalization.CultureInfo("id-ID");
                                     }
-                                    @*<td>
-                                @Html.DisplayFor(modelItem => item.Guid)
-                                </td>*@
+                                    <td hidden>
+                                        @Html.DisplayFor(modelItem => item.Guid)
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.FullName)
                                     </td>
@@ -68,17 +67,32 @@
                                         @Html.DisplayFor(modelItem => formatDate)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Salary)
+                                        @{
+                                            var formatMoney = item.Salary.ToString("C0",culture);
+                                        }
+                                        @Html.DisplayFor(modelItem => formatMoney)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Allowance)
+                                        @{
+                                            var formatAllow = item.Allowance.ToString("C0", culture);
+                                        }
+                                        @Html.DisplayFor(modelItem => formatAllow)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PaidOvertime)
+                                        @{
+                                            var formatPaid = item.PaidOvertime.ToString("C0", culture);
+                                        }
+                                        @Html.DisplayFor(modelItem => formatPaid)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TotalSalary)
+                                        @{
+                                            var formatTotal = item.TotalSalary.ToString("C0", culture);
+                                        }
+                                        @Html.DisplayFor(modelItem => formatTotal)
                                     </td>
+@*                                    <td>
+                                        <button class="btn btn-secondary btn-md" onclick="showDetailOrder('@item.Guid')"><i class="ti ti-clipboard-list"></i> Detail Payslip</button>
+                                    </td>*@
                                     @* <td>
                                 @Html.DisplayFor(modelItem => item.EmployeeGuid)
                                 </td>*@
@@ -92,3 +106,35 @@
     </div>
 </div>
 
+@*<div class="modal text-start" id="modalDetail" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+   
+    <div class="modal-dialog" style="max-width:80%">
+        <div class="modal-content" style="margin-left:auto; margin-right:auto">
+
+          
+            <div class="modal-header">
+                
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        function showDetailPayslip(guid) {
+            $.get("/payslips/dummy?guid=" + guid, function (data) {
+                $("#modalDetail .modal-body").html(data);
+                $("#modalDetail").modal("show");
+            });
+        }
+    </script>
+}*@

@@ -28,7 +28,7 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
                     }).FirstOrDefault();
                 var salaryPerHours = emp.Payslip.Salary * 1 / 173;
                 var totalHours = Convert.ToInt32((over.EndDate - over.StartDate).TotalHours);
-                var today = over.CreatedDate.DayOfWeek;
+                var today = over.StartDate.DayOfWeek;
                 if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday)
                 {
                     if (totalHours > 11)

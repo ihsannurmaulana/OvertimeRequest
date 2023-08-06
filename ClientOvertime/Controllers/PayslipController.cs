@@ -66,4 +66,16 @@ public class PayslipController : Controller
         }
         return RedirectToAction("Index", "Dashboard");
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetDetail(Guid guid)
+    {
+        var result = await _payslipRepository.GetDetail(guid);
+        var detail = new PayslipVMGet();
+        if (result.Data != null)
+        {
+            detail = result.Data;
+        }
+        return View(detail);
+    }
 }
