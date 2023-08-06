@@ -136,6 +136,17 @@
 
                         }
 
+                        <!--Overtime By Manager-->
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Overtime/GetByManager">
+                                    <span class="menu-title">Overtime History</span>
+                                    <i class="mdi mdi-av-timer menu-icon"></i>
+                                </a>
+                            </li>
+                        }
+
                         <!--Overtime Payslip-->
                         @*@if (User.IsInRole("User") || User.IsInRole("Admin"))
                         {*@
@@ -147,16 +158,7 @@
                             </li>
                         @*}*@
 
-                        <!--Overtime By Manager-->
-                        @if (User.IsInRole("Manager"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Overtime/GetByManager">
-                                    <span class="menu-title">Overtime History</span>
-                                    <i class="mdi mdi-av-timer menu-icon"></i>
-                                </a>
-                            </li>
-                        }
+                     
                         <!--End Sidebar-->
                     }
                 </ul>

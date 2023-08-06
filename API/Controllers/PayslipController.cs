@@ -86,13 +86,13 @@ public class PayslipController : ControllerBase
 
     }
 
-    [HttpPut]
-    public IActionResult Update(UpdatePayslip updatePayslip)
+    [HttpPut("dummy")]
+    public IActionResult Update(PayslipDtoUpdate updatePayslip)
     {
         var payslip = _payslipService.UpdatePayslips(updatePayslip);
         if (payslip == -1)
         {
-            return NotFound(new ResponseHandler<UpdatePayslip>
+            return NotFound(new ResponseHandler<PayslipDtoUpdate>
             {
                 Code = StatusCodes.Status404NotFound,
                 Status = HttpStatusCode.NotFound.ToString(),
@@ -101,7 +101,7 @@ public class PayslipController : ControllerBase
         }
         else if (payslip == 0)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<UpdatePayslip>
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<PayslipDtoUpdate>
             {
                 Code = StatusCodes.Status500InternalServerError,
                 Status = HttpStatusCode.InternalServerError.ToString(),
@@ -110,7 +110,7 @@ public class PayslipController : ControllerBase
         }
         else
         {
-            return Ok(new ResponseHandler<UpdatePayslip>
+            return Ok(new ResponseHandler<PayslipDtoUpdate>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),

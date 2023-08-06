@@ -21,7 +21,7 @@
                                        placeholder="Email"
                                        asp-for="Email"
                                        required />
-                                <span class="text-danger" id="emailWarning" style="display: none;">Please enter your email.</span>
+                                <span class="text-danger" style="display: none;">Please enter your email.</span>
                             </div>
                             <div class="form-group">
                                 <input type="password"
@@ -30,7 +30,7 @@
                                        placeholder="Password"
                                        asp-for="Password"
                                        required />
-                                <span class="text-danger" id="passwordWarning" style="display: none;">Please enter your password.</span>
+                                <span class="text-danger" style="display: none;">Please enter your password.</span>
                             </div>
                             <div class="mt-3">
                                 <button class="btn btn-info btn-rounded w-100" type="submit">Login</button>
@@ -49,27 +49,3 @@
 </div>
 <!-- container-scroller -->
 
-<script>
-    function validateForm() {
-        var email = document.getElementById('exampleInputEmail1').value;
-        var password = document.getElementById('exampleInputPassword1').value;
-        var emailWarning = document.getElementById('emailWarning');
-        var passwordWarning = document.getElementById('passwordWarning');
-
-        if (email === '') {
-            emailWarning.style.display = 'block';
-            return false;
-        } else {
-            emailWarning.style.display = 'none';
-        }
-
-        if (password === '') {
-            passwordWarning.style.display = 'block';
-            return false;
-        } else {
-            passwordWarning.style.display = 'none';
-        }
-
-        return true;
-    }
-</script>
