@@ -220,4 +220,18 @@ public class PayslipController : ControllerBase
         });
     }
 
+    [HttpGet("dummy/total-expense")]
+    public IActionResult GetTotalSalaryExpense()
+    {
+        double totalExpense = _payslipService.GetTotalSalaryExpense();
+
+        return Ok(new ResponseHandler<double>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Total Salary Expense Calculated",
+            Data = totalExpense
+        });
+    }
+
 }
