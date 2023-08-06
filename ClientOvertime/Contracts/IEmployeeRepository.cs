@@ -8,4 +8,6 @@ public interface IEmployeeRepository : IGeneralRepository<EmployeeVM, Guid>
     Task<ResponseHandler<IEnumerable<EmployeeVM>>> GetEmployees();
 
     Task<ResponseHandler<IEnumerable<ManagerVM>>> GetManager();
+
+    public Task<ResponseHandler<int>> GetCount();
 }

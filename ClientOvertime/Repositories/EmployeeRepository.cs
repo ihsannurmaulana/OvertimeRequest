@@ -31,5 +31,16 @@ public class EmployeeRepository : GeneralRepository<EmployeeVM, Guid>, IEmployee
         return entityVM;
     }
 
+    public async Task<ResponseHandler<int>> GetCount()
+    {
+        ResponseHandler<int> entity = null;
+        using (var response = await _httpClient.GetAsync(_request + "total-count"))
+        {
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            entity = JsonConvert.DeserializeObject<ResponseHandler<int>>(apiResponse);
+        }
+        return entity;
+    }
+
 
 }

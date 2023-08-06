@@ -71,7 +71,7 @@ public class EmployeeService
 
             foreach (var payslip in payslips)
             {
-                if (payslip.EmployeeGuid == getDataEmployee.Guid) 
+                if (payslip.EmployeeGuid == getDataEmployee.Guid)
                 {
                     getDataEmployee.Salary = payslip.Salary;
                     break;
@@ -189,6 +189,15 @@ public class EmployeeService
         var isDelete = _employeeRepository.Delete(employee);
         return !isDelete ? 0 : // Employee failed to delete
             1;                 // Employee deleted
+    }
+
+    // Get Count Employee
+    public int GetTotalEmployeeCount()
+    {
+        var employees = GetAllMaster();
+        int totalEmployeeCount = employees.Count(employee => employee.RoleName != "Admin");
+
+        return totalEmployeeCount;
     }
 
 }

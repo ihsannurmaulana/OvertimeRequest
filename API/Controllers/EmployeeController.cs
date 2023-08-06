@@ -210,4 +210,18 @@ public class EmployeeController : ControllerBase
         });
     }
 
+
+    [HttpGet("total-count")]
+    public IActionResult GetTotalEmployeeCount()
+    {
+        int totalEmployeeCount = _service.GetTotalEmployeeCount();
+
+        return Ok(new ResponseHandler<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Status = HttpStatusCode.OK.ToString(),
+            Message = "Total Employee Count",
+            Data = totalEmployeeCount
+        });
+    }
 }
