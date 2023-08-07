@@ -18,7 +18,7 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h3 class="card-title h3">Datatables History</h3>
-                    <table class="table datatable table-hover table-responsive table-striped text-center" id="data-table" style="width: 100%">
+                    <table class="table datatable table-hover table-responsive table-striped" id="data-table" style="width: 100%">
                         <thead class="table-primary">
                             <tr>
 
@@ -127,4 +127,38 @@
         </div>
     </div>
 </div>
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
+
+        .table thead th {
+            background-color: #da8cff;
+            background-image: linear-gradient(315deg, #da8cff 0%, #9a55ff 50%);
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        
+        .table tbody td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        .table tbody td button {
+            padding: 5px 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+</style>

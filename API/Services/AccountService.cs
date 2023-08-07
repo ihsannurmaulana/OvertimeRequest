@@ -207,7 +207,7 @@ public class AccountService
             IsActive = account.IsActive,
             Otp = account.Otp,
             ExpiredTime = account.ExpiredTime,
-            IsUsed = true,
+            IsUsed = false,
             CreatedDate = account.CreatedDate,
             ModifiedDate = DateTime.Now
         });

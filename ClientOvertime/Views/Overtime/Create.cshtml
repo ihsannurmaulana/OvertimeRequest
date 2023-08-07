@@ -22,7 +22,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card mt-4">
                 <div class="card-body">
-                    <form action="Create" method="POST">
+                    <form id="create-form" action="Create" method="POST">
                         <input asp-for="EmployeeGuid" class="form-control" hidden value="@guid" />
                         <input asp-for="Status" class="form-control" value="0" hidden />
                         <div class="form-group">
@@ -57,12 +57,12 @@
                         </div>
                         <div class="form-group">
                             <h6 asp-for="StartDate" class="control-label">Start Date:</h6>
-                            <input asp-for="StartDate" class="form-control"/>
+                            <input asp-for="StartDate" type="datetime-local" class="form-control" oninput="checkDateValidity()"/>
                             <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="EndDate" class="control-label">End Date:</label>
-                            <input asp-for="EndDate" class="form-control"/>
+                            <input asp-for="EndDate" type="datetime-local" class="form-control" oninput="checkDateValidity()" />
                             <span asp-validation-for="EndDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -71,7 +71,7 @@
                             <span asp-validation-for="Remarks" class="text-danger"></span>
                         </div>
                         <div class="form-group mt-3">
-                            <button class="btn btn-primary" type="submit">Create</button>
+                            <button class="btn btn-primary  " type="submit">Create</button>
                             <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Back to List</a>
                         </div>
                     </form>
@@ -81,12 +81,178 @@
     </div>
 </div>
 
-@*@section Scripts{
+<style>
+    /* Gaya judul form */
+    form h6 {
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    /* Gaya isi kolom nama dan manajer */
+    .col-5 p {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+        /* Gaya kolom Remaining */
+        .col-5 p.remaining {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+    /* Gaya input dan textarea */
+    input[type="datetime-local"],
+    textarea {
+        outline: none; /* Hilangkan garis seleksi saat focus */
+    }
+
+        input[type="datetime-local"]:focus,
+        textarea:focus {
+            border-color: #007bff; /* Ubah warna border saat focus */
+        }
+
+    /* Gaya tombol Create dan Back to List saat hover */
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    /* Gaya tombol Back to List */
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+        margin-right: 10px;
+        transition: background-color 0.2s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    /* Gaya form container */
+    .form-container {
+        margin-top: 20px;
+    }
+
+    /* Gaya pesan sukses */
+    .success-message {
+        color: #28a745;
+        font-weight: bold;
+    }
+</style>
+
+@section Scripts{
     <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
+        function checkDateValidity() {
+            var now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            var startDateInput = document.getElementById('StartDate');
+            var endDateInput = document.getElementById('EndDate');
+
+            var maxAllowedDate = new Date(now);
+            maxAllowedDate.setDate(maxAllowedDate.getDate() - 2);
+
+            var maxAllowedDatePlus = new Date(now);
+            maxAllowedDatePlus.setDate(maxAllowedDatePlus.getDate() + 3);
+
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(endDateInput.value);
+
+            if (startDate < maxAllowedDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Start Date',
+                    text: 'Start Date cannot be in the past.',
+                    onClose: function () {
+                        startDateInput.value = '';
+                    }
+                });
+                startDateInput.value = '';
+                return;
+            }
+            if (endDate < maxAllowedDate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid End Date',
+                    text: 'End Date cannot be in the past.',
+                    onClose: function () {
+                        endDateInput.value = '';
+                    }
+                });
+                endDateInput.value = '';
+                return;
+            }
+
+            if (startDate > maxAllowedDatePlus) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Start Date',
+                    text: 'Start cannot be more than 2 days after today.',
+                    onClose: function () {
+                        startDateInput.value = '';
+                    }
+                });
+                startDateInput.value = '';
+                return;
+            }
+
+            if (endDate > maxAllowedDatePlus) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid End Date',
+                    text: 'End Date cannot be more than 2 days after today.',
+                    onClose: function () {
+                        endDateInput.value = '';
+                    }
+                });
+                endDateInput.value = '';
+                return;
+            }
+
+            if (endDate.getDate() < startDate.getDate() && endDate.getHours() <= startDate.getHours()) {
+                endDate.setCustomValidity('End Date cannot be earlier than Start Date.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Dates',
+                    text: 'End Date cannot be earlier than Start Date.'
+                });
+            } else {
+                endDateInput.setCustomValidity('');
+            }
+
+            if (endDate.toDateString() === startDate.toDateString()) {
+                endDateInput.setCustomValidity('');
+            }
+        }
+
+        document.getElementById('StartDate').addEventListener('input', checkDateValidity);
+        document.getElementById('EndDate').addEventListener('input', checkDateValidity);
     </script>
-}*@
+
+
+    <script>
+        function checkFormValidity() {
+            var startDateInput = document.getElementById('StartDate');
+            var endDateInput = document.getElementById('EndDate');
+            var remarksInput = document.getElementById('Remarks');
+
+            if (startDateInput.value.trim() === '' || endDateInput.value.trim() === '' || remarksInput.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Form',
+                    text: 'Please fill in all the required fields.'
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        document.getElementById('create-form').addEventListener('submit', function (event) {
+            if (!checkFormValidity()) {
+                event.preventDefault();
+            }
+        });
+    </script>
+}
