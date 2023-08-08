@@ -151,7 +151,6 @@ public class PayslipService
                        where p.EmployeeGuid == guid
                        select new
                        {
-
                            guid = o.EmployeeGuid,
                            totalOver = o.PaidOvertime,
                        }).ToList().GroupBy(a => a.guid).Select(b => new PayslipDtoGetMaster()
@@ -236,7 +235,6 @@ public class PayslipService
 
         return totalExpense;
     }
-
     public double GetTotalOvertime(Guid guid)
     {
         var payslips = GetAllMasterOverbyEmpGuid(guid);

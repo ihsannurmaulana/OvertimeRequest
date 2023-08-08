@@ -18,7 +18,7 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
         {
             var remainingOvertime = RemainingOvertimeByEmployeeGuid(over.EmployeeGuid);
             var exitingOvertime = _context.Overtimes.FirstOrDefault(o => o.StartDate.Day == over.StartDate.Day);
-            if (remainingOvertime.Remaining > 0)
+            if (remainingOvertime.Remaining > 0 && remainingOvertime.EndDate <= remainingOvertime.StartDate)
             {
                 var emp = _context.Employees.Where(e => e.Guid == over.EmployeeGuid)
                     .Join(_context.Payslips, e => e.Guid, p => p.EmployeeGuid, (e, p) => new
@@ -141,11 +141,11 @@ public class OvertimeRepository : GeneralRepository<Overtime>, IOvertimeReposito
             int paid = 0;
             for (int i = 0; i < totalHour; i++)
             {
-                if (i < 8)
+                if (i <= 8)
                 {
                     paid += 2 * (int)salaryPerHours;
                 }
-                else if (i == 8)
+                else if (i == 9)
                 {
                     paid += 3 * (int)salaryPerHours;
                 }

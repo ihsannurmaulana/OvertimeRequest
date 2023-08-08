@@ -70,9 +70,8 @@ public class DashboardController : Controller
             listOvertimeManager = overtimeManager.Data.ToList();
         }
 
-        var countOvertimeGuid = listOvertimeManager.Count(item => item.EmployeeGuid == guid && item.Status == API.Utilities.Enums.StatusLevel.Waiting);
-
-        ViewData["countOvertime"] = countOvertimeGuid;
+        var countOvertimeGuid = listOvertimeManager.Count(item => item.Status == API.Utilities.Enums.StatusLevel.Waiting);
+        ViewData["countWaiting"] = countOvertimeGuid.ToString();
         return View();
     }
 }

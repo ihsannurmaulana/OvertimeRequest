@@ -72,6 +72,27 @@
                 </button>
             </div>
         </nav>
+
+@*        <script>
+            document.getElementById("logout-button").addEventListener("click", function (e) {
+                e.preventDefault(); // Mencegah tindakan default dari link
+
+                Swal.fire({
+                    title: "Confirmation Logout !",
+                    text: "Are you sure?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, Logout",
+                    cancelButtonText: "Cancel",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika pengguna menekan "Ya, Logout", maka arahkan ke halaman logout
+                        window.location.href = document.getElementById("logout-button").getAttribute("~/account/logout")
+                    }
+                });
+            });
+        </script>*@
+
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <!-- partial:partials/_sidebar.html -->
